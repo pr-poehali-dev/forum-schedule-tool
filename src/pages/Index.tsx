@@ -26,6 +26,14 @@ interface ScheduleItem {
   customTitle?: string;
 }
 
+interface SavedSchedule {
+  id: string;
+  name: string;
+  selectedEvents: Record<string, Event[]>;
+  schedule: ScheduleItem[];
+  createdAt: string;
+}
+
 const mockEvents: Event[] = [
   { id: '1a', title: 'Обзорная экскурсия по территории ОЭЗ', description: 'Мероприятие для ознакомления участниц с ОЭЗ и ее резидентами. Автобус провозит участниц по маршруту: Синергия 13.2 - Август-Алабуга - Trakya Glass Rus - Хаят Кимия - Кастамону - КНТ-Пласт - Драйлок - Алабуга Политех', duration: 30, location: 'Территория ОЭЗ', category: 'Утренние мероприятия' },
   { id: '1b', title: 'Утренняя зарядка (Йога)', description: 'Утренняя зарядка способствует быстрому пробуждению и хорошему самочувствию в течении всего дня. Включает: 30 мин сбор, 10 мин трансфер, 40 мин зарядка, 10 мин сбор после', duration: 90, location: 'Спортзал Пирамиды', category: 'Утренние мероприятия' },
@@ -84,6 +92,11 @@ const Index = () => {
   const [draggedIndex, setDraggedIndex] = useState<number | null>(null);
   const [viewEventDialog, setViewEventDialog] = useState(false);
   const [viewingEvent, setViewingEvent] = useState<Event | null>(null);
+  const [savedSchedules, setSavedSchedules] = useState<SavedSchedule[]>([]);
+  const [currentScheduleId, setCurrentScheduleId] = useState<string | null>(null);
+  const [saveDialog, setSaveDialog] = useState(false);
+  const [scheduleName, setScheduleName] = useState('');
+  const [manageDialog, setManageDialog] = useState(false);
 
   const handleEventSelect = (event: Event) => {
     setSelectedEvents(prev => {
@@ -278,14 +291,92 @@ const Index = () => {
     setViewEventDialog(true);
   };
 
+  const saveCurrentSchedule = () => {
+    if (!scheduleName.trim()) return;
+    
+    const newSchedule: SavedSchedule = {
+      id: currentScheduleId || `schedule-${Date.now()}`,
+      name: scheduleName,
+      selectedEvents: { ...selectedEvents },
+      schedule: [...schedule],
+      createdAt: new Date().toISOString()
+    };
+
+    setSavedSchedules(prev => {
+      const existing = prev.findIndex(s => s.id === newSchedule.id);
+      if (existing !== -1) {
+        const updated = [...prev];
+        updated[existing] = newSchedule;
+        return updated;
+      }
+      return [...prev, newSchedule];
+    });
+
+    setCurrentScheduleId(newSchedule.id);
+    setSaveDialog(false);
+    setScheduleName('');
+  };
+
+  const loadSchedule = (scheduleId: string) => {
+    const schedule = savedSchedules.find(s => s.id === scheduleId);
+    if (schedule) {
+      setSelectedEvents(schedule.selectedEvents);
+      setSchedule(schedule.schedule);
+      setCurrentScheduleId(schedule.id);
+      setStep('editing');
+      setManageDialog(false);
+    }
+  };
+
+  const deleteSchedule = (scheduleId: string) => {
+    setSavedSchedules(prev => prev.filter(s => s.id !== scheduleId));
+    if (currentScheduleId === scheduleId) {
+      setCurrentScheduleId(null);
+    }
+  };
+
+  const createNewSchedule = () => {
+    setSelectedEvents({});
+    setSchedule([]);
+    setCurrentScheduleId(null);
+    setStep('selection');
+    setManageDialog(false);
+  };
+
   return (
     <div className="min-h-screen bg-gradient-to-br from-cyan-50 via-blue-50 to-sky-100">
       <div className="container mx-auto px-4 py-8">
-        <div className="mb-8 text-center animate-fade-in">
-          <h1 className="text-5xl font-bold bg-gradient-to-r from-cyan-600 to-blue-600 bg-clip-text text-transparent mb-3">
-            Планировщик форума
-          </h1>
-          <p className="text-gray-600 text-lg">Создайте идеальное расписание для форума</p>
+        <div className="mb-8 animate-fade-in">
+          <div className="text-center">
+            <h1 className="text-5xl font-bold bg-gradient-to-r from-cyan-600 to-blue-600 bg-clip-text text-transparent mb-3">
+              Планировщик форума
+            </h1>
+            <p className="text-gray-600 text-lg">Создайте идеальное расписание для форума</p>
+          </div>
+          
+          <div className="flex justify-center gap-3 mt-6">
+            <Button
+              onClick={() => setManageDialog(true)}
+              variant="outline"
+              className="gap-2"
+            >
+              <Icon name="FolderOpen" size={18} />
+              Мои расписания ({savedSchedules.length})
+            </Button>
+            {(step === 'editing' || step === 'final') && (
+              <Button
+                onClick={() => {
+                  const currentSchedule = savedSchedules.find(s => s.id === currentScheduleId);
+                  setScheduleName(currentSchedule?.name || '');
+                  setSaveDialog(true);
+                }}
+                className="gap-2 bg-gradient-to-r from-cyan-600 to-blue-600 hover:from-cyan-700 hover:to-blue-700"
+              >
+                <Icon name="Save" size={18} />
+                {currentScheduleId ? 'Обновить' : 'Сохранить'}
+              </Button>
+            )}
+          </div>
         </div>
 
         {step === 'selection' && (
@@ -678,6 +769,139 @@ const Index = () => {
                 </div>
               </div>
             )}
+          </DialogContent>
+        </Dialog>
+
+        <Dialog open={saveDialog} onOpenChange={setSaveDialog}>
+          <DialogContent>
+            <DialogHeader>
+              <DialogTitle className="flex items-center gap-2">
+                <Icon name="Save" size={24} className="text-cyan-600" />
+                {currentScheduleId ? 'Обновить расписание' : 'Сохранить расписание'}
+              </DialogTitle>
+              <DialogDescription>
+                Дайте название вашему расписанию для удобного поиска
+              </DialogDescription>
+            </DialogHeader>
+            <div className="space-y-4 pt-4">
+              <div className="space-y-2">
+                <Label htmlFor="schedule-name">Название расписания</Label>
+                <Input
+                  id="schedule-name"
+                  value={scheduleName}
+                  onChange={(e) => setScheduleName(e.target.value)}
+                  placeholder="Например: Форум День 1, Вариант А"
+                  autoFocus
+                />
+              </div>
+              <div className="flex justify-end gap-3">
+                <Button variant="outline" onClick={() => setSaveDialog(false)}>
+                  Отмена
+                </Button>
+                <Button
+                  onClick={saveCurrentSchedule}
+                  disabled={!scheduleName.trim()}
+                  className="bg-gradient-to-r from-cyan-600 to-blue-600 hover:from-cyan-700 hover:to-blue-700"
+                >
+                  <Icon name="Check" size={18} className="mr-2" />
+                  {currentScheduleId ? 'Обновить' : 'Сохранить'}
+                </Button>
+              </div>
+            </div>
+          </DialogContent>
+        </Dialog>
+
+        <Dialog open={manageDialog} onOpenChange={setManageDialog}>
+          <DialogContent className="max-w-3xl max-h-[80vh] overflow-y-auto">
+            <DialogHeader>
+              <DialogTitle className="text-2xl flex items-center gap-2">
+                <Icon name="FolderOpen" size={28} className="text-cyan-600" />
+                Управление расписаниями
+              </DialogTitle>
+              <DialogDescription>
+                Загрузите сохраненное расписание или создайте новое
+              </DialogDescription>
+            </DialogHeader>
+            <div className="space-y-4 pt-4">
+              <Button
+                onClick={createNewSchedule}
+                className="w-full gap-2 bg-gradient-to-r from-cyan-600 to-blue-600 hover:from-cyan-700 hover:to-blue-700"
+              >
+                <Icon name="Plus" size={20} />
+                Создать новое расписание
+              </Button>
+
+              {savedSchedules.length === 0 ? (
+                <div className="text-center py-12 text-gray-500">
+                  <Icon name="Inbox" size={48} className="mx-auto mb-4 opacity-50" />
+                  <p>У вас пока нет сохраненных расписаний</p>
+                  <p className="text-sm mt-2">Создайте первое расписание и сохраните его</p>
+                </div>
+              ) : (
+                <div className="space-y-3">
+                  <h3 className="font-semibold text-gray-700">Сохраненные расписания:</h3>
+                  {savedSchedules.map(schedule => {
+                    const totalEvents = Object.values(schedule.selectedEvents).flat().length;
+                    const totalDuration = schedule.schedule.reduce((acc, item) => acc + item.event.duration, 0);
+                    
+                    return (
+                      <Card
+                        key={schedule.id}
+                        className={`cursor-pointer transition-all hover:shadow-md ${
+                          currentScheduleId === schedule.id ? 'ring-2 ring-cyan-500 bg-cyan-50' : ''
+                        }`}
+                      >
+                        <CardHeader className="pb-3">
+                          <div className="flex items-start justify-between">
+                            <div className="flex-1">
+                              <CardTitle className="text-lg mb-2">{schedule.name}</CardTitle>
+                              <div className="flex items-center gap-4 text-sm text-gray-600">
+                                <span className="flex items-center gap-1">
+                                  <Icon name="Calendar" size={14} />
+                                  {totalEvents} мероприятий
+                                </span>
+                                <span className="flex items-center gap-1">
+                                  <Icon name="Clock" size={14} />
+                                  {Math.floor(totalDuration / 60)}ч {totalDuration % 60}м
+                                </span>
+                                <span className="flex items-center gap-1 text-xs">
+                                  <Icon name="CalendarClock" size={14} />
+                                  {new Date(schedule.createdAt).toLocaleDateString('ru-RU')}
+                                </span>
+                              </div>
+                            </div>
+                            <div className="flex gap-2">
+                              <Button
+                                variant="outline"
+                                size="sm"
+                                onClick={() => loadSchedule(schedule.id)}
+                                className="gap-1"
+                              >
+                                <Icon name="FolderOpen" size={16} />
+                                Открыть
+                              </Button>
+                              <Button
+                                variant="ghost"
+                                size="sm"
+                                onClick={(e) => {
+                                  e.stopPropagation();
+                                  if (confirm(`Удалить расписание "${schedule.name}"?`)) {
+                                    deleteSchedule(schedule.id);
+                                  }
+                                }}
+                                className="text-red-600 hover:text-red-700"
+                              >
+                                <Icon name="Trash2" size={16} />
+                              </Button>
+                            </div>
+                          </div>
+                        </CardHeader>
+                      </Card>
+                    );
+                  })}
+                </div>
+              )}
+            </div>
           </DialogContent>
         </Dialog>
       </div>
