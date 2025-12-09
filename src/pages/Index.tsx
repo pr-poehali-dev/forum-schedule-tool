@@ -67,6 +67,12 @@ const categories = [
   'Лекции'
 ];
 
+const getDurationColor = (duration: number) => {
+  if (duration >= 30 && duration <= 60) return { bg: 'bg-green-100', border: 'border-green-400', text: 'text-green-700', badge: 'bg-green-500' };
+  if (duration > 60 && duration <= 90) return { bg: 'bg-yellow-100', border: 'border-yellow-400', text: 'text-yellow-700', badge: 'bg-yellow-500' };
+  return { bg: 'bg-red-100', border: 'border-red-400', text: 'text-red-700', badge: 'bg-red-500' };
+};
+
 const Index = () => {
   const [selectedEvents, setSelectedEvents] = useState<Record<string, Event[]>>({});
   const [schedule, setSchedule] = useState<ScheduleItem[]>([]);
@@ -76,6 +82,8 @@ const Index = () => {
   const [addDuration, setAddDuration] = useState(15);
   const [addTitle, setAddTitle] = useState('');
   const [draggedIndex, setDraggedIndex] = useState<number | null>(null);
+  const [viewEventDialog, setViewEventDialog] = useState(false);
+  const [viewingEvent, setViewingEvent] = useState<Event | null>(null);
 
   const handleEventSelect = (event: Event) => {
     setSelectedEvents(prev => {
@@ -265,14 +273,19 @@ const Index = () => {
     return (selectedEvents[cat] || []).length === 1;
   });
 
+  const handleViewEvent = (event: Event) => {
+    setViewingEvent(event);
+    setViewEventDialog(true);
+  };
+
   return (
-    <div className="min-h-screen bg-gradient-to-br from-purple-50 via-white to-blue-50">
+    <div className="min-h-screen bg-gradient-to-br from-cyan-50 via-blue-50 to-sky-100">
       <div className="container mx-auto px-4 py-8">
         <div className="mb-8 text-center animate-fade-in">
-          <h1 className="text-5xl font-bold bg-gradient-to-r from-purple-600 to-blue-600 bg-clip-text text-transparent mb-3">
+          <h1 className="text-5xl font-bold bg-gradient-to-r from-cyan-600 to-blue-600 bg-clip-text text-transparent mb-3">
             Планировщик форума
           </h1>
-          <p className="text-gray-600 text-lg">Создайте идеальное расписание для программы АС</p>
+          <p className="text-gray-600 text-lg">Создайте идеальное расписание для форума</p>
         </div>
 
         {step === 'selection' && (
@@ -280,7 +293,7 @@ const Index = () => {
             {categories.map((category) => (
               <div key={category} className="bg-white rounded-2xl shadow-lg p-6 hover:shadow-xl transition-shadow">
                 <h2 className="text-2xl font-bold mb-4 flex items-center gap-3 text-gray-800">
-                  <div className="w-2 h-8 bg-gradient-to-b from-purple-500 to-blue-500 rounded-full"></div>
+                  <div className="w-2 h-8 bg-gradient-to-b from-cyan-500 to-blue-500 rounded-full"></div>
                   {category}
                   {selectedEvents[category] && selectedEvents[category].length > 0 && (
                     <Badge className="ml-2 bg-green-500">
@@ -296,28 +309,41 @@ const Index = () => {
                     .filter(event => event.category === category)
                     .map(event => {
                       const selected = isEventSelected(event.id);
+                      const colorScheme = getDurationColor(event.duration);
                       
                       return (
                         <Card
                           key={event.id}
-                          className={`cursor-pointer transition-all hover:shadow-md hover:-translate-y-1 ${
-                            selected ? 'ring-2 ring-purple-500 bg-purple-50' : 'hover:bg-gray-50'
+                          className={`cursor-pointer transition-all hover:shadow-md hover:-translate-y-1 relative ${
+                            selected ? 'ring-2 ring-cyan-500 bg-cyan-50' : 'hover:bg-gray-50'
                           }`}
-                          onClick={() => handleEventSelect(event)}
                         >
-                          <CardHeader className="pb-3">
+                          <CardHeader className="pb-3" onClick={() => handleEventSelect(event)}>
                             <div className="flex items-start justify-between gap-2">
                               <CardTitle className="text-base leading-tight">{event.title}</CardTitle>
-                              <Badge variant="secondary" className="shrink-0">
+                              <Badge className={`${colorScheme.badge} text-white shrink-0`}>
                                 {event.duration} мин
                               </Badge>
                             </div>
                             <CardDescription className="text-sm line-clamp-2">{event.description}</CardDescription>
                           </CardHeader>
                           <CardContent className="pt-0">
-                            <div className="flex items-center gap-2 text-sm text-gray-600">
-                              <Icon name="MapPin" size={14} />
-                              <span className="line-clamp-1">{event.location}</span>
+                            <div className="flex items-center justify-between gap-2">
+                              <div className="flex items-center gap-2 text-sm text-gray-600">
+                                <Icon name="MapPin" size={14} />
+                                <span className="line-clamp-1">{event.location}</span>
+                              </div>
+                              <Button
+                                variant="ghost"
+                                size="sm"
+                                onClick={(e) => {
+                                  e.stopPropagation();
+                                  handleViewEvent(event);
+                                }}
+                                className="h-8 text-cyan-600 hover:text-cyan-700"
+                              >
+                                <Icon name="Info" size={16} />
+                              </Button>
                             </div>
                           </CardContent>
                         </Card>
@@ -332,7 +358,7 @@ const Index = () => {
                 <Button
                   size="lg"
                   onClick={generateInitialSchedule}
-                  className="gap-2 bg-gradient-to-r from-purple-600 to-blue-600 hover:from-purple-700 hover:to-blue-700 text-lg px-8 py-6"
+                  className="gap-2 bg-gradient-to-r from-cyan-600 to-blue-600 hover:from-cyan-700 hover:to-blue-700 text-lg px-8 py-6"
                 >
                   Создать расписание
                   <Icon name="ArrowRight" size={22} />
@@ -367,11 +393,11 @@ const Index = () => {
                     onDragEnd={handleDragEnd}
                     className={`p-4 rounded-xl border-2 cursor-move transition-all ${
                       item.type === 'event'
-                        ? 'bg-gradient-to-r from-purple-50 to-blue-50 border-purple-200 hover:border-purple-400'
+                        ? `${getDurationColor(item.event.duration).bg} ${getDurationColor(item.event.duration).border} hover:border-opacity-100`
                         : item.type === 'meal'
-                        ? 'bg-green-50 border-green-200 hover:border-green-400'
+                        ? 'bg-emerald-50 border-emerald-200 hover:border-emerald-400'
                         : item.type === 'break'
-                        ? 'bg-yellow-50 border-yellow-200 hover:border-yellow-400'
+                        ? 'bg-amber-50 border-amber-200 hover:border-amber-400'
                         : 'bg-gray-50 border-gray-200 hover:border-gray-400'
                     } ${draggedIndex === index ? 'opacity-50' : ''}`}
                   >
@@ -421,7 +447,7 @@ const Index = () => {
               </Button>
               <Button
                 onClick={() => setStep('final')}
-                className="gap-2 bg-gradient-to-r from-purple-600 to-blue-600 hover:from-purple-700 hover:to-blue-700"
+                className="gap-2 bg-gradient-to-r from-cyan-600 to-blue-600 hover:from-cyan-700 hover:to-blue-700"
               >
                 Сформировать расписание
                 <Icon name="Sparkles" size={18} />
@@ -437,7 +463,7 @@ const Index = () => {
                 <div className="flex items-center justify-between">
                   <div>
                     <CardTitle className="text-3xl flex items-center gap-3">
-                      <Icon name="CalendarCheck" size={32} className="text-purple-600" />
+                      <Icon name="CalendarCheck" size={32} className="text-cyan-600" />
                       Финальное расписание
                     </CardTitle>
                     <CardDescription className="text-base mt-2">
@@ -460,17 +486,17 @@ const Index = () => {
                         key={item.id}
                         className={`p-5 rounded-xl border-l-4 transition-all hover:shadow-md ${
                           item.type === 'event'
-                            ? 'bg-gradient-to-r from-purple-50 to-blue-50 border-purple-500'
+                            ? `${getDurationColor(item.event.duration).bg} ${getDurationColor(item.event.duration).border.replace('border-', 'border-l-')}`
                             : item.type === 'meal'
-                            ? 'bg-green-50 border-green-500'
+                            ? 'bg-emerald-50 border-l-emerald-500'
                             : item.type === 'break'
-                            ? 'bg-yellow-50 border-yellow-500'
-                            : 'bg-gray-50 border-gray-400'
+                            ? 'bg-amber-50 border-l-amber-500'
+                            : 'bg-gray-50 border-l-gray-400'
                         }`}
                       >
                         <div className="flex items-center gap-4">
                           <div className="flex flex-col items-center bg-white rounded-lg px-3 py-2 shadow-sm">
-                            <span className="text-sm font-bold text-purple-600">{item.startTime}</span>
+                            <span className="text-sm font-bold text-cyan-600">{item.startTime}</span>
                             <span className="text-xs text-gray-400">—</span>
                             <span className="text-sm font-bold text-blue-600">{endTime}</span>
                           </div>
@@ -479,7 +505,7 @@ const Index = () => {
                               {item.customTitle || item.event.title}
                             </h3>
                             {item.event.category && (
-                              <p className="text-sm text-purple-600 font-medium mt-1">
+                              <p className="text-sm text-cyan-600 font-medium mt-1">
                                 [{item.event.category}]
                               </p>
                             )}
@@ -490,7 +516,7 @@ const Index = () => {
                               </p>
                             )}
                           </div>
-                          <Badge className="bg-purple-100 text-purple-800 border-purple-300">
+                          <Badge className={`${item.type === 'event' ? getDurationColor(item.event.duration).badge : 'bg-gray-400'} text-white`}>
                             {item.event.duration} мин
                           </Badge>
                         </div>
@@ -577,6 +603,81 @@ const Index = () => {
                 Добавить
               </Button>
             </div>
+          </DialogContent>
+        </Dialog>
+
+        <Dialog open={viewEventDialog} onOpenChange={setViewEventDialog}>
+          <DialogContent className="max-w-2xl">
+            <DialogHeader>
+              <DialogTitle className="text-2xl flex items-center gap-3">
+                <Icon name="Calendar" size={28} className="text-cyan-600" />
+                {viewingEvent?.title}
+              </DialogTitle>
+            </DialogHeader>
+            {viewingEvent && (
+              <div className="space-y-4 pt-4">
+                <div className={`p-4 rounded-lg ${getDurationColor(viewingEvent.duration).bg} ${getDurationColor(viewingEvent.duration).border} border-2`}>
+                  <div className="flex items-center justify-between mb-3">
+                    <div className="flex items-center gap-2">
+                      <Icon name="Clock" size={20} className={getDurationColor(viewingEvent.duration).text} />
+                      <span className={`font-semibold ${getDurationColor(viewingEvent.duration).text}`}>
+                        Длительность: {viewingEvent.duration} минут
+                      </span>
+                    </div>
+                    <Badge className={`${getDurationColor(viewingEvent.duration).badge} text-white`}>
+                      {viewingEvent.duration >= 30 && viewingEvent.duration <= 60 ? '🟢 Оптимально' : 
+                       viewingEvent.duration > 60 && viewingEvent.duration <= 90 ? '🟡 Средне' : '🔴 Длительно'}
+                    </Badge>
+                  </div>
+                  
+                  <div className="space-y-3">
+                    <div>
+                      <h4 className="font-semibold text-gray-700 mb-1 flex items-center gap-2">
+                        <Icon name="FileText" size={18} />
+                        Описание
+                      </h4>
+                      <p className="text-gray-600 leading-relaxed">{viewingEvent.description}</p>
+                    </div>
+                    
+                    <div>
+                      <h4 className="font-semibold text-gray-700 mb-1 flex items-center gap-2">
+                        <Icon name="MapPin" size={18} />
+                        Место проведения
+                      </h4>
+                      <p className="text-gray-600">{viewingEvent.location}</p>
+                    </div>
+                    
+                    <div>
+                      <h4 className="font-semibold text-gray-700 mb-1 flex items-center gap-2">
+                        <Icon name="Folder" size={18} />
+                        Категория
+                      </h4>
+                      <Badge variant="outline" className="text-cyan-600 border-cyan-300">
+                        {viewingEvent.category}
+                      </Badge>
+                    </div>
+                  </div>
+                </div>
+                
+                <div className="flex justify-end gap-3 pt-2">
+                  <Button
+                    variant="outline"
+                    onClick={() => setViewEventDialog(false)}
+                  >
+                    Закрыть
+                  </Button>
+                  <Button
+                    onClick={() => {
+                      handleEventSelect(viewingEvent);
+                      setViewEventDialog(false);
+                    }}
+                    className="bg-gradient-to-r from-cyan-600 to-blue-600 hover:from-cyan-700 hover:to-blue-700"
+                  >
+                    {isEventSelected(viewingEvent.id) ? 'Убрать из расписания' : 'Добавить в расписание'}
+                  </Button>
+                </div>
+              </div>
+            )}
           </DialogContent>
         </Dialog>
       </div>
