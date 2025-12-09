@@ -6,6 +6,8 @@ import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle } from '@/components/ui/dialog';
 import Icon from '@/components/ui/icon';
+import { jsPDF } from 'jspdf';
+import autoTable from 'jspdf-autotable';
 
 interface Event {
   id: string;
@@ -188,17 +190,72 @@ const Index = () => {
   };
 
   const exportToPDF = () => {
-    const scheduleText = schedule.map(item => {
-      const endTime = addMinutes(item.startTime, item.event.duration);
-      return `${item.startTime} - ${endTime}: ${item.event.title} (${item.event.duration} мин)${item.event.category ? ` [${item.event.category}]` : ''}`;
-    }).join('\n');
+    const doc = new jsPDF();
     
-    const blob = new Blob([scheduleText], { type: 'text/plain' });
-    const url = URL.createObjectURL(blob);
-    const a = document.createElement('a');
-    a.href = url;
-    a.download = 'schedule.txt';
-    a.click();
+    doc.addFileToVFS('Roboto-Regular.ttf', '');
+    
+    doc.setFont('helvetica', 'bold');
+    doc.setFontSize(20);
+    doc.setTextColor(147, 51, 234);
+    doc.text('Расписание форума', 105, 20, { align: 'center' });
+    
+    doc.setFontSize(12);
+    doc.setTextColor(100, 100, 100);
+    doc.text('Программа АС', 105, 28, { align: 'center' });
+    
+    const tableData = schedule.map(item => {
+      const endTime = addMinutes(item.startTime, item.event.duration);
+      return [
+        `${item.startTime} - ${endTime}`,
+        item.customTitle || item.event.title,
+        item.event.category || '',
+        `${item.event.duration} мин`,
+        item.event.location || ''
+      ];
+    });
+    
+    autoTable(doc, {
+      startY: 35,
+      head: [['Время', 'Мероприятие', 'Раздел', 'Длительность', 'Место']],
+      body: tableData,
+      theme: 'grid',
+      headStyles: {
+        fillColor: [147, 51, 234],
+        textColor: [255, 255, 255],
+        fontStyle: 'bold',
+        fontSize: 10
+      },
+      bodyStyles: {
+        fontSize: 9,
+        cellPadding: 4
+      },
+      columnStyles: {
+        0: { cellWidth: 35 },
+        1: { cellWidth: 60 },
+        2: { cellWidth: 35 },
+        3: { cellWidth: 25 },
+        4: { cellWidth: 35 }
+      },
+      alternateRowStyles: {
+        fillColor: [245, 243, 255]
+      },
+      margin: { top: 35, left: 10, right: 10 }
+    });
+    
+    const pageCount = doc.getNumberOfPages();
+    for (let i = 1; i <= pageCount; i++) {
+      doc.setPage(i);
+      doc.setFontSize(8);
+      doc.setTextColor(150, 150, 150);
+      doc.text(
+        `Страница ${i} из ${pageCount}`,
+        105,
+        doc.internal.pageSize.height - 10,
+        { align: 'center' }
+      );
+    }
+    
+    doc.save('schedule-forum.pdf');
   };
 
   const canGenerateSchedule = categories.every(cat => {
