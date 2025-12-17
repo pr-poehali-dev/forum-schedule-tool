@@ -1,0 +1,205 @@
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
+import { Button } from '@/components/ui/button';
+import { Badge } from '@/components/ui/badge';
+import Icon from '@/components/ui/icon';
+import { Event, mockEvents, categories, getDurationColor } from './types';
+
+interface EventSelectionProps {
+  selectedEvents: Record<string, Event[]>;
+  durationFilter: 'all' | 'short' | 'medium' | 'long';
+  setDurationFilter: (filter: 'all' | 'short' | 'medium' | 'long') => void;
+  handleEventSelect: (event: Event) => void;
+  isEventSelected: (eventId: string) => boolean;
+  handleViewEvent: (event: Event) => void;
+  setMasterClassDialog: (open: boolean) => void;
+  canGenerateSchedule: boolean;
+  generateInitialSchedule: () => void;
+}
+
+const EventSelection = ({
+  selectedEvents,
+  durationFilter,
+  setDurationFilter,
+  handleEventSelect,
+  isEventSelected,
+  handleViewEvent,
+  setMasterClassDialog,
+  canGenerateSchedule,
+  generateInitialSchedule
+}: EventSelectionProps) => {
+  return (
+    <div className="space-y-8 animate-fade-in">
+      <Card className="bg-white shadow-lg">
+        <CardHeader>
+          <CardTitle className="text-xl flex items-center gap-2">
+            <Icon name="Filter" size={24} className="text-cyan-600" />
+            Фильтр по длительности
+          </CardTitle>
+        </CardHeader>
+        <CardContent>
+          <div className="flex flex-wrap gap-3">
+            <Button
+              variant={durationFilter === 'all' ? 'default' : 'outline'}
+              onClick={() => setDurationFilter('all')}
+              className={durationFilter === 'all' ? 'bg-gradient-to-r from-cyan-600 to-blue-600' : ''}
+            >
+              <Icon name="List" size={18} className="mr-2" />
+              Все мероприятия
+              <Badge className="ml-2 bg-gray-600 text-white">
+                {mockEvents.filter(e => !e.id.startsWith('3b') && !(e.id.startsWith('2b') && e.id.length > 2)).length}
+              </Badge>
+            </Button>
+            <Button
+              variant={durationFilter === 'short' ? 'default' : 'outline'}
+              onClick={() => setDurationFilter('short')}
+              className={durationFilter === 'short' ? 'bg-green-500 hover:bg-green-600' : 'border-green-300 text-green-700 hover:bg-green-50'}
+            >
+              🟢 Короткие (0-60 мин)
+              <Badge className={durationFilter === 'short' ? 'ml-2 bg-white text-green-600' : 'ml-2 bg-green-100 text-green-700'}>
+                {mockEvents.filter(e => e.duration > 0 && e.duration <= 60 && !e.id.startsWith('3b') && !(e.id.startsWith('2b') && e.id.length > 2)).length}
+              </Badge>
+            </Button>
+            <Button
+              variant={durationFilter === 'medium' ? 'default' : 'outline'}
+              onClick={() => setDurationFilter('medium')}
+              className={durationFilter === 'medium' ? 'bg-yellow-500 hover:bg-yellow-600' : 'border-yellow-300 text-yellow-700 hover:bg-yellow-50'}
+            >
+              🟡 Средние (60-90 мин)
+              <Badge className={durationFilter === 'medium' ? 'ml-2 bg-white text-yellow-600' : 'ml-2 bg-yellow-100 text-yellow-700'}>
+                {mockEvents.filter(e => e.duration > 60 && e.duration <= 90 && !e.id.startsWith('3b') && !(e.id.startsWith('2b') && e.id.length > 2)).length}
+              </Badge>
+            </Button>
+            <Button
+              variant={durationFilter === 'long' ? 'default' : 'outline'}
+              onClick={() => setDurationFilter('long')}
+              className={durationFilter === 'long' ? 'bg-red-500 hover:bg-red-600' : 'border-red-300 text-red-700 hover:bg-red-50'}
+            >
+              🔴 Длинные ({'>'}90 мин)
+              <Badge className={durationFilter === 'long' ? 'ml-2 bg-white text-red-600' : 'ml-2 bg-red-100 text-red-700'}>
+                {mockEvents.filter(e => e.duration > 90 && !e.id.startsWith('3b') && !(e.id.startsWith('2b') && e.id.length > 2)).length}
+              </Badge>
+            </Button>
+          </div>
+        </CardContent>
+      </Card>
+      {categories.map((category) => (
+        <div key={category} className="bg-white rounded-2xl shadow-lg p-6 hover:shadow-xl transition-shadow">
+          <h2 className="text-2xl font-bold mb-4 flex items-center gap-3 text-gray-800">
+            <div className="w-2 h-8 bg-gradient-to-b from-cyan-500 to-blue-500 rounded-full"></div>
+            {category}
+            {selectedEvents[category] && selectedEvents[category].length > 0 && (
+              <Badge className="ml-2 bg-green-500">
+                <Icon name="Check" size={14} className="mr-1" />
+                {category === 'Знакомство с программой АС' 
+                  ? `Выбрано: ${selectedEvents[category].length}`
+                  : 'Выбрано'}
+              </Badge>
+            )}
+          </h2>
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+            {mockEvents
+              .filter(event => {
+                if (event.category === category) {
+                  if (category === 'Знакомство с программой АС' && event.id.startsWith('3b')) {
+                    return false;
+                  }
+                  if (category === 'Открывающие мероприятия' && event.id.length > 2 && event.id.startsWith('2b')) {
+                    return false;
+                  }
+                  
+                  if (durationFilter === 'short' && event.duration > 60) return false;
+                  if (durationFilter === 'medium' && (event.duration <= 60 || event.duration > 90)) return false;
+                  if (durationFilter === 'long' && event.duration <= 90) return false;
+                  
+                  return true;
+                }
+                return false;
+              })
+              .map(event => {
+                const selected = isEventSelected(event.id);
+                const colorScheme = getDurationColor(event.duration);
+                
+                return (
+                  <Card
+                    key={event.id}
+                    className={`cursor-pointer transition-all hover:shadow-md hover:-translate-y-1 relative ${
+                      selected ? 'ring-2 ring-cyan-500 bg-cyan-50' : 'hover:bg-gray-50'
+                    }`}
+                  >
+                    <CardHeader className="pb-3" onClick={() => handleEventSelect(event)}>
+                      <div className="flex items-start justify-between gap-2">
+                        <CardTitle className="text-base leading-tight">{event.title}</CardTitle>
+                        <Badge className={`${colorScheme.badge} text-white shrink-0`}>
+                          {event.duration} мин
+                        </Badge>
+                      </div>
+                      <CardDescription className="text-sm line-clamp-2">{event.description}</CardDescription>
+                    </CardHeader>
+                    <CardContent className="pt-0">
+                      <div className="flex items-center justify-between gap-2">
+                        <div className="flex items-center gap-2 text-sm text-gray-600">
+                          <Icon name="MapPin" size={14} />
+                          <span className="line-clamp-1">{event.location}</span>
+                        </div>
+                        <Button
+                          variant="ghost"
+                          size="sm"
+                          onClick={(e) => {
+                            e.stopPropagation();
+                            handleViewEvent(event);
+                          }}
+                          className="h-8 text-cyan-600 hover:text-cyan-700"
+                        >
+                          <Icon name="Info" size={16} />
+                        </Button>
+                      </div>
+                    </CardContent>
+                  </Card>
+                );
+              })}
+            {category === 'Знакомство с программой АС' && (
+              <Card
+                className="cursor-pointer transition-all hover:shadow-md hover:-translate-y-1 bg-gradient-to-br from-blue-50 to-cyan-50"
+                onClick={() => setMasterClassDialog(true)}
+              >
+                <CardHeader>
+                  <div className="flex items-center gap-3">
+                    <div className="p-3 bg-blue-100 rounded-xl">
+                      <Icon name="GraduationCap" size={28} className="text-blue-600" />
+                    </div>
+                    <div>
+                      <CardTitle className="text-lg">Мастер-классы</CardTitle>
+                      <CardDescription>Выберите мастер-классы</CardDescription>
+                    </div>
+                  </div>
+                </CardHeader>
+                <CardContent>
+                  {(selectedEvents[category] || []).filter(e => e.id.startsWith('3b')).length > 0 && (
+                    <Badge className="bg-green-500 text-white">
+                      Выбрано: {(selectedEvents[category] || []).filter(e => e.id.startsWith('3b')).length}
+                    </Badge>
+                  )}
+                </CardContent>
+              </Card>
+            )}
+          </div>
+        </div>
+      ))}
+
+      {canGenerateSchedule && (
+        <div className="flex justify-center pt-6 animate-scale-in">
+          <Button
+            size="lg"
+            onClick={generateInitialSchedule}
+            className="gap-2 bg-gradient-to-r from-cyan-600 to-blue-600 hover:from-cyan-700 hover:to-blue-700 text-lg px-8 py-6"
+          >
+            Создать расписание
+            <Icon name="ArrowRight" size={22} />
+          </Button>
+        </div>
+      )}
+    </div>
+  );
+};
+
+export default EventSelection;
