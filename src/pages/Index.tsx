@@ -76,7 +76,7 @@ const categories = [
 ];
 
 const getDurationColor = (duration: number) => {
-  if (duration >= 30 && duration <= 60) return { bg: 'bg-green-100', border: 'border-green-400', text: 'text-green-700', badge: 'bg-green-500' };
+  if (duration > 0 && duration <= 60) return { bg: 'bg-green-100', border: 'border-green-400', text: 'text-green-700', badge: 'bg-green-500' };
   if (duration > 60 && duration <= 90) return { bg: 'bg-yellow-100', border: 'border-yellow-400', text: 'text-yellow-700', badge: 'bg-yellow-500' };
   return { bg: 'bg-red-100', border: 'border-red-400', text: 'text-red-700', badge: 'bg-red-500' };
 };
@@ -716,7 +716,7 @@ const Index = () => {
                       </span>
                     </div>
                     <Badge className={`${getDurationColor(viewingEvent.duration).badge} text-white`}>
-                      {viewingEvent.duration >= 30 && viewingEvent.duration <= 60 ? '🟢 Оптимально' : 
+                      {viewingEvent.duration > 0 && viewingEvent.duration <= 60 ? '🟢 Оптимально' : 
                        viewingEvent.duration > 60 && viewingEvent.duration <= 90 ? '🟡 Средне' : '🔴 Длительно'}
                     </Badge>
                   </div>
