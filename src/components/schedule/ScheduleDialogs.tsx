@@ -437,51 +437,98 @@ const ScheduleDialogs = ({
       </Dialog>
 
       <Dialog open={masterClassDialog} onOpenChange={setMasterClassDialog}>
-        <DialogContent className="max-w-4xl max-h-[80vh] overflow-y-auto">
+        <DialogContent className="max-w-6xl max-h-[90vh] overflow-y-auto">
           <DialogHeader>
             <DialogTitle className="text-2xl flex items-center gap-2">
               <Icon name="GraduationCap" size={28} className="text-cyan-600" />
-              Выберите мастер-классы
+              Выберите мастер-классы по направлениям
             </DialogTitle>
             <DialogDescription>
-              Выберите один или несколько мастер-классов для программы
+              Для каждого направления вы можете выбрать базовый или роскошный вариант (там где доступно)
             </DialogDescription>
           </DialogHeader>
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-3 pt-4">
-            {mockEvents.filter(e => e.id.startsWith('3b')).map(event => {
-              const selected = isEventSelected(event.id);
-              const colorScheme = getDurationColor(event.duration);
+          <div className="space-y-6 pt-4">
+            {[
+              { name: 'Кейтеринг', prefix: '3b1' },
+              { name: 'Сервис и гостеприимство', prefix: '3b2' },
+              { name: 'Оператор композитного производства', prefix: '3b3' },
+              { name: 'Автотранспортный цех', prefix: '3b4' },
+              { name: 'Логистика', prefix: '3b5' },
+              { name: 'Монтажные + отделочные работы', prefix: '3b6' }
+            ].map(direction => {
+              const directionEvents = mockEvents.filter(e => e.id.startsWith(direction.prefix));
               
               return (
-                <Card
-                  key={event.id}
-                  className={`cursor-pointer transition-all hover:shadow-md ${
-                    selected ? 'ring-2 ring-cyan-500 bg-cyan-50' : ''
-                  }`}
-                  onClick={() => handleEventSelect(event)}
-                >
-                  <CardHeader className="pb-3">
-                    <div className="flex items-start justify-between gap-2">
-                      <CardTitle className="text-base">{event.title}</CardTitle>
-                      <Badge className={`${colorScheme.badge} text-white shrink-0`}>
-                        {event.duration} мин
-                      </Badge>
-                    </div>
-                    <CardDescription className="text-sm">{event.description}</CardDescription>
-                  </CardHeader>
-                  <CardContent className="pt-0">
-                    <div className="flex items-center gap-2 text-sm text-gray-600">
-                      <Icon name="MapPin" size={14} />
-                      <span className="line-clamp-1">{event.location}</span>
-                    </div>
-                  </CardContent>
-                </Card>
+                <div key={direction.prefix} className="space-y-3">
+                  <h3 className="text-lg font-bold text-gray-800 flex items-center gap-2">
+                    <div className="w-1.5 h-6 bg-gradient-to-b from-cyan-500 to-blue-500 rounded-full"></div>
+                    {direction.name}
+                  </h3>
+                  <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
+                    {directionEvents.map(event => {
+                      const selected = isEventSelected(event.id);
+                      const colorScheme = getDurationColor(event.duration);
+                      const isPremium = event.tier === 'premium';
+                      
+                      return (
+                        <Card
+                          key={event.id}
+                          className={`cursor-pointer transition-all hover:shadow-md ${
+                            selected ? 'ring-2 ring-cyan-500 bg-cyan-50' : ''
+                          } ${
+                            isPremium 
+                              ? 'bg-gradient-to-br from-amber-50 to-yellow-50 border-2 border-amber-300' 
+                              : 'bg-white border border-gray-200'
+                          }`}
+                          onClick={() => handleEventSelect(event)}
+                        >
+                          <CardHeader className="pb-3">
+                            <div className="flex items-start justify-between gap-2">
+                              <div className="flex-1">
+                                <CardTitle className={`text-base ${isPremium ? 'text-amber-900' : ''}`}>
+                                  {event.title}
+                                </CardTitle>
+                                {isPremium && (
+                                  <Badge className="mt-1 bg-gradient-to-r from-amber-500 to-yellow-500 text-white">
+                                    <Icon name="Sparkles" size={12} className="mr-1" />
+                                    Роскошный
+                                  </Badge>
+                                )}
+                              </div>
+                              <Badge className={`${colorScheme.badge} text-white shrink-0`}>
+                                {event.duration} мин
+                              </Badge>
+                            </div>
+                            <CardDescription className={`text-sm ${isPremium ? 'text-amber-800' : ''}`}>
+                              {event.description}
+                            </CardDescription>
+                          </CardHeader>
+                          <CardContent className="pt-0">
+                            <div className={`flex items-center gap-2 text-sm ${isPremium ? 'text-amber-700' : 'text-gray-600'}`}>
+                              <Icon name="MapPin" size={14} />
+                              <span className="line-clamp-1">{event.location}</span>
+                            </div>
+                          </CardContent>
+                        </Card>
+                      );
+                    })}
+                  </div>
+                </div>
               );
             })}
           </div>
-          <div className="flex justify-end gap-3 pt-4 border-t">
-            <Button variant="outline" onClick={() => setMasterClassDialog(false)}>
-              Закрыть
+          <div className="flex justify-between items-center pt-4 border-t">
+            <div className="text-sm text-gray-600">
+              Выбрано мастер-классов: <span className="font-bold text-cyan-600">
+                {(selectedEvents['Знакомство с программой АС'] || []).filter(e => e.id.startsWith('3b')).length}
+              </span>
+            </div>
+            <Button 
+              variant="outline" 
+              onClick={() => setMasterClassDialog(false)}
+              className="bg-gradient-to-r from-cyan-600 to-blue-600 text-white hover:from-cyan-700 hover:to-blue-700"
+            >
+              Готово
             </Button>
           </div>
         </DialogContent>

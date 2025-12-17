@@ -159,7 +159,7 @@ const EventSelection = ({
               })}
             {category === 'Знакомство с программой АС' && (
               <Card
-                className="cursor-pointer transition-all hover:shadow-md hover:-translate-y-1 bg-gradient-to-br from-blue-50 to-cyan-50"
+                className="cursor-pointer transition-all hover:shadow-md hover:-translate-y-1 bg-gradient-to-br from-blue-50 to-cyan-50 border-2 border-blue-200"
                 onClick={() => setMasterClassDialog(true)}
               >
                 <CardHeader>
@@ -167,17 +167,28 @@ const EventSelection = ({
                     <div className="p-3 bg-blue-100 rounded-xl">
                       <Icon name="GraduationCap" size={28} className="text-blue-600" />
                     </div>
-                    <div>
-                      <CardTitle className="text-lg">Мастер-классы</CardTitle>
-                      <CardDescription>Выберите мастер-классы</CardDescription>
+                    <div className="flex-1">
+                      <CardTitle className="text-lg">Мастер-классы по направлениям</CardTitle>
+                      <CardDescription>6 направлений: Кейтеринг, Сервис, Композитное производство, Автотранспорт, Логистика, Отделочные работы</CardDescription>
                     </div>
                   </div>
                 </CardHeader>
                 <CardContent>
-                  {(selectedEvents[category] || []).filter(e => e.id.startsWith('3b')).length > 0 && (
-                    <Badge className="bg-green-500 text-white">
-                      Выбрано: {(selectedEvents[category] || []).filter(e => e.id.startsWith('3b')).length}
-                    </Badge>
+                  {(selectedEvents[category] || []).filter(e => e.id.startsWith('3b')).length > 0 ? (
+                    <div className="flex gap-2 flex-wrap">
+                      <Badge className="bg-green-500 text-white">
+                        <Icon name="Check" size={14} className="mr-1" />
+                        Выбрано: {(selectedEvents[category] || []).filter(e => e.id.startsWith('3b')).length}
+                      </Badge>
+                      {(selectedEvents[category] || []).filter(e => e.tier === 'premium').length > 0 && (
+                        <Badge className="bg-gradient-to-r from-amber-500 to-yellow-500 text-white">
+                          <Icon name="Sparkles" size={14} className="mr-1" />
+                          Роскошных: {(selectedEvents[category] || []).filter(e => e.tier === 'premium').length}
+                        </Badge>
+                      )}
+                    </div>
+                  ) : (
+                    <p className="text-sm text-gray-500">Нажмите, чтобы выбрать</p>
                   )}
                 </CardContent>
               </Card>
