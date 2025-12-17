@@ -35,19 +35,26 @@ interface SavedSchedule {
 }
 
 const mockEvents: Event[] = [
-  { id: '1a', title: 'Обзорная экскурсия по территории ОЭЗ', description: 'Мероприятие для ознакомления участниц с ОЭЗ и ее резидентами. Автобус провозит участниц по маршруту: Синергия 13.2 - Август-Алабуга - Trakya Glass Rus - Хаят Кимия - Кастамону - КНТ-Пласт - Драйлок - Алабуга Политех', duration: 30, location: 'Территория ОЭЗ', category: 'Утренние мероприятия' },
-  { id: '1b', title: 'Утренняя зарядка (Йога)', description: 'Утренняя зарядка способствует быстрому пробуждению и хорошему самочувствию в течении всего дня. Включает: 30 мин сбор, 10 мин трансфер, 40 мин зарядка, 10 мин сбор после', duration: 90, location: 'Спортзал Пирамиды', category: 'Утренние мероприятия' },
+  { id: '1a', title: 'Обзорная экскурсия по Елабуге', description: 'Участницы направятся на обзорную экскурсию по достопримечательностям Елабуги. Маршрут: 1. «Чёртово» Городище; 2. Площадь Тысячелетия Елабуги; 3. Собор Спаса Нерукотворного Образа; 4. Музей И. И. Шишкина; 5. Шишкинские Пруды; 6. Памятник И. И. Шишкину; 7. Памятник Н. А. Дуровой; 8. Троицкое Кладбище; 9. Улица Казанская; 10. Памятник М. И. Цветаевой; 11. Дом Памяти М. И. Цветаевой.', duration: 75, location: 'город Елабуга', category: 'Утренние мероприятия' },
+  { id: '1b', title: 'Обзорная экскурсия по "Алабуга Политех"', description: 'Участницам форума проведут лекцию о проекте "Алабуга Политех", а также подробно расскажут о каждом направлении обучения.', duration: 60, location: '"Алабуга Политех"', category: 'Утренние мероприятия' },
+  { id: '1c', title: 'Обзорная экскурсия по территории ОЭЗ', description: 'Мероприятие проводится для ознакомления участниц с ОЭЗ и ее резидентами. Автобус провозит участниц по маршруту: выезд с Синергии 13.2 "Яковлев" - проезд мимо резидентов: Август-Алабуга, Trakya Glass Rus, Хаят Кимия, Кастамону, КНТ-Пласт, Драйлок - проезд мимо "Алабуга Политех" и АлДи - возвращение в Синергию 13.2 "Яковлев"', duration: 45, location: 'Территория ОЭЗ', category: 'Утренние мероприятия' },
+  { id: '1d', title: 'Обзорная экскурсия по Международной Школе "Три Медведя"', description: 'Участницам форума проведут лекцию о проекте "Три медведя", а также подробно расскажут о процессе обучения.', duration: 60, location: 'Международная школа "Три медведя"', category: 'Утренние мероприятия' },
+  { id: '1e', title: 'Обзорная экскурсия по Штаб-квартире "Алабуга Политех": Пирамида', description: 'Участницам форума подробно покажут и расскажут о месте проживания участниц программы АС.', duration: 60, location: 'Корп. хостел Пирамида', category: 'Утренние мероприятия' },
+  { id: '1f', title: 'Утренняя зарядка (Йога)', description: 'Мероприятие направлено на развитие физических качеств участниц. Утренняя зарядка способствует быстрому пробуждению и хорошему самочувствию в течении всего дня.', duration: 60, location: 'Спортзал Пирамиды', category: 'Утренние мероприятия' },
 
   { id: '2a', title: 'Открытие (Начальное мероприятие)', description: 'Вступительное мероприятие, на котором участницы знакомятся с организаторами и ведущими, узнают вводную информацию о форуме', duration: 60, location: 'Конференц-зал Курчатов/Яковлев', category: 'Открывающие мероприятия' },
-  { id: '2b', title: 'Открытие с интерактивом', description: 'Знакомство с организаторами и друг с другом + интерактив (запуск "До - После", конкурс видеороликов)', duration: 60, location: 'Спортзал "Алабуга Политех"', category: 'Открывающие мероприятия' },
+  { id: '2b', title: 'Открытие с интерактивом', description: 'Знакомство с организаторами и друг с другом + интерактив', duration: 60, location: 'Спортзал "Алабуга Политех"', category: 'Открывающие мероприятия' },
+  { id: '2b1', title: 'Интерактив "Капсула времени"', description: 'Всех участниц собирают в круг. Каждой участнице выдаётся лист бумаги и ручка. Участницам необходимо полностью расписать ответ на вопрос «С какой целью я сюда приехала? Что я ожидаю от данного форума?». Организаторы собирают все письма и откладывают в шкатулку. По завершению форума организаторы выдают все письма обратно и проводят анализ.', duration: 15, location: 'Конференц-зал Курчатов/Яковлев; Спортзал "Алабуга Политех"', category: 'Открывающие мероприятия' },
+  { id: '2b2', title: 'Интерактив "Круг доверия"', description: 'Участницы образуют команды по 5 человек и по очереди делятся 3 фактами о себе, 2 правдивых и 1 ложный. Другие участницы должны угадать 1 ложный факт.', duration: 20, location: 'Конференц-зал Курчатов/Яковлев; Спортзал "Алабуга Политех"', category: 'Открывающие мероприятия' },
+  { id: '2b3', title: 'Интерактив "Время перемен"', description: 'Участницы пишут на бумажках одну привычку или установку, от которой они хотят избавиться, и затем обмениваются ими, обсуждая возможные пути изменения.', duration: 15, location: 'Конференц-зал Курчатов/Яковлев; Спортзал "Алабуга Политех"', category: 'Открывающие мероприятия' },
 
   { id: '3a', title: 'Презентация программы АС', description: 'Участницам полностью рассказывают о программе АС, знакомят с направлениями, карьерным треком, условиями проживания и т.д.', duration: 60, location: 'Конференц-зал Курчатов/Яковлев', category: 'Знакомство с программой АС' },
-  { id: '3b1', title: 'МК: Сервис (Бариста, Официант, Шеф-повар)', description: 'Интерактив + кулинарный челлендж. Показать современность профессий сферы гостеприимства', duration: 35, location: 'Спортзал "Алабуга Политех"', category: 'Знакомство с программой АС' },
-  { id: '3b2', title: 'МК: Оператор производства композитных материалов', description: 'Hands-on + творческая симуляция. Работа с высокими технологиями', duration: 35, location: 'Спортзал "Алабуга Политех"', category: 'Знакомство с программой АС' },
-  { id: '3b3', title: 'МК: Супервайзер и Администратор', description: 'Бизнес-игра + тренажёр лидерства', duration: 35, location: 'Переговорная Курчатов/Яковлев', category: 'Знакомство с программой АС' },
-  { id: '3b4', title: 'МК: Девушка за рулём (Водитель)', description: 'Лекция + игровая практика', duration: 35, location: 'Спортзал "Алабуга Политех"', category: 'Знакомство с программой АС' },
-  { id: '3b5', title: 'МК: Водитель погрузчика и крановщик', description: 'Симулятор + командный челлендж', duration: 40, location: 'Территория ОЭЗ', category: 'Знакомство с программой АС' },
-  { id: '3b6', title: 'МК: Мастер мебели / Штукатур', description: 'DIY-практикум. Монтаж дверей, сборка конструкций, плиточные работы', duration: 35, location: 'Спортзал "Алабуга Политех"', category: 'Знакомство с программой АС' },
+  { id: '3b1', title: 'МК: Сервис (Бариста, Официант, Шеф-повар)', description: 'Формат: мини-лекция/видео, Латте-арт, Декор маффина. Цель: показать современность профессий сферы гостеприимства, дать попробовать навыки, которые сразу дают эффект.', duration: 35, location: 'Спортзал "Алабуга Политех"', category: 'Знакомство с программой АС' },
+  { id: '3b2', title: 'МК: Оператор производства композитных материалов', description: 'Формат: мини-лекция/видео, ассесмент производства. Цель: показать работу с высокими технологиями, доступными для новичков.', duration: 35, location: 'Спортзал "Алабуга Политех"', category: 'Знакомство с программой АС' },
+  { id: '3b3', title: 'МК: Мастер мебели (Монтажные + отделочные работы)', description: 'Стройка — это красиво: Штукатур / Плиточник. Формат: мини лекция, DIY-практикум.', duration: 35, location: 'Спортзал "Алабуга Политех"', category: 'Знакомство с программой АС' },
+  { id: '3b4', title: 'МК: Сервис и гостеприимство', description: 'Формат: мини-лекция/видео, логистика гостеприимства.', duration: 35, location: 'Спортзал "Алабуга Политех"', category: 'Знакомство с программой АС' },
+  { id: '3b5', title: 'МК: Девушка за рулём (Профессия водитель)', description: 'Формат: лекция + игровая практика.', duration: 35, location: 'Спортзал "Алабуга Политех"', category: 'Знакомство с программой АС' },
+  { id: '3b6', title: 'МК: Логистика', description: 'Формат: симулятор + командный челлендж.', duration: 40, location: 'Территория ОЭЗ', category: 'Знакомство с программой АС' },
 
   { id: '4a', title: 'Игра "Предпринимательский вызов"', description: 'Развитие навыков работы в команде и предпринимательского мышления. Участницы разрабатывают проект с "секретными ингредиентами" и презентуют его', duration: 110, location: 'Конференц-зал Курчатов/Яковлев', category: 'Развлекательные мероприятия' },
   { id: '4b', title: 'Корп. игра "Бенди"', description: 'Хоккей с мячом - командная игра в формате турнира (включая подведение итогов и награждение)', duration: 150, location: 'Футбольное поле МШ', category: 'Развлекательные мероприятия' },
@@ -97,13 +104,38 @@ const Index = () => {
   const [saveDialog, setSaveDialog] = useState(false);
   const [scheduleName, setScheduleName] = useState('');
   const [manageDialog, setManageDialog] = useState(false);
+  const [interactiveDialog, setInteractiveDialog] = useState(false);
+  const [masterClassDialog, setMasterClassDialog] = useState(false);
+  const [editingTime, setEditingTime] = useState<string | null>(null);
+  const [tempTime, setTempTime] = useState('');
 
   const handleEventSelect = (event: Event) => {
+    if (event.id === '2b') {
+      setSelectedEvents(prev => ({
+        ...prev,
+        [event.category]: [event]
+      }));
+      setInteractiveDialog(true);
+      return;
+    }
+
     setSelectedEvents(prev => {
       const categoryEvents = prev[event.category] || [];
       const isSelected = categoryEvents.some(e => e.id === event.id);
       
       if (event.category === 'Знакомство с программой АС' && event.id.startsWith('3b')) {
+        if (isSelected) {
+          return {
+            ...prev,
+            [event.category]: categoryEvents.filter(e => e.id !== event.id)
+          };
+        } else {
+          return {
+            ...prev,
+            [event.category]: [...categoryEvents, event]
+          };
+        }
+      } else if (event.id.startsWith('2b') && event.id.length > 2) {
         if (isSelected) {
           return {
             ...prev,
@@ -280,10 +312,15 @@ const Index = () => {
   };
 
   const canGenerateSchedule = categories.every(cat => {
+    const events = selectedEvents[cat] || [];
     if (cat === 'Знакомство с программой АС') {
-      return (selectedEvents[cat] || []).length >= 1;
+      return events.length >= 1;
     }
-    return (selectedEvents[cat] || []).length === 1;
+    if (cat === 'Открывающие мероприятия') {
+      const hasOpening = events.some(e => e.id === '2a' || e.id === '2b');
+      return hasOpening;
+    }
+    return events.length === 1;
   });
 
   const handleViewEvent = (event: Event) => {
@@ -397,7 +434,18 @@ const Index = () => {
                 </h2>
                 <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
                   {mockEvents
-                    .filter(event => event.category === category)
+                    .filter(event => {
+                      if (event.category === category) {
+                        if (category === 'Знакомство с программой АС' && event.id.startsWith('3b')) {
+                          return false;
+                        }
+                        if (category === 'Открывающие мероприятия' && event.id.length > 2 && event.id.startsWith('2b')) {
+                          return false;
+                        }
+                        return true;
+                      }
+                      return false;
+                    })
                     .map(event => {
                       const selected = isEventSelected(event.id);
                       const colorScheme = getDurationColor(event.duration);
@@ -440,6 +488,31 @@ const Index = () => {
                         </Card>
                       );
                     })}
+                  {category === 'Знакомство с программой АС' && (
+                    <Card
+                      className="cursor-pointer transition-all hover:shadow-md hover:-translate-y-1 bg-gradient-to-br from-blue-50 to-cyan-50"
+                      onClick={() => setMasterClassDialog(true)}
+                    >
+                      <CardHeader>
+                        <div className="flex items-center gap-3">
+                          <div className="p-3 bg-blue-100 rounded-xl">
+                            <Icon name="GraduationCap" size={28} className="text-blue-600" />
+                          </div>
+                          <div>
+                            <CardTitle className="text-lg">Мастер-классы</CardTitle>
+                            <CardDescription>Выберите мастер-классы</CardDescription>
+                          </div>
+                        </div>
+                      </CardHeader>
+                      <CardContent>
+                        {(selectedEvents[category] || []).filter(e => e.id.startsWith('3b')).length > 0 && (
+                          <Badge className="bg-green-500 text-white">
+                            Выбрано: {(selectedEvents[category] || []).filter(e => e.id.startsWith('3b')).length}
+                          </Badge>
+                        )}
+                      </CardContent>
+                    </Card>
+                  )}
                 </div>
               </div>
             ))}
@@ -495,12 +568,39 @@ const Index = () => {
                     <div className="flex items-center gap-4">
                       <Icon name="GripVertical" size={20} className="text-gray-400" />
                       <div className="flex items-center gap-2">
-                        <Input
-                          type="time"
-                          value={item.startTime}
-                          onChange={(e) => updateStartTime(item.id, e.target.value)}
-                          className="w-32"
-                        />
+                        {editingTime === item.id ? (
+                          <>
+                            <Input
+                              type="time"
+                              value={tempTime}
+                              onChange={(e) => setTempTime(e.target.value)}
+                              className="w-32"
+                              autoFocus
+                              onBlur={() => {
+                                updateStartTime(item.id, tempTime);
+                                setEditingTime(null);
+                              }}
+                              onKeyDown={(e) => {
+                                if (e.key === 'Enter') {
+                                  updateStartTime(item.id, tempTime);
+                                  setEditingTime(null);
+                                }
+                              }}
+                            />
+                          </>
+                        ) : (
+                          <>
+                            <button
+                              onClick={() => {
+                                setEditingTime(item.id);
+                                setTempTime(item.startTime);
+                              }}
+                              className="px-3 py-1 rounded bg-gray-100 hover:bg-gray-200 text-sm font-medium"
+                            >
+                              {item.startTime}
+                            </button>
+                          </>
+                        )}
                         <span className="text-sm text-gray-500">—</span>
                         <span className="text-sm font-medium">
                           {addMinutes(item.startTime, item.event.duration)}
@@ -901,6 +1001,108 @@ const Index = () => {
                   })}
                 </div>
               )}
+            </div>
+          </DialogContent>
+        </Dialog>
+
+        <Dialog open={interactiveDialog} onOpenChange={setInteractiveDialog}>
+          <DialogContent className="max-w-3xl">
+            <DialogHeader>
+              <DialogTitle className="text-2xl flex items-center gap-2">
+                <Icon name="Sparkles" size={28} className="text-cyan-600" />
+                Выберите интерактив
+              </DialogTitle>
+              <DialogDescription>
+                Выберите один или несколько интерактивов для открытия форума
+              </DialogDescription>
+            </DialogHeader>
+            <div className="grid grid-cols-1 gap-3 pt-4">
+              {mockEvents.filter(e => e.id.startsWith('2b') && e.id.length > 2).map(event => {
+                const selected = isEventSelected(event.id);
+                const colorScheme = getDurationColor(event.duration);
+                
+                return (
+                  <Card
+                    key={event.id}
+                    className={`cursor-pointer transition-all hover:shadow-md ${
+                      selected ? 'ring-2 ring-cyan-500 bg-cyan-50' : ''
+                    }`}
+                    onClick={() => handleEventSelect(event)}
+                  >
+                    <CardHeader className="pb-3">
+                      <div className="flex items-start justify-between gap-2">
+                        <CardTitle className="text-base">{event.title}</CardTitle>
+                        <Badge className={`${colorScheme.badge} text-white shrink-0`}>
+                          {event.duration} мин
+                        </Badge>
+                      </div>
+                      <CardDescription className="text-sm">{event.description}</CardDescription>
+                    </CardHeader>
+                    <CardContent className="pt-0">
+                      <div className="flex items-center gap-2 text-sm text-gray-600">
+                        <Icon name="MapPin" size={14} />
+                        <span>{event.location}</span>
+                      </div>
+                    </CardContent>
+                  </Card>
+                );
+              })}
+            </div>
+            <div className="flex justify-end gap-3 pt-4 border-t">
+              <Button variant="outline" onClick={() => setInteractiveDialog(false)}>
+                Закрыть
+              </Button>
+            </div>
+          </DialogContent>
+        </Dialog>
+
+        <Dialog open={masterClassDialog} onOpenChange={setMasterClassDialog}>
+          <DialogContent className="max-w-4xl max-h-[80vh] overflow-y-auto">
+            <DialogHeader>
+              <DialogTitle className="text-2xl flex items-center gap-2">
+                <Icon name="GraduationCap" size={28} className="text-cyan-600" />
+                Выберите мастер-классы
+              </DialogTitle>
+              <DialogDescription>
+                Выберите один или несколько мастер-классов для программы
+              </DialogDescription>
+            </DialogHeader>
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-3 pt-4">
+              {mockEvents.filter(e => e.id.startsWith('3b')).map(event => {
+                const selected = isEventSelected(event.id);
+                const colorScheme = getDurationColor(event.duration);
+                
+                return (
+                  <Card
+                    key={event.id}
+                    className={`cursor-pointer transition-all hover:shadow-md ${
+                      selected ? 'ring-2 ring-cyan-500 bg-cyan-50' : ''
+                    }`}
+                    onClick={() => handleEventSelect(event)}
+                  >
+                    <CardHeader className="pb-3">
+                      <div className="flex items-start justify-between gap-2">
+                        <CardTitle className="text-base">{event.title}</CardTitle>
+                        <Badge className={`${colorScheme.badge} text-white shrink-0`}>
+                          {event.duration} мин
+                        </Badge>
+                      </div>
+                      <CardDescription className="text-sm">{event.description}</CardDescription>
+                    </CardHeader>
+                    <CardContent className="pt-0">
+                      <div className="flex items-center gap-2 text-sm text-gray-600">
+                        <Icon name="MapPin" size={14} />
+                        <span className="line-clamp-1">{event.location}</span>
+                      </div>
+                    </CardContent>
+                  </Card>
+                );
+              })}
+            </div>
+            <div className="flex justify-end gap-3 pt-4 border-t">
+              <Button variant="outline" onClick={() => setMasterClassDialog(false)}>
+                Закрыть
+              </Button>
             </div>
           </DialogContent>
         </Dialog>
