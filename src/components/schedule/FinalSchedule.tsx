@@ -1,12 +1,15 @@
+import { useRef } from 'react';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
 import Icon from '@/components/ui/icon';
 import { ScheduleItem, getDurationColor, addMinutes } from './types';
+import html2canvas from 'html2canvas';
 
 interface FinalScheduleProps {
   schedule: ScheduleItem[];
   exportToExcel: () => void;
+  exportToJPG: () => Promise<void>;
   setStep: (step: 'selection' | 'editing' | 'final') => void;
   setSelectedEvents: (events: Record<string, any[]>) => void;
   setSchedule: (schedule: ScheduleItem[]) => void;
@@ -15,28 +18,44 @@ interface FinalScheduleProps {
 const FinalSchedule = ({
   schedule,
   exportToExcel,
+  exportToJPG,
   setStep,
   setSelectedEvents,
   setSchedule
 }: FinalScheduleProps) => {
+  const scheduleRef = useRef<HTMLDivElement>(null);
+
   return (
     <div className="animate-fade-in">
-      <Card className="bg-white shadow-2xl">
+      <Card className="bg-white shadow-2xl" data-schedule-export>
         <CardHeader>
           <div className="flex items-center justify-between">
-            <div>
-              <CardTitle className="text-3xl flex items-center gap-3">
-                <Icon name="CalendarCheck" size={32} className="text-cyan-600" />
-                Финальное расписание
-              </CardTitle>
-              <CardDescription className="text-base mt-2">
-                Готовое расписание форума программы АС
-              </CardDescription>
+            <div className="flex items-center gap-4">
+              <img 
+                src="https://cdn.poehali.dev/files/Рисунок алабуга.png" 
+                alt="Алабуга логотип" 
+                className="w-16 h-auto"
+              />
+              <div>
+                <CardTitle className="text-3xl flex items-center gap-3">
+                  <Icon name="CalendarCheck" size={32} className="text-cyan-600" />
+                  Финальное расписание
+                </CardTitle>
+                <CardDescription className="text-base mt-2">
+                  Готовое расписание форума программы АС
+                </CardDescription>
+              </div>
             </div>
-            <Button onClick={exportToExcel} className="gap-2 bg-green-600 hover:bg-green-700">
-              <Icon name="Download" size={18} />
-              Скачать Excel
-            </Button>
+            <div className="flex gap-2">
+              <Button onClick={exportToJPG} className="gap-2 bg-blue-600 hover:bg-blue-700">
+                <Icon name="Image" size={18} />
+                Скачать JPG
+              </Button>
+              <Button onClick={exportToExcel} className="gap-2 bg-green-600 hover:bg-green-700">
+                <Icon name="Download" size={18} />
+                Скачать Excel
+              </Button>
+            </div>
           </div>
         </CardHeader>
         <CardContent>

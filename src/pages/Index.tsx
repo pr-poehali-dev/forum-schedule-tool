@@ -2,6 +2,7 @@ import { useState } from 'react';
 import { Button } from '@/components/ui/button';
 import Icon from '@/components/ui/icon';
 import * as XLSX from 'xlsx';
+import html2canvas from 'html2canvas';
 import { Event, ScheduleItem, SavedSchedule, mockEvents, categories, addMinutes } from '@/components/schedule/types';
 import EventSelection from '@/components/schedule/EventSelection';
 import ScheduleEditor from '@/components/schedule/ScheduleEditor';
@@ -200,6 +201,30 @@ const Index = () => {
 
   const handleDragEnd = () => {
     setDraggedIndex(null);
+  };
+
+  const exportToJPG = async () => {
+    const scheduleElement = document.querySelector('[data-schedule-export]');
+    if (!scheduleElement) return;
+
+    const canvas = await html2canvas(scheduleElement as HTMLElement, {
+      scale: 2,
+      backgroundColor: '#ffffff',
+      logging: false,
+      useCORS: true,
+      allowTaint: true
+    });
+
+    canvas.toBlob((blob) => {
+      if (blob) {
+        const url = URL.createObjectURL(blob);
+        const link = document.createElement('a');
+        link.href = url;
+        link.download = 'raspisanie-foruma.jpg';
+        link.click();
+        URL.revokeObjectURL(url);
+      }
+    }, 'image/jpeg', 0.95);
   };
 
   const exportToExcel = () => {
@@ -428,6 +453,7 @@ const Index = () => {
           <FinalSchedule
             schedule={schedule}
             exportToExcel={exportToExcel}
+            exportToJPG={exportToJPG}
             setStep={setStep}
             setSelectedEvents={setSelectedEvents}
             setSchedule={setSchedule}
