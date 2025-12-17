@@ -48,6 +48,13 @@ const Index = () => {
       return;
     }
 
+    if (event.id === '2a') {
+      const has2b = (selectedEvents['Открывающие мероприятия'] || []).some(e => e.id === '2b');
+      if (has2b) {
+        return;
+      }
+    }
+
     setSelectedEvents(prev => {
       const categoryEvents = prev[event.category] || [];
       const isSelected = categoryEvents.some(e => e.id === event.id);

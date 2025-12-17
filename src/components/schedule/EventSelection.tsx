@@ -118,26 +118,48 @@ const EventSelection = ({
               .map(event => {
                 const selected = isEventSelected(event.id);
                 const colorScheme = getDurationColor(event.duration);
+                const is2aBlocked = event.id === '2a' && (selectedEvents['Открывающие мероприятия'] || []).some(e => e.id === '2b');
                 
                 return (
                   <Card
                     key={event.id}
-                    className={`cursor-pointer transition-all hover:shadow-md hover:-translate-y-1 relative ${
-                      selected ? 'ring-2 ring-cyan-500 bg-cyan-50' : 'hover:bg-gray-50'
+                    className={`transition-all hover:-translate-y-1 relative ${
+                      is2aBlocked 
+                        ? 'opacity-50 cursor-not-allowed bg-gray-100' 
+                        : selected 
+                          ? 'ring-2 ring-cyan-500 bg-cyan-50 cursor-pointer hover:shadow-md' 
+                          : 'hover:bg-gray-50 cursor-pointer hover:shadow-md'
                     }`}
                   >
-                    <CardHeader className="pb-3" onClick={() => handleEventSelect(event)}>
+                    {is2aBlocked && (
+                      <div className="absolute top-2 right-2 z-10">
+                        <Badge className="bg-red-500 text-white">
+                          <Icon name="X" size={12} className="mr-1" />
+                          Недоступно
+                        </Badge>
+                      </div>
+                    )}
+                    <CardHeader className="pb-3" onClick={() => !is2aBlocked && handleEventSelect(event)}>
                       <div className="flex items-start justify-between gap-2">
-                        <CardTitle className="text-base leading-tight">{event.title}</CardTitle>
-                        <Badge className={`${colorScheme.badge} text-white shrink-0`}>
+                        <CardTitle className={`text-base leading-tight ${is2aBlocked ? 'text-gray-400' : ''}`}>
+                          {event.title}
+                        </CardTitle>
+                        <Badge className={`${colorScheme.badge} text-white shrink-0 ${is2aBlocked ? 'opacity-50' : ''}`}>
                           {event.duration} мин
                         </Badge>
                       </div>
-                      <CardDescription className="text-sm line-clamp-2">{event.description}</CardDescription>
+                      <CardDescription className={`text-sm line-clamp-2 ${is2aBlocked ? 'text-gray-400' : ''}`}>
+                        {event.description}
+                      </CardDescription>
+                      {is2aBlocked && (
+                        <p className="text-xs text-red-600 mt-2">
+                          ⚠️ Уже выбрано "Открытие с интерактивом"
+                        </p>
+                      )}
                     </CardHeader>
                     <CardContent className="pt-0">
                       <div className="flex items-center justify-between gap-2">
-                        <div className="flex items-center gap-2 text-sm text-gray-600">
+                        <div className={`flex items-center gap-2 text-sm ${is2aBlocked ? 'text-gray-400' : 'text-gray-600'}`}>
                           <Icon name="MapPin" size={14} />
                           <span className="line-clamp-1">{event.location}</span>
                         </div>
@@ -148,7 +170,8 @@ const EventSelection = ({
                             e.stopPropagation();
                             handleViewEvent(event);
                           }}
-                          className="h-8 text-cyan-600 hover:text-cyan-700"
+                          className={`h-8 ${is2aBlocked ? 'text-gray-400' : 'text-cyan-600 hover:text-cyan-700'}`}
+                          disabled={is2aBlocked}
                         >
                           <Icon name="Info" size={16} />
                         </Button>
