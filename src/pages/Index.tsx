@@ -208,8 +208,6 @@ const Index = () => {
       return {
         'Время': `${item.startTime} - ${endTime}`,
         'Мероприятие': item.customTitle || item.event.title,
-        'Раздел': item.event.category || '',
-        'Длительность (мин)': item.event.duration,
         'Место проведения': item.event.location || ''
       };
     });
@@ -220,13 +218,41 @@ const Index = () => {
     
     worksheet['!cols'] = [
       { wch: 20 },
-      { wch: 40 },
-      { wch: 30 },
-      { wch: 15 },
+      { wch: 50 },
       { wch: 40 }
     ];
     
-    XLSX.writeFile(workbook, 'raspisanie-foruma.xlsx');
+    const range = XLSX.utils.decode_range(worksheet['!ref'] || 'A1');
+    
+    for (let C = range.s.c; C <= range.e.c; ++C) {
+      const headerCell = XLSX.utils.encode_cell({ r: 0, c: C });
+      if (!worksheet[headerCell]) continue;
+      worksheet[headerCell].s = {
+        font: { bold: true },
+        fill: { fgColor: { rgb: "ADD8E6" } },
+        alignment: { horizontal: 'center', vertical: 'center' }
+      };
+    }
+    
+    for (let R = range.s.r + 1; R <= range.e.r; ++R) {
+      const timeCell = XLSX.utils.encode_cell({ r: R, c: 0 });
+      if (worksheet[timeCell]) {
+        worksheet[timeCell].s = {
+          fill: { fgColor: { rgb: "E0F2F7" } },
+          font: { italic: true },
+          alignment: { horizontal: 'center', vertical: 'center' }
+        };
+      }
+      
+      const locationCell = XLSX.utils.encode_cell({ r: R, c: 2 });
+      if (worksheet[locationCell]) {
+        worksheet[locationCell].s = {
+          alignment: { wrapText: true, vertical: 'top' }
+        };
+      }
+    }
+    
+    XLSX.writeFile(workbook, 'raspisanie-foruma.xlsx', { cellStyles: true });
   };
 
   const updateDuration = (id: string, newDuration: number) => {
@@ -327,8 +353,7 @@ const Index = () => {
           <img 
             src="https://cdn.poehali.dev/files/Рисунок алабуга.png" 
             alt="Алабуга логотип" 
-            className="absolute top-0 right-0 w-48 md:w-56 h-auto object-contain"
-            style={{ imageRendering: 'crisp-edges' }}
+            className="absolute top-0 right-0 w-32 h-auto"
           />
           <div className="text-center">
             <h1 className="text-5xl font-bold bg-gradient-to-r from-cyan-600 to-blue-600 bg-clip-text text-transparent mb-3">
