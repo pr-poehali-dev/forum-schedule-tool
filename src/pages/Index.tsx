@@ -421,7 +421,8 @@ const Index = () => {
           <img 
             src="https://cdn.poehali.dev/files/Рисунок алабуга.png" 
             alt="Алабуга логотип" 
-            className="absolute top-0 right-0 w-32 h-auto"
+            className="absolute top-0 right-0 w-48 md:w-56 h-auto object-contain"
+            style={{ imageRendering: 'crisp-edges' }}
           />
           <div className="text-center">
             <h1 className="text-5xl font-bold bg-gradient-to-r from-cyan-600 to-blue-600 bg-clip-text text-transparent mb-3">
