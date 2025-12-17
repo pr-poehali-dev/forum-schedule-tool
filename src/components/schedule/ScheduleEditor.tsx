@@ -61,111 +61,130 @@ const ScheduleEditor = ({
           </div>
         </CardHeader>
         <CardContent className="space-y-3">
-          {schedule.map((item, index) => (
-            <div
-              key={item.id}
-              draggable
-              onDragStart={() => handleDragStart(index)}
-              onDragOver={(e) => handleDragOver(e, index)}
-              onDragEnd={handleDragEnd}
-              className={`p-4 rounded-xl border-2 cursor-move transition-all ${
-                item.type === 'event'
-                  ? `${getDurationColor(item.event.duration).bg} ${getDurationColor(item.event.duration).border} hover:border-opacity-100`
-                  : item.type === 'meal'
-                  ? 'bg-emerald-50 border-emerald-200 hover:border-emerald-400'
-                  : item.type === 'break'
-                  ? 'bg-amber-50 border-amber-200 hover:border-amber-400'
-                  : 'bg-gray-50 border-gray-200 hover:border-gray-400'
-              } ${draggedIndex === index ? 'opacity-50' : ''}`}
-            >
-              <div className="flex items-center gap-4">
-                <Icon name="GripVertical" size={20} className="text-gray-400" />
-                <div className="flex items-center gap-2">
-                  {editingTime === item.id ? (
-                    <>
-                      <Input
-                        type="time"
-                        value={tempTime}
-                        onChange={(e) => setTempTime(e.target.value)}
-                        className="w-32"
-                        autoFocus
-                        onBlur={() => {
-                          updateStartTime(item.id, tempTime);
-                          setEditingTime(null);
-                        }}
-                        onKeyDown={(e) => {
-                          if (e.key === 'Enter') {
+          {schedule.map((item, index) => {
+            const isCustomItem = item.type !== 'event';
+            const customStyle = isCustomItem
+              ? item.type === 'meal'
+                ? 'bg-gradient-to-r from-emerald-50 to-green-50 border-emerald-300 border-l-8 border-l-emerald-500 shadow-md'
+                : item.type === 'break'
+                  ? 'bg-gradient-to-r from-amber-50 to-orange-50 border-amber-300 border-l-8 border-l-amber-500 shadow-md'
+                  : 'bg-gradient-to-r from-blue-50 to-cyan-50 border-blue-300 border-l-8 border-l-blue-500 shadow-md'
+              : '';
+            
+            return (
+              <div
+                key={item.id}
+                draggable
+                onDragStart={() => handleDragStart(index)}
+                onDragOver={(e) => handleDragOver(e, index)}
+                onDragEnd={handleDragEnd}
+                className={`p-4 rounded-xl border-2 cursor-move transition-all ${
+                  isCustomItem
+                    ? customStyle
+                    : `${getDurationColor(item.event.duration).bg} ${getDurationColor(item.event.duration).border} hover:border-opacity-100`
+                } ${draggedIndex === index ? 'opacity-50' : ''}`}
+              >
+                <div className="flex items-center gap-4">
+                  <Icon name="GripVertical" size={20} className="text-gray-400" />
+                  {isCustomItem && (
+                    <div className="text-2xl">
+                      {item.type === 'meal' ? '🍽️' : item.type === 'break' ? '☕' : '🚌'}
+                    </div>
+                  )}
+                  <div className="flex items-center gap-2">
+                    {editingTime === item.id ? (
+                      <>
+                        <Input
+                          type="time"
+                          value={tempTime}
+                          onChange={(e) => setTempTime(e.target.value)}
+                          className="w-32"
+                          autoFocus
+                          onBlur={() => {
                             updateStartTime(item.id, tempTime);
                             setEditingTime(null);
-                          }
-                        }}
-                      />
-                    </>
-                  ) : (
-                    <>
-                      <button
-                        onClick={() => {
-                          setEditingTime(item.id);
-                          setTempTime(item.startTime);
-                        }}
-                        className="px-3 py-1 rounded bg-gray-100 hover:bg-gray-200 text-sm font-medium"
-                      >
-                        {item.startTime}
-                      </button>
-                    </>
-                  )}
-                  <span className="text-sm text-gray-500">—</span>
-                  <span className="text-sm font-medium">
-                    {addMinutes(item.startTime, item.event.duration)}
-                  </span>
-                </div>
-                <div className="flex-1">
-                  <h3 className="font-semibold">{item.customTitle || item.event.title}</h3>
-                  {item.event.category && (
-                    <p className="text-xs text-gray-600">[{item.event.category}]</p>
-                  )}
-                </div>
-                {editingDuration === item.id ? (
-                  <Input
-                    type="number"
-                    value={tempDuration}
-                    onChange={(e) => setTempDuration(Number(e.target.value))}
-                    className="w-20"
-                    min="1"
-                    autoFocus
-                    onBlur={() => {
-                      updateDuration(item.id, tempDuration);
-                      setEditingDuration(null);
-                    }}
-                    onKeyDown={(e) => {
-                      if (e.key === 'Enter') {
+                          }}
+                          onKeyDown={(e) => {
+                            if (e.key === 'Enter') {
+                              updateStartTime(item.id, tempTime);
+                              setEditingTime(null);
+                            }
+                          }}
+                        />
+                      </>
+                    ) : (
+                      <>
+                        <button
+                          onClick={() => {
+                            setEditingTime(item.id);
+                            setTempTime(item.startTime);
+                          }}
+                          className="px-3 py-1 rounded bg-white hover:bg-gray-50 text-sm font-medium shadow-sm border"
+                        >
+                          {item.startTime}
+                        </button>
+                      </>
+                    )}
+                    <span className="text-sm text-gray-500">—</span>
+                    <span className="text-sm font-medium">
+                      {addMinutes(item.startTime, item.event.duration)}
+                    </span>
+                  </div>
+                  <div className="flex-1">
+                    <h3 className={`font-semibold ${isCustomItem ? 'text-lg' : ''}`}>
+                      {item.customTitle || item.event.title}
+                    </h3>
+                    {item.event.category && (
+                      <p className="text-xs text-gray-600">[{item.event.category}]</p>
+                    )}
+                    {isCustomItem && (
+                      <p className="text-xs font-medium mt-1 text-gray-500">
+                        {item.type === 'meal' ? '🍴 Прием пищи' : item.type === 'break' ? '☕ Перерыв' : '🚌 Трансфер'}
+                      </p>
+                    )}
+                  </div>
+                  {editingDuration === item.id ? (
+                    <Input
+                      type="number"
+                      value={tempDuration}
+                      onChange={(e) => setTempDuration(Number(e.target.value))}
+                      className="w-20"
+                      min="1"
+                      autoFocus
+                      onBlur={() => {
                         updateDuration(item.id, tempDuration);
                         setEditingDuration(null);
-                      }
-                    }}
-                  />
-                ) : (
-                  <button
-                    onClick={() => {
-                      setEditingDuration(item.id);
-                      setTempDuration(item.event.duration);
-                    }}
-                    className="px-3 py-1 rounded bg-gray-100 hover:bg-gray-200 text-sm font-medium"
+                      }}
+                      onKeyDown={(e) => {
+                        if (e.key === 'Enter') {
+                          updateDuration(item.id, tempDuration);
+                          setEditingDuration(null);
+                        }
+                      }}
+                    />
+                  ) : (
+                    <button
+                      onClick={() => {
+                        setEditingDuration(item.id);
+                        setTempDuration(item.event.duration);
+                      }}
+                      className="px-3 py-1 rounded bg-white hover:bg-gray-50 text-sm font-medium shadow-sm border"
+                    >
+                      {item.event.duration} мин
+                    </button>
+                  )}
+                  <Button
+                    variant="ghost"
+                    size="sm"
+                    onClick={() => removeItem(item.id)}
+                    className="text-red-600 hover:text-red-700 hover:bg-red-50"
                   >
-                    {item.event.duration} мин
-                  </button>
-                )}
-                <Button
-                  variant="ghost"
-                  size="sm"
-                  onClick={() => removeItem(item.id)}
-                  className="text-red-600 hover:text-red-700"
-                >
-                  <Icon name="Trash2" size={18} />
-                </Button>
+                    <Icon name="Trash2" size={18} />
+                  </Button>
+                </div>
               </div>
-            </div>
-          ))}
+            );
+          })}
         </CardContent>
       </Card>
 

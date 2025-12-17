@@ -102,31 +102,51 @@ const ScheduleDialogs = ({
               <div className="grid grid-cols-3 gap-2">
                 <Button
                   variant={addType === 'break' ? 'default' : 'outline'}
-                  onClick={() => setAddType('break')}
+                  onClick={() => {
+                    setAddType('break');
+                    setAddTitle('');
+                  }}
+                  className={addType === 'break' ? 'bg-amber-500 hover:bg-amber-600' : 'border-amber-300 text-amber-700 hover:bg-amber-50'}
                 >
-                  Перерыв
+                  ☕ Перерыв
                 </Button>
                 <Button
                   variant={addType === 'meal' ? 'default' : 'outline'}
-                  onClick={() => setAddType('meal')}
+                  onClick={() => {
+                    setAddType('meal');
+                    setAddTitle('');
+                  }}
+                  className={addType === 'meal' ? 'bg-emerald-500 hover:bg-emerald-600' : 'border-emerald-300 text-emerald-700 hover:bg-emerald-50'}
                 >
-                  Прием пищи
+                  🍽️ Прием пищи
                 </Button>
                 <Button
                   variant={addType === 'transfer' ? 'default' : 'outline'}
-                  onClick={() => setAddType('transfer')}
+                  onClick={() => {
+                    setAddType('transfer');
+                    setAddTitle('');
+                  }}
+                  className={addType === 'transfer' ? 'bg-blue-500 hover:bg-blue-600' : 'border-blue-300 text-blue-700 hover:bg-blue-50'}
                 >
-                  Трансфер
+                  🚌 Трансфер
                 </Button>
               </div>
             </div>
             <div className="space-y-2">
-              <Label htmlFor="custom-title">Название и место проведения (обязательно)</Label>
+              <Label htmlFor="custom-title">
+                {addType === 'transfer' ? 'Откуда - Куда?' : 'Название'} 
+                <span className="text-red-500 ml-1">*</span>
+              </Label>
               <Input
                 id="custom-title"
                 value={addTitle}
                 onChange={(e) => setAddTitle(e.target.value)}
-                placeholder="Например: Обед, Кофе-брейк"
+                placeholder={
+                  addType === 'transfer' 
+                    ? 'Яковлев - Курчатов' 
+                    : 'Обед, Фуд-корт Яковлева'
+                }
+                required
               />
             </div>
             <div className="space-y-2">
@@ -139,7 +159,11 @@ const ScheduleDialogs = ({
                 min="5"
               />
             </div>
-            <Button onClick={addCustomItem} className="w-full">
+            <Button 
+              onClick={addCustomItem} 
+              className="w-full"
+              disabled={!addTitle.trim()}
+            >
               Добавить
             </Button>
           </div>

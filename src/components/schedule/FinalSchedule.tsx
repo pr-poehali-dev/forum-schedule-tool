@@ -62,6 +62,7 @@ const FinalSchedule = ({
           <div className="space-y-4">
             {schedule.map((item) => {
               const endTime = addMinutes(item.startTime, item.event.duration);
+              const isCustomItem = item.type !== 'event';
               
               return (
                 <div
@@ -70,22 +71,40 @@ const FinalSchedule = ({
                     item.type === 'event'
                       ? `${getDurationColor(item.event.duration).bg} ${getDurationColor(item.event.duration).border.replace('border-', 'border-l-')}`
                       : item.type === 'meal'
-                      ? 'bg-emerald-50 border-l-emerald-500'
+                      ? 'bg-gradient-to-r from-emerald-50 to-green-50 border-l-emerald-500 border-l-8'
                       : item.type === 'break'
-                      ? 'bg-amber-50 border-l-amber-500'
-                      : 'bg-gray-50 border-l-gray-400'
+                      ? 'bg-gradient-to-r from-amber-50 to-orange-50 border-l-amber-500 border-l-8'
+                      : 'bg-gradient-to-r from-blue-50 to-cyan-50 border-l-blue-500 border-l-8'
                   }`}
                 >
                   <div className="flex items-center gap-4">
+                    {isCustomItem && (
+                      <div className="text-4xl">
+                        {item.type === 'meal' ? '🍽️' : item.type === 'break' ? '☕' : '🚌'}
+                      </div>
+                    )}
                     <div className="flex flex-col items-center bg-white rounded-lg px-3 py-2 shadow-sm">
                       <span className="text-sm font-bold text-cyan-600">{item.startTime}</span>
                       <span className="text-xs text-gray-400">—</span>
                       <span className="text-sm font-bold text-blue-600">{endTime}</span>
                     </div>
                     <div className="flex-1">
-                      <h3 className="font-bold text-lg text-gray-800">
-                        {item.customTitle || item.event.title}
-                      </h3>
+                      <div className="flex items-center gap-2">
+                        <h3 className={`font-bold text-lg text-gray-800 ${isCustomItem ? 'text-xl' : ''}`}>
+                          {item.customTitle || item.event.title}
+                        </h3>
+                        {isCustomItem && (
+                          <Badge className={
+                            item.type === 'meal' 
+                              ? 'bg-emerald-500 text-white' 
+                              : item.type === 'break' 
+                                ? 'bg-amber-500 text-white' 
+                                : 'bg-blue-500 text-white'
+                          }>
+                            {item.type === 'meal' ? '🍴 Прием пищи' : item.type === 'break' ? '☕ Перерыв' : '🚌 Трансфер'}
+                          </Badge>
+                        )}
+                      </div>
                       {item.event.category && (
                         <p className="text-sm text-cyan-600 font-medium mt-1">
                           [{item.event.category}]
