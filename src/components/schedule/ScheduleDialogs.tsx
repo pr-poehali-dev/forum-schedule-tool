@@ -121,7 +121,7 @@ const ScheduleDialogs = ({
               </div>
             </div>
             <div className="space-y-2">
-              <Label htmlFor="custom-title">Название (опционально)</Label>
+              <Label htmlFor="custom-title">Название и место проведения (обязательно)</Label>
               <Input
                 id="custom-title"
                 value={addTitle}
