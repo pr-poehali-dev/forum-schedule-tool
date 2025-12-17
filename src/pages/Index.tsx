@@ -513,7 +513,7 @@ const Index = () => {
                     onClick={() => setDurationFilter('long')}
                     className={durationFilter === 'long' ? 'bg-red-500 hover:bg-red-600' : 'border-red-300 text-red-700 hover:bg-red-50'}
                   >
-                    🔴 Длинные (>90 мин)
+                    🔴 Длинные ({'>'}90 мин)
                     <Badge className={durationFilter === 'long' ? 'ml-2 bg-white text-red-600' : 'ml-2 bg-red-100 text-red-700'}>
                       {mockEvents.filter(e => e.duration > 90 && !e.id.startsWith('3b') && !(e.id.startsWith('2b') && e.id.length > 2)).length}
                     </Badge>
