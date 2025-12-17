@@ -417,7 +417,12 @@ const Index = () => {
   return (
     <div className="min-h-screen bg-gradient-to-br from-cyan-50 via-blue-50 to-sky-100">
       <div className="container mx-auto px-4 py-8">
-        <div className="mb-8 animate-fade-in">
+        <div className="mb-8 animate-fade-in relative">
+          <img 
+            src="https://cdn.poehali.dev/files/Рисунок алабуга.png" 
+            alt="Алабуга логотип" 
+            className="absolute top-0 right-0 w-32 h-auto"
+          />
           <div className="text-center">
             <h1 className="text-5xl font-bold bg-gradient-to-r from-cyan-600 to-blue-600 bg-clip-text text-transparent mb-3">
               Планировщик форума
