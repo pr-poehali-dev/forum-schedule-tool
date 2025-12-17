@@ -98,7 +98,7 @@ const FinalSchedule = ({
                         </p>
                       )}
                     </div>
-                    <Badge className={`${item.type === 'event' ? getDurationColor(item.event.duration).badge : 'bg-gray-400'} text-white`}>
+                    <Badge className={`${item.type === 'event' ? getDurationColor(item.event.duration).badge : 'bg-gray-400'} text-white`} data-no-export>
                       {item.event.duration} мин
                     </Badge>
                   </div>
