@@ -111,10 +111,15 @@ const Index = () => {
 
   const handleEventSelect = (event: Event) => {
     if (event.id === '2b') {
-      setSelectedEvents(prev => ({
-        ...prev,
-        [event.category]: [event]
-      }));
+      const hasInteractives = (selectedEvents['Открывающие мероприятия'] || []).some(e => e.id.startsWith('2b') && e.id.length > 2);
+      
+      if (!hasInteractives) {
+        setSelectedEvents(prev => ({
+          ...prev,
+          [event.category]: [event]
+        }));
+      }
+      
       setInteractiveDialog(true);
       return;
     }
@@ -190,16 +195,42 @@ const Index = () => {
   };
 
   const updateStartTime = (id: string, newTime: string) => {
-    setSchedule(prev => prev.map(item => 
-      item.id === id ? { ...item, startTime: newTime } : item
-    ));
+    setSchedule(prev => {
+      const newSchedule = [...prev];
+      const changedIndex = newSchedule.findIndex(item => item.id === id);
+      
+      if (changedIndex === -1) return prev;
+      
+      newSchedule[changedIndex] = { ...newSchedule[changedIndex], startTime: newTime };
+      
+      for (let i = changedIndex + 1; i < newSchedule.length; i++) {
+        const prevItem = newSchedule[i - 1];
+        const autoStartTime = addMinutes(prevItem.startTime, prevItem.event.duration);
+        newSchedule[i] = { ...newSchedule[i], startTime: autoStartTime };
+      }
+      
+      return newSchedule;
+    });
   };
 
   const removeItem = (id: string) => {
-    setSchedule(prev => prev.filter(item => item.id !== id));
+    setSchedule(prev => {
+      const newSchedule = prev.filter(item => item.id !== id);
+      
+      for (let i = 1; i < newSchedule.length; i++) {
+        const prevItem = newSchedule[i - 1];
+        const autoStartTime = addMinutes(prevItem.startTime, prevItem.event.duration);
+        newSchedule[i] = { ...newSchedule[i], startTime: autoStartTime };
+      }
+      
+      return newSchedule;
+    });
   };
 
   const addCustomItem = () => {
+    const lastItem = schedule[schedule.length - 1];
+    const autoStartTime = lastItem ? addMinutes(lastItem.startTime, lastItem.event.duration) : '12:00';
+    
     const newItem: ScheduleItem = {
       id: `${Date.now()}-${Math.random()}`,
       event: {
@@ -210,7 +241,7 @@ const Index = () => {
         location: '',
         category: ''
       },
-      startTime: '12:00',
+      startTime: autoStartTime,
       type: addType,
       customTitle: addTitle
     };
@@ -233,6 +264,13 @@ const Index = () => {
     const draggedItem = newSchedule[draggedIndex];
     newSchedule.splice(draggedIndex, 1);
     newSchedule.splice(index, 0, draggedItem);
+    
+    for (let i = 0; i < newSchedule.length; i++) {
+      if (i === 0) continue;
+      const prevItem = newSchedule[i - 1];
+      const autoStartTime = addMinutes(prevItem.startTime, prevItem.event.duration);
+      newSchedule[i] = { ...newSchedule[i], startTime: autoStartTime };
+    }
     
     setSchedule(newSchedule);
     setDraggedIndex(index);
@@ -1005,15 +1043,32 @@ const Index = () => {
           </DialogContent>
         </Dialog>
 
-        <Dialog open={interactiveDialog} onOpenChange={setInteractiveDialog}>
-          <DialogContent className="max-w-3xl">
+        <Dialog open={interactiveDialog} onOpenChange={(open) => {
+          if (!open) {
+            const hasInteractives = (selectedEvents['Открывающие мероприятия'] || []).some(e => e.id.startsWith('2b') && e.id.length > 2);
+            if (!hasInteractives) {
+              setSelectedEvents(prev => {
+                const newEvents = { ...prev };
+                delete newEvents['Открывающие мероприятия'];
+                return newEvents;
+              });
+            }
+          }
+          setInteractiveDialog(open);
+        }}>
+          <DialogContent className="max-w-3xl" onInteractOutside={(e) => {
+            const hasInteractives = (selectedEvents['Открывающие мероприятия'] || []).some(e => e.id.startsWith('2b') && e.id.length > 2);
+            if (!hasInteractives) {
+              e.preventDefault();
+            }
+          }}>
             <DialogHeader>
               <DialogTitle className="text-2xl flex items-center gap-2">
                 <Icon name="Sparkles" size={28} className="text-cyan-600" />
                 Выберите интерактив
               </DialogTitle>
               <DialogDescription>
-                Выберите один или несколько интерактивов для открытия форума
+                Выберите хотя бы один интерактив или вернитесь к выбору другого мероприятия
               </DialogDescription>
             </DialogHeader>
             <div className="grid grid-cols-1 gap-3 pt-4">
@@ -1048,9 +1103,23 @@ const Index = () => {
                 );
               })}
             </div>
-            <div className="flex justify-end gap-3 pt-4 border-t">
-              <Button variant="outline" onClick={() => setInteractiveDialog(false)}>
-                Закрыть
+            <div className="flex justify-between items-center pt-4 border-t">
+              <div className="text-sm text-gray-600">
+                {(selectedEvents['Открывающие мероприятия'] || []).filter(e => e.id.startsWith('2b') && e.id.length > 2).length === 0 && (
+                  <span className="text-amber-600 font-medium">⚠️ Выберите хотя бы один интерактив</span>
+                )}
+              </div>
+              <Button 
+                onClick={() => {
+                  const hasInteractives = (selectedEvents['Открывающие мероприятия'] || []).some(e => e.id.startsWith('2b') && e.id.length > 2);
+                  if (hasInteractives) {
+                    setInteractiveDialog(false);
+                  }
+                }}
+                className="bg-gradient-to-r from-cyan-600 to-blue-600 hover:from-cyan-700 hover:to-blue-700"
+                disabled={(selectedEvents['Открывающие мероприятия'] || []).filter(e => e.id.startsWith('2b') && e.id.length > 2).length === 0}
+              >
+                Готово
               </Button>
             </div>
           </DialogContent>
