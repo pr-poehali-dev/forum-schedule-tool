@@ -115,6 +115,7 @@ const Index = () => {
   const [masterClassDialog, setMasterClassDialog] = useState(false);
   const [editingTime, setEditingTime] = useState<string | null>(null);
   const [tempTime, setTempTime] = useState('');
+  const [durationFilter, setDurationFilter] = useState<'all' | 'short' | 'medium' | 'long'>('all');
 
   const handleEventSelect = (event: Event) => {
     if (event.id === '2b') {
@@ -467,6 +468,59 @@ const Index = () => {
 
         {step === 'selection' && (
           <div className="space-y-8 animate-fade-in">
+            <Card className="bg-white shadow-lg">
+              <CardHeader>
+                <CardTitle className="text-xl flex items-center gap-2">
+                  <Icon name="Filter" size={24} className="text-cyan-600" />
+                  Фильтр по длительности
+                </CardTitle>
+              </CardHeader>
+              <CardContent>
+                <div className="flex flex-wrap gap-3">
+                  <Button
+                    variant={durationFilter === 'all' ? 'default' : 'outline'}
+                    onClick={() => setDurationFilter('all')}
+                    className={durationFilter === 'all' ? 'bg-gradient-to-r from-cyan-600 to-blue-600' : ''}
+                  >
+                    <Icon name="List" size={18} className="mr-2" />
+                    Все мероприятия
+                    <Badge className="ml-2 bg-gray-600 text-white">
+                      {mockEvents.filter(e => !e.id.startsWith('3b') && !(e.id.startsWith('2b') && e.id.length > 2)).length}
+                    </Badge>
+                  </Button>
+                  <Button
+                    variant={durationFilter === 'short' ? 'default' : 'outline'}
+                    onClick={() => setDurationFilter('short')}
+                    className={durationFilter === 'short' ? 'bg-green-500 hover:bg-green-600' : 'border-green-300 text-green-700 hover:bg-green-50'}
+                  >
+                    🟢 Короткие (0-60 мин)
+                    <Badge className={durationFilter === 'short' ? 'ml-2 bg-white text-green-600' : 'ml-2 bg-green-100 text-green-700'}>
+                      {mockEvents.filter(e => e.duration > 0 && e.duration <= 60 && !e.id.startsWith('3b') && !(e.id.startsWith('2b') && e.id.length > 2)).length}
+                    </Badge>
+                  </Button>
+                  <Button
+                    variant={durationFilter === 'medium' ? 'default' : 'outline'}
+                    onClick={() => setDurationFilter('medium')}
+                    className={durationFilter === 'medium' ? 'bg-yellow-500 hover:bg-yellow-600' : 'border-yellow-300 text-yellow-700 hover:bg-yellow-50'}
+                  >
+                    🟡 Средние (60-90 мин)
+                    <Badge className={durationFilter === 'medium' ? 'ml-2 bg-white text-yellow-600' : 'ml-2 bg-yellow-100 text-yellow-700'}>
+                      {mockEvents.filter(e => e.duration > 60 && e.duration <= 90 && !e.id.startsWith('3b') && !(e.id.startsWith('2b') && e.id.length > 2)).length}
+                    </Badge>
+                  </Button>
+                  <Button
+                    variant={durationFilter === 'long' ? 'default' : 'outline'}
+                    onClick={() => setDurationFilter('long')}
+                    className={durationFilter === 'long' ? 'bg-red-500 hover:bg-red-600' : 'border-red-300 text-red-700 hover:bg-red-50'}
+                  >
+                    🔴 Длинные (>90 мин)
+                    <Badge className={durationFilter === 'long' ? 'ml-2 bg-white text-red-600' : 'ml-2 bg-red-100 text-red-700'}>
+                      {mockEvents.filter(e => e.duration > 90 && !e.id.startsWith('3b') && !(e.id.startsWith('2b') && e.id.length > 2)).length}
+                    </Badge>
+                  </Button>
+                </div>
+              </CardContent>
+            </Card>
             {categories.map((category) => (
               <div key={category} className="bg-white rounded-2xl shadow-lg p-6 hover:shadow-xl transition-shadow">
                 <h2 className="text-2xl font-bold mb-4 flex items-center gap-3 text-gray-800">
@@ -491,6 +545,11 @@ const Index = () => {
                         if (category === 'Открывающие мероприятия' && event.id.length > 2 && event.id.startsWith('2b')) {
                           return false;
                         }
+                        
+                        if (durationFilter === 'short' && event.duration > 60) return false;
+                        if (durationFilter === 'medium' && (event.duration <= 60 || event.duration > 90)) return false;
+                        if (durationFilter === 'long' && event.duration <= 90) return false;
+                        
                         return true;
                       }
                       return false;
