@@ -212,7 +212,10 @@ const Index = () => {
       backgroundColor: '#ffffff',
       logging: false,
       useCORS: true,
-      allowTaint: true
+      allowTaint: true,
+      ignoreElements: (element) => {
+        return element.hasAttribute('data-no-export');
+      }
     });
 
     canvas.toBlob((blob) => {

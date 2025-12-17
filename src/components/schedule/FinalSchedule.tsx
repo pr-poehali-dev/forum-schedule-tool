@@ -46,7 +46,7 @@ const FinalSchedule = ({
                 </CardDescription>
               </div>
             </div>
-            <div className="flex gap-2">
+            <div className="flex gap-2" data-no-export>
               <Button onClick={exportToJPG} className="gap-2 bg-blue-600 hover:bg-blue-700">
                 <Icon name="Image" size={18} />
                 Скачать JPG
@@ -107,7 +107,7 @@ const FinalSchedule = ({
             })}
           </div>
 
-          <div className="flex justify-between gap-4 pt-8 border-t mt-8">
+          <div className="flex justify-between gap-4 pt-8 border-t mt-8" data-no-export>
             <Button
               variant="outline"
               onClick={() => setStep('editing')}
