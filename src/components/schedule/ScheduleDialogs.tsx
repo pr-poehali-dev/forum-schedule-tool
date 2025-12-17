@@ -134,7 +134,7 @@ const ScheduleDialogs = ({
             </div>
             <div className="space-y-2">
               <Label htmlFor="custom-title">
-                {addType === 'transfer' ? 'Откуда - Куда?' : 'Название'} 
+                {addType === 'transfer' ? 'Откуда - Куда?' : 'Описание'} 
                 <span className="text-red-500 ml-1">*</span>
               </Label>
               <Input
