@@ -6,8 +6,7 @@ import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle } from '@/components/ui/dialog';
 import Icon from '@/components/ui/icon';
-import { jsPDF } from 'jspdf';
-import autoTable from 'jspdf-autotable';
+import * as XLSX from 'xlsx';
 
 interface Event {
   id: string;
@@ -115,6 +114,8 @@ const Index = () => {
   const [masterClassDialog, setMasterClassDialog] = useState(false);
   const [editingTime, setEditingTime] = useState<string | null>(null);
   const [tempTime, setTempTime] = useState('');
+  const [editingDuration, setEditingDuration] = useState<string | null>(null);
+  const [tempDuration, setTempDuration] = useState(0);
   const [durationFilter, setDurationFilter] = useState<'all' | 'short' | 'medium' | 'long'>('all');
 
   const handleEventSelect = (event: Event) => {
@@ -161,10 +162,17 @@ const Index = () => {
           };
         }
       } else {
-        return {
-          ...prev,
-          [event.category]: isSelected ? [] : [event]
-        };
+        if (isSelected) {
+          return {
+            ...prev,
+            [event.category]: categoryEvents.filter(e => e.id !== event.id)
+          };
+        } else {
+          return {
+            ...prev,
+            [event.category]: [...categoryEvents, event]
+          };
+        }
       }
     });
   };
@@ -288,77 +296,53 @@ const Index = () => {
     setDraggedIndex(null);
   };
 
-  const exportToPDF = () => {
-    const doc = new jsPDF('p', 'mm', 'a4');
-    
-    const title = 'Raspisanie foruma';
-    const subtitle = 'Programma AS';
-    
-    doc.setFont('helvetica', 'bold');
-    doc.setFontSize(20);
-    doc.setTextColor(8, 145, 178);
-    doc.text(title, 105, 20, { align: 'center' });
-    
-    doc.setFontSize(12);
-    doc.setTextColor(100, 100, 100);
-    doc.text(subtitle, 105, 28, { align: 'center' });
-    
+  const exportToExcel = () => {
     const tableData = schedule.map(item => {
       const endTime = addMinutes(item.startTime, item.event.duration);
-      return [
-        `${item.startTime} - ${endTime}`,
-        item.customTitle || item.event.title,
-        item.event.category || '',
-        `${item.event.duration} min`,
-        item.event.location || ''
-      ];
+      return {
+        'Время': `${item.startTime} - ${endTime}`,
+        'Мероприятие': item.customTitle || item.event.title,
+        'Раздел': item.event.category || '',
+        'Длительность (мин)': item.event.duration,
+        'Место проведения': item.event.location || ''
+      };
     });
     
-    autoTable(doc, {
-      startY: 35,
-      head: [['Vremya', 'Meropriyatie', 'Razdel', 'Dlitelnost', 'Mesto']],
-      body: tableData,
-      theme: 'grid',
-      styles: {
-        font: 'helvetica',
-        fontStyle: 'normal'
-      },
-      headStyles: {
-        fillColor: [8, 145, 178],
-        textColor: [255, 255, 255],
-        fontStyle: 'bold',
-        fontSize: 10,
-        halign: 'center'
-      },
-      bodyStyles: {
-        fontSize: 8,
-        cellPadding: 3,
-        valign: 'middle'
-      },
-      columnStyles: {
-        0: { cellWidth: 30, halign: 'center' },
-        1: { cellWidth: 65 },
-        2: { cellWidth: 35 },
-        3: { cellWidth: 20, halign: 'center' },
-        4: { cellWidth: 40 }
-      },
-      alternateRowStyles: {
-        fillColor: [224, 247, 250]
-      },
-      margin: { top: 35, left: 10, right: 10 },
-      didDrawPage: (data) => {
-        doc.setFontSize(8);
-        doc.setTextColor(150, 150, 150);
-        doc.text(
-          `Page ${data.pageNumber} of ${doc.getNumberOfPages()}`,
-          105,
-          doc.internal.pageSize.height - 10,
-          { align: 'center' }
-        );
+    const worksheet = XLSX.utils.json_to_sheet(tableData);
+    const workbook = XLSX.utils.book_new();
+    XLSX.utils.book_append_sheet(workbook, worksheet, 'Расписание');
+    
+    worksheet['!cols'] = [
+      { wch: 20 },
+      { wch: 40 },
+      { wch: 30 },
+      { wch: 15 },
+      { wch: 40 }
+    ];
+    
+    XLSX.writeFile(workbook, 'raspisanie-foruma.xlsx');
+  };
+
+  const updateDuration = (id: string, newDuration: number) => {
+    setSchedule(prev => {
+      const newSchedule = [...prev];
+      const changedIndex = newSchedule.findIndex(item => item.id === id);
+      
+      if (changedIndex === -1) return prev;
+      
+      newSchedule[changedIndex] = { 
+        ...newSchedule[changedIndex], 
+        event: { ...newSchedule[changedIndex].event, duration: newDuration }
+      };
+      
+      for (let i = changedIndex + 1; i < newSchedule.length; i++) {
+        const prevItem = newSchedule[i - 1];
+        const autoStartTime = addMinutes(prevItem.startTime, prevItem.event.duration);
+        newSchedule[i] = { ...newSchedule[i], startTime: autoStartTime };
       }
+      
+      return newSchedule;
     });
-    
-    doc.save('raspisanie-foruma.pdf');
   };
 
   const canGenerateSchedule = categories.every(cat => {
@@ -370,7 +354,7 @@ const Index = () => {
       const hasOpening = events.some(e => e.id === '2a' || e.id === '2b');
       return hasOpening;
     }
-    return events.length === 1;
+    return events.length >= 1;
   });
 
   const handleViewEvent = (event: Event) => {
@@ -720,7 +704,36 @@ const Index = () => {
                           <p className="text-xs text-gray-600">[{item.event.category}]</p>
                         )}
                       </div>
-                      <Badge variant="outline">{item.event.duration} мин</Badge>
+                      {editingDuration === item.id ? (
+                        <Input
+                          type="number"
+                          value={tempDuration}
+                          onChange={(e) => setTempDuration(Number(e.target.value))}
+                          className="w-20"
+                          min="1"
+                          autoFocus
+                          onBlur={() => {
+                            updateDuration(item.id, tempDuration);
+                            setEditingDuration(null);
+                          }}
+                          onKeyDown={(e) => {
+                            if (e.key === 'Enter') {
+                              updateDuration(item.id, tempDuration);
+                              setEditingDuration(null);
+                            }
+                          }}
+                        />
+                      ) : (
+                        <button
+                          onClick={() => {
+                            setEditingDuration(item.id);
+                            setTempDuration(item.event.duration);
+                          }}
+                          className="px-3 py-1 rounded bg-gray-100 hover:bg-gray-200 text-sm font-medium"
+                        >
+                          {item.event.duration} мин
+                        </button>
+                      )}
                       <Button
                         variant="ghost"
                         size="sm"
@@ -769,9 +782,9 @@ const Index = () => {
                       Готовое расписание форума программы АС
                     </CardDescription>
                   </div>
-                  <Button onClick={exportToPDF} className="gap-2 bg-green-600 hover:bg-green-700">
+                  <Button onClick={exportToExcel} className="gap-2 bg-green-600 hover:bg-green-700">
                     <Icon name="Download" size={18} />
-                    Скачать
+                    Скачать Excel
                   </Button>
                 </div>
               </CardHeader>
