@@ -285,8 +285,7 @@ const EventSelection = ({
                     return (
                       <Card
                         key={event.id}
-                        onClick={() => handleEventSelect(event)}
-                        className="cursor-pointer transition-all hover:-translate-y-1 hover:shadow-md hover:bg-blue-50"
+                        className="transition-all hover:shadow-md"
                       >
                         <CardHeader className="pb-3">
                           <div className="flex items-start justify-between gap-2">
@@ -300,7 +299,7 @@ const EventSelection = ({
                           </CardDescription>
                         </CardHeader>
                         <CardContent className="pt-0">
-                          <div className="flex items-center justify-between gap-2">
+                          <div className="flex items-center justify-between gap-2 mb-3">
                             <div className="flex items-center gap-2 text-sm text-gray-600">
                               <Icon name="MapPin" size={16} className="shrink-0" />
                               <span className="line-clamp-1">{event.location}</span>
@@ -311,6 +310,19 @@ const EventSelection = ({
                                 {count}
                               </Badge>
                             )}
+                          </div>
+                          <div className="flex items-center gap-2">
+                            <Button
+                              onClick={(e) => {
+                                e.stopPropagation();
+                                handleEventSelect(event);
+                              }}
+                              size="sm"
+                              className="flex-1 bg-blue-600 hover:bg-blue-700 text-white gap-2"
+                            >
+                              <Icon name="Plus" size={16} />
+                              Добавить трансфер
+                            </Button>
                           </div>
                         </CardContent>
                       </Card>
