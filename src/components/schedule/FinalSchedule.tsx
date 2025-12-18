@@ -63,6 +63,7 @@ const FinalSchedule = ({
             {schedule.map((item) => {
               const endTime = addMinutes(item.startTime, item.event.duration);
               const isCustomItem = item.type !== 'event';
+              const isMeal = item.type === 'meal';
               
               return (
                 <div
@@ -71,16 +72,16 @@ const FinalSchedule = ({
                     item.type === 'event'
                       ? `${getDurationColor(item.event.duration).bg} ${getDurationColor(item.event.duration).border.replace('border-', 'border-l-')}`
                       : item.type === 'meal'
-                      ? 'bg-gradient-to-r from-emerald-50 to-green-50 border-l-emerald-500 border-l-8'
+                      ? 'bg-gradient-to-br from-emerald-100 via-green-50 to-emerald-100 border-l-emerald-500 border-l-8 ring-2 ring-emerald-200'
                       : item.type === 'break'
-                      ? 'bg-gradient-to-r from-amber-50 to-orange-50 border-l-amber-500 border-l-8'
+                      ? 'bg-gradient-to-r from-purple-50 to-pink-50 border-l-purple-400 border-l-4'
                       : 'bg-gradient-to-r from-blue-50 to-cyan-50 border-l-blue-500 border-l-8'
                   }`}
                 >
                   <div className="flex items-center gap-4">
                     {isCustomItem && (
-                      <div className="text-4xl">
-                        {item.type === 'meal' ? '🍽️' : item.type === 'break' ? '☕' : '🚌'}
+                      <div className={`${isMeal ? 'text-5xl' : 'text-4xl'}`}>
+                        {item.type === 'meal' ? '🍽️' : item.type === 'break' ? '⏸️' : '🚌'}
                       </div>
                     )}
                     <div className="flex flex-col items-center bg-white rounded-lg px-3 py-2 shadow-sm">
@@ -90,18 +91,18 @@ const FinalSchedule = ({
                     </div>
                     <div className="flex-1">
                       <div className="flex items-center gap-2">
-                        <h3 className={`font-bold text-lg text-gray-800 ${isCustomItem ? 'text-xl' : ''}`}>
+                        <h3 className={`font-bold text-lg text-gray-800 ${isMeal ? 'text-2xl text-emerald-700' : isCustomItem ? 'text-xl' : ''}`}>
                           {item.customTitle || item.event.title}
                         </h3>
                         {isCustomItem && (
                           <Badge className={
                             item.type === 'meal' 
-                              ? 'bg-emerald-500 text-white' 
+                              ? 'bg-emerald-600 text-white text-sm' 
                               : item.type === 'break' 
-                                ? 'bg-amber-500 text-white' 
+                                ? 'bg-purple-500 text-white' 
                                 : 'bg-blue-500 text-white'
                           }>
-                            {item.type === 'meal' ? '🍴 Прием пищи' : item.type === 'break' ? '☕ Перерыв' : '🚌 Трансфер'}
+                            {item.type === 'meal' ? '🍴 Прием пищи' : item.type === 'break' ? '⏸️ Дополнительный элемент' : '🚌 Трансфер'}
                           </Badge>
                         )}
                       </div>

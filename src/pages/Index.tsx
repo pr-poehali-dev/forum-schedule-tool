@@ -156,10 +156,18 @@ const Index = () => {
     const items: ScheduleItem[] = [];
     let currentTime = '09:00';
 
+    const additionalCategory = selectedEvents['Дополнительно'] || [];
+    const breakfast = additionalCategory.find(e => e.id === 'meal_breakfast');
+    const lunch = additionalCategory.find(e => e.id === 'meal_lunch');
+    const dinner = additionalCategory.find(e => e.id === 'meal_dinner');
+    const transfers = additionalCategory.filter(e => e.id.startsWith('transfer_'));
+
+    const regularEvents: ScheduleItem[] = [];
     categories.forEach(category => {
+      if (category === 'Дополнительно') return;
       const events = selectedEvents[category] || [];
       events.forEach(event => {
-        items.push({
+        regularEvents.push({
           id: `${Date.now()}-${Math.random()}`,
           event,
           startTime: currentTime,
@@ -167,6 +175,58 @@ const Index = () => {
         });
         currentTime = addMinutes(currentTime, event.duration);
       });
+    });
+
+    if (breakfast) {
+      items.push({
+        id: `${Date.now()}-${Math.random()}`,
+        event: breakfast,
+        startTime: '09:00',
+        type: 'meal'
+      });
+      currentTime = addMinutes('09:00', breakfast.duration);
+    } else {
+      currentTime = '09:00';
+    }
+
+    const midPoint = Math.floor(regularEvents.length / 2);
+    
+    for (let i = 0; i < regularEvents.length; i++) {
+      if (lunch && i === midPoint) {
+        items.push({
+          id: `${Date.now()}-${Math.random()}`,
+          event: lunch,
+          startTime: currentTime,
+          type: 'meal'
+        });
+        currentTime = addMinutes(currentTime, lunch.duration);
+      }
+      
+      items.push({
+        ...regularEvents[i],
+        startTime: currentTime
+      });
+      currentTime = addMinutes(currentTime, regularEvents[i].event.duration);
+    }
+
+    if (dinner) {
+      items.push({
+        id: `${Date.now()}-${Math.random()}`,
+        event: dinner,
+        startTime: currentTime,
+        type: 'meal'
+      });
+      currentTime = addMinutes(currentTime, dinner.duration);
+    }
+
+    transfers.forEach(transfer => {
+      items.push({
+        id: `${Date.now()}-${Math.random()}`,
+        event: transfer,
+        startTime: currentTime,
+        type: 'transfer'
+      });
+      currentTime = addMinutes(currentTime, transfer.duration);
     });
 
     setSchedule(items);
@@ -214,14 +274,14 @@ const Index = () => {
       id: `${Date.now()}-${Math.random()}`,
       event: {
         id: `custom-${Date.now()}`,
-        title: addTitle || (addType === 'break' ? 'Перерыв' : addType === 'meal' ? 'Прием пищи' : 'Трансфер'),
+        title: addTitle || 'Дополнительный элемент',
         description: '',
         duration: addDuration,
         location: '',
         category: ''
       },
       startTime: autoStartTime,
-      type: addType,
+      type: 'break',
       customTitle: addTitle
     };
     

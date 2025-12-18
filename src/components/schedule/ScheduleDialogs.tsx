@@ -98,48 +98,19 @@ const ScheduleDialogs = ({
         <DialogContent>
           <DialogHeader>
             <DialogTitle>Добавить элемент в расписание</DialogTitle>
-            <DialogDescription>Выберите тип и укажите параметры</DialogDescription>
+            <DialogDescription>Укажите название и длительность элемента</DialogDescription>
           </DialogHeader>
           <div className="space-y-4 pt-4">
             <div className="space-y-2">
-              <Label>Тип элемента</Label>
-              <div className="grid grid-cols-2 gap-2">
-                <Button
-                  variant={addType === 'break' ? 'default' : 'outline'}
-                  onClick={() => {
-                    setAddType('break');
-                    setAddTitle('');
-                  }}
-                  className={addType === 'break' ? 'bg-amber-500 hover:bg-amber-600' : 'border-amber-300 text-amber-700 hover:bg-amber-50'}
-                >
-                  ☕ Перерыв
-                </Button>
-                <Button
-                  variant={addType === 'transfer' ? 'default' : 'outline'}
-                  onClick={() => {
-                    setAddType('transfer');
-                    setAddTitle('');
-                  }}
-                  className={addType === 'transfer' ? 'bg-blue-500 hover:bg-blue-600' : 'border-blue-300 text-blue-700 hover:bg-blue-50'}
-                >
-                  🚌 Трансфер
-                </Button>
-              </div>
-            </div>
-            <div className="space-y-2">
               <Label htmlFor="custom-title">
-                {addType === 'transfer' ? 'Откуда - Куда?' : 'Описание'} 
+                Название элемента
                 <span className="text-red-500 ml-1">*</span>
               </Label>
               <Input
                 id="custom-title"
                 value={addTitle}
                 onChange={(e) => setAddTitle(e.target.value)}
-                placeholder={
-                  addType === 'transfer' 
-                    ? 'Яковлев - Курчатов' 
-                    : 'Обед, Фуд-корт Яковлева'
-                }
+                placeholder="Дополнительный трансфер; Перерыв и т. д."
                 required
               />
             </div>

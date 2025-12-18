@@ -63,11 +63,12 @@ const ScheduleEditor = ({
         <CardContent className="space-y-3">
           {schedule.map((item, index) => {
             const isCustomItem = item.type !== 'event';
+            const isMeal = item.type === 'meal';
             const customStyle = isCustomItem
               ? item.type === 'meal'
-                ? 'bg-gradient-to-r from-emerald-50 to-green-50 border-emerald-300 border-l-8 border-l-emerald-500 shadow-md'
+                ? 'bg-gradient-to-br from-emerald-100 via-green-50 to-emerald-100 border-emerald-400 border-2 shadow-lg ring-2 ring-emerald-200'
                 : item.type === 'break'
-                  ? 'bg-gradient-to-r from-amber-50 to-orange-50 border-amber-300 border-l-8 border-l-amber-500 shadow-md'
+                  ? 'bg-gradient-to-r from-purple-50 to-pink-50 border-purple-300 border-2 shadow-md'
                   : 'bg-gradient-to-r from-blue-50 to-cyan-50 border-blue-300 border-l-8 border-l-blue-500 shadow-md'
               : '';
             
@@ -87,8 +88,8 @@ const ScheduleEditor = ({
                 <div className="flex items-center gap-4">
                   <Icon name="GripVertical" size={20} className="text-gray-400" />
                   {isCustomItem && (
-                    <div className="text-2xl">
-                      {item.type === 'meal' ? '🍽️' : item.type === 'break' ? '☕' : '🚌'}
+                    <div className={`text-2xl ${isMeal ? 'text-3xl' : ''}`}>
+                      {item.type === 'meal' ? '🍽️' : item.type === 'break' ? '⏸️' : '🚌'}
                     </div>
                   )}
                   <div className="flex items-center gap-2">
@@ -131,15 +132,15 @@ const ScheduleEditor = ({
                     </span>
                   </div>
                   <div className="flex-1">
-                    <h3 className={`font-semibold ${isCustomItem ? 'text-lg' : ''}`}>
+                    <h3 className={`font-semibold ${isMeal ? 'text-xl text-emerald-700' : isCustomItem ? 'text-lg' : ''}`}>
                       {item.customTitle || item.event.title}
                     </h3>
                     {item.event.category && (
                       <p className="text-xs text-gray-600">[{item.event.category}]</p>
                     )}
                     {isCustomItem && (
-                      <p className="text-xs font-medium mt-1 text-gray-500">
-                        {item.type === 'meal' ? '🍴 Прием пищи' : item.type === 'break' ? '☕ Перерыв' : '🚌 Трансфер'}
+                      <p className={`text-xs font-medium mt-1 ${isMeal ? 'text-emerald-600' : 'text-gray-500'}`}>
+                        {item.type === 'meal' ? '🍴 Прием пищи' : item.type === 'break' ? '⏸️ Дополнительный элемент' : '🚌 Трансфер'}
                       </p>
                     )}
                   </div>
