@@ -54,9 +54,9 @@ const EventSelection = ({
               onClick={() => setDurationFilter('short')}
               className={durationFilter === 'short' ? 'bg-green-500 hover:bg-green-600' : 'border-green-300 text-green-700 hover:bg-green-50'}
             >
-              🟢 Короткие (0-60 мин)
+              🟢 Короткие (0-59 мин)
               <Badge className={durationFilter === 'short' ? 'ml-2 bg-white text-green-600' : 'ml-2 bg-green-100 text-green-700'}>
-                {mockEvents.filter(e => e.duration > 0 && e.duration <= 60 && !e.id.startsWith('3b') && !(e.id.startsWith('2b') && e.id.length > 2) && !(e.id.startsWith('4c') && e.id.length > 2)).length}
+                {mockEvents.filter(e => e.duration > 0 && e.duration < 60 && !e.id.startsWith('3b') && !(e.id.startsWith('2b') && e.id.length > 2) && !(e.id.startsWith('4c') && e.id.length > 2)).length}
               </Badge>
             </Button>
             <Button
@@ -64,9 +64,9 @@ const EventSelection = ({
               onClick={() => setDurationFilter('medium')}
               className={durationFilter === 'medium' ? 'bg-yellow-500 hover:bg-yellow-600' : 'border-yellow-300 text-yellow-700 hover:bg-yellow-50'}
             >
-              🟡 Средние (60-90 мин)
+              🟡 Средние (60-89 мин)
               <Badge className={durationFilter === 'medium' ? 'ml-2 bg-white text-yellow-600' : 'ml-2 bg-yellow-100 text-yellow-700'}>
-                {mockEvents.filter(e => e.duration > 60 && e.duration <= 90 && !e.id.startsWith('3b') && !(e.id.startsWith('2b') && e.id.length > 2) && !(e.id.startsWith('4c') && e.id.length > 2)).length}
+                {mockEvents.filter(e => e.duration >= 60 && e.duration < 90 && !e.id.startsWith('3b') && !(e.id.startsWith('2b') && e.id.length > 2) && !(e.id.startsWith('4c') && e.id.length > 2)).length}
               </Badge>
             </Button>
             <Button
@@ -74,9 +74,9 @@ const EventSelection = ({
               onClick={() => setDurationFilter('long')}
               className={durationFilter === 'long' ? 'bg-red-500 hover:bg-red-600' : 'border-red-300 text-red-700 hover:bg-red-50'}
             >
-              🔴 Длинные ({'>'}90 мин)
+              🔴 Длинные (90+ мин)
               <Badge className={durationFilter === 'long' ? 'ml-2 bg-white text-red-600' : 'ml-2 bg-red-100 text-red-700'}>
-                {mockEvents.filter(e => e.duration > 90 && !e.id.startsWith('3b') && !(e.id.startsWith('2b') && e.id.length > 2) && !(e.id.startsWith('4c') && e.id.length > 2)).length}
+                {mockEvents.filter(e => e.duration >= 90 && !e.id.startsWith('3b') && !(e.id.startsWith('2b') && e.id.length > 2) && !(e.id.startsWith('4c') && e.id.length > 2)).length}
               </Badge>
             </Button>
           </div>
@@ -110,9 +110,9 @@ const EventSelection = ({
                     return false;
                   }
                   
-                  if (durationFilter === 'short' && event.duration > 60) return false;
-                  if (durationFilter === 'medium' && (event.duration <= 60 || event.duration > 90)) return false;
-                  if (durationFilter === 'long' && event.duration <= 90) return false;
+                  if (durationFilter === 'short' && event.duration >= 60) return false;
+                  if (durationFilter === 'medium' && (event.duration < 60 || event.duration >= 90)) return false;
+                  if (durationFilter === 'long' && event.duration < 90) return false;
                   
                   return true;
                 }
