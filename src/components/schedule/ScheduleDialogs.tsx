@@ -209,7 +209,7 @@ const ScheduleDialogs = ({
                   
                   <div>
                     <h4 className="font-semibold text-gray-700 mb-1 flex items-center gap-2">
-                      <Icon name="MapPin" size={18} />
+                      <Icon name="MapPin" size={16} />
                       Место проведения
                     </h4>
                     <p className="text-gray-600">{viewingEvent.location}</p>
