@@ -236,13 +236,17 @@ const EventSelection = ({
                       .filter(e => e.category === category && e.id.startsWith('meal_'))
                       .map(event => {
                         const colorScheme = getDurationColor(event.duration);
-                        const count = (selectedEvents[category] || []).filter(e => e.id === event.id).length;
+                        const selected = isEventSelected(event.id);
                         
                         return (
                           <Card
                             key={event.id}
                             onClick={() => handleEventSelect(event)}
-                            className="cursor-pointer transition-all hover:-translate-y-1 hover:shadow-md hover:bg-emerald-50"
+                            className={`cursor-pointer transition-all hover:-translate-y-1 hover:shadow-md ${
+                              selected 
+                                ? 'ring-2 ring-emerald-500 bg-emerald-50' 
+                                : 'hover:bg-emerald-50'
+                            }`}
                           >
                             <CardHeader className="pb-3">
                               <div className="flex items-start justify-between gap-2">
@@ -261,10 +265,10 @@ const EventSelection = ({
                                   <Icon name="MapPin" size={16} className="shrink-0" />
                                   <span className="line-clamp-1">{event.location}</span>
                                 </div>
-                                {count > 0 && (
+                                {selected && (
                                   <Badge className="bg-green-500 text-white">
                                     <Icon name="Check" size={16} className="mr-1" />
-                                    {count}
+                                    Выбрано
                                   </Badge>
                                 )}
                               </div>

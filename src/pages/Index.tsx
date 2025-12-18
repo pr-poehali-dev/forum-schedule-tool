@@ -74,7 +74,7 @@ const Index = () => {
       const categoryEvents = prev[event.category] || [];
       const isSelected = categoryEvents.some(e => e.id === event.id);
       
-      if (event.category === 'Дополнительно') {
+      if (event.category === 'Дополнительно' && event.id.startsWith('transfer_')) {
         return {
           ...prev,
           [event.category]: [...categoryEvents, event]
