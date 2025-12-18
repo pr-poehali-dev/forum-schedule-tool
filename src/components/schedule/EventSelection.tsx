@@ -163,7 +163,7 @@ const EventSelection = ({
                     <CardContent className="pt-0">
                       <div className="flex items-center justify-between gap-2">
                         <div className={`flex items-center gap-2 text-sm ${is2aBlocked ? 'text-gray-400' : 'text-gray-600'}`}>
-                          <Icon name="MapPin" size={14} />
+                          <Icon name="MapPin" size={16} />
                           <span className="line-clamp-1">{event.location}</span>
                         </div>
                         <Button

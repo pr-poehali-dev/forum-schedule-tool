@@ -434,7 +434,7 @@ const ScheduleDialogs = ({
                   </CardHeader>
                   <CardContent className="pt-0">
                     <div className="flex items-center gap-2 text-sm text-gray-600">
-                      <Icon name="MapPin" size={14} />
+                      <Icon name="MapPin" size={16} />
                       <span>{event.location}</span>
                     </div>
                   </CardContent>
@@ -518,7 +518,7 @@ const ScheduleDialogs = ({
                   </CardHeader>
                   <CardContent className="pt-0">
                     <div className="flex items-center gap-2 text-sm text-gray-600">
-                      <Icon name="MapPin" size={14} />
+                      <Icon name="MapPin" size={16} />
                       <span>{event.location}</span>
                     </div>
                   </CardContent>
@@ -617,7 +617,7 @@ const ScheduleDialogs = ({
                           </CardHeader>
                           <CardContent className="pt-0">
                             <div className={`flex items-center gap-2 text-sm ${isPremium ? 'text-amber-700' : 'text-gray-600'}`}>
-                              <Icon name="MapPin" size={14} />
+                              <Icon name="MapPin" size={16} />
                               <span className="line-clamp-1">{event.location}</span>
                             </div>
                           </CardContent>

@@ -112,7 +112,7 @@ const FinalSchedule = ({
                       )}
                       {item.event.location && (
                         <p className="text-sm text-gray-600 flex items-center gap-1 mt-1">
-                          <Icon name="MapPin" size={14} />
+                          <Icon name="MapPin" size={16} />
                           {item.event.location}
                         </p>
                       )}
