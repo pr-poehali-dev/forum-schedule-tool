@@ -89,7 +89,7 @@ const EventSelection = ({
             {category}
             {selectedEvents[category] && selectedEvents[category].length > 0 && (
               <Badge className="ml-2 bg-green-500">
-                <Icon name="Check" size={14} className="mr-1" />
+                <Icon name="Check" size={16} className="mr-1" />
                 {category === 'Знакомство с программой АС' 
                   ? `Выбрано: ${selectedEvents[category].length}`
                   : 'Выбрано'}
@@ -137,7 +137,7 @@ const EventSelection = ({
                     {is2aBlocked && (
                       <div className="absolute top-2 right-2 z-10">
                         <Badge className="bg-red-500 text-white">
-                          <Icon name="X" size={12} className="mr-1" />
+                          <Icon name="X" size={16} className="mr-1" />
                           Недоступно
                         </Badge>
                       </div>
@@ -203,12 +203,12 @@ const EventSelection = ({
                   {(selectedEvents[category] || []).filter(e => e.id.startsWith('3b')).length > 0 ? (
                     <div className="flex gap-2 flex-wrap">
                       <Badge className="bg-green-500 text-white">
-                        <Icon name="Check" size={14} className="mr-1" />
+                        <Icon name="Check" size={16} className="mr-1" />
                         Выбрано: {(selectedEvents[category] || []).filter(e => e.id.startsWith('3b')).length}
                       </Badge>
                       {(selectedEvents[category] || []).filter(e => e.tier === 'premium').length > 0 && (
                         <Badge className="bg-gradient-to-r from-amber-500 to-yellow-500 text-white">
-                          <Icon name="Sparkles" size={14} className="mr-1" />
+                          <Icon name="Sparkles" size={16} className="mr-1" />
                           Роскошных: {(selectedEvents[category] || []).filter(e => e.tier === 'premium').length}
                         </Badge>
                       )}
