@@ -103,7 +103,7 @@ const ScheduleDialogs = ({
           <div className="space-y-4 pt-4">
             <div className="space-y-2">
               <Label>Тип элемента</Label>
-              <div className="grid grid-cols-3 gap-2">
+              <div className="grid grid-cols-2 gap-2">
                 <Button
                   variant={addType === 'break' ? 'default' : 'outline'}
                   onClick={() => {
@@ -113,16 +113,6 @@ const ScheduleDialogs = ({
                   className={addType === 'break' ? 'bg-amber-500 hover:bg-amber-600' : 'border-amber-300 text-amber-700 hover:bg-amber-50'}
                 >
                   ☕ Перерыв
-                </Button>
-                <Button
-                  variant={addType === 'meal' ? 'default' : 'outline'}
-                  onClick={() => {
-                    setAddType('meal');
-                    setAddTitle('');
-                  }}
-                  className={addType === 'meal' ? 'bg-emerald-500 hover:bg-emerald-600' : 'border-emerald-300 text-emerald-700 hover:bg-emerald-50'}
-                >
-                  🍽️ Прием пищи
                 </Button>
                 <Button
                   variant={addType === 'transfer' ? 'default' : 'outline'}

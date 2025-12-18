@@ -109,6 +109,9 @@ const EventSelection = ({
                   if (category === 'Развлекательные мероприятия' && event.id.length > 2 && event.id.startsWith('4c')) {
                     return false;
                   }
+                  if (category === 'Дополнительно') {
+                    return false;
+                  }
                   
                   if (durationFilter === 'short' && event.duration >= 60) return false;
                   if (durationFilter === 'medium' && (event.duration < 60 || event.duration >= 90)) return false;
@@ -218,6 +221,102 @@ const EventSelection = ({
                   )}
                 </CardContent>
               </Card>
+            )}
+            {category === 'Дополнительно' && (
+              <>
+                <div className="col-span-full">
+                  <h3 className="text-lg font-semibold mb-3 flex items-center gap-2">
+                    <Icon name="Utensils" size={20} className="text-emerald-600" />
+                    Приемы пищи
+                  </h3>
+                </div>
+                {mockEvents
+                  .filter(e => e.category === category && e.id.startsWith('meal_'))
+                  .map(event => {
+                    const colorScheme = getDurationColor(event.duration);
+                    const count = (selectedEvents[category] || []).filter(e => e.id === event.id).length;
+                    
+                    return (
+                      <Card
+                        key={event.id}
+                        onClick={() => handleEventSelect(event)}
+                        className="cursor-pointer transition-all hover:-translate-y-1 hover:shadow-md hover:bg-emerald-50"
+                      >
+                        <CardHeader className="pb-3">
+                          <div className="flex items-start justify-between gap-2">
+                            <CardTitle className="text-base leading-tight">{event.title}</CardTitle>
+                            <Badge className={`${colorScheme.badge} text-white shrink-0`}>
+                              {event.duration} мин
+                            </Badge>
+                          </div>
+                          <CardDescription className="text-sm">
+                            Общее время проведения: {event.title === 'Завтрак' ? '30-40' : event.title === 'Обед' ? '50-60' : '30-40'} минут
+                          </CardDescription>
+                        </CardHeader>
+                        <CardContent className="pt-0">
+                          <div className="flex items-center justify-between gap-2">
+                            <div className="flex items-center gap-2 text-sm text-gray-600">
+                              <Icon name="MapPin" size={16} className="shrink-0" />
+                              <span className="line-clamp-1">{event.location}</span>
+                            </div>
+                            {count > 0 && (
+                              <Badge className="bg-green-500 text-white">
+                                <Icon name="Check" size={16} className="mr-1" />
+                                {count}
+                              </Badge>
+                            )}
+                          </div>
+                        </CardContent>
+                      </Card>
+                    );
+                  })}
+                <div className="col-span-full mt-6">
+                  <h3 className="text-lg font-semibold mb-3 flex items-center gap-2">
+                    <Icon name="Bus" size={20} className="text-blue-600" />
+                    Трансфер
+                  </h3>
+                </div>
+                {mockEvents
+                  .filter(e => e.category === category && e.id.startsWith('transfer_'))
+                  .map(event => {
+                    const colorScheme = getDurationColor(event.duration);
+                    const count = (selectedEvents[category] || []).filter(e => e.id === event.id).length;
+                    
+                    return (
+                      <Card
+                        key={event.id}
+                        onClick={() => handleEventSelect(event)}
+                        className="cursor-pointer transition-all hover:-translate-y-1 hover:shadow-md hover:bg-blue-50"
+                      >
+                        <CardHeader className="pb-3">
+                          <div className="flex items-start justify-between gap-2">
+                            <CardTitle className="text-base leading-tight">{event.title}</CardTitle>
+                            <Badge className={`${colorScheme.badge} text-white shrink-0`}>
+                              {event.duration} мин
+                            </Badge>
+                          </div>
+                          <CardDescription className="text-sm">
+                            Общее время переезда: 15 минут
+                          </CardDescription>
+                        </CardHeader>
+                        <CardContent className="pt-0">
+                          <div className="flex items-center justify-between gap-2">
+                            <div className="flex items-center gap-2 text-sm text-gray-600">
+                              <Icon name="MapPin" size={16} className="shrink-0" />
+                              <span className="line-clamp-1">{event.location}</span>
+                            </div>
+                            {count > 0 && (
+                              <Badge className="bg-green-500 text-white">
+                                <Icon name="Check" size={16} className="mr-1" />
+                                {count}
+                              </Badge>
+                            )}
+                          </div>
+                        </CardContent>
+                      </Card>
+                    );
+                  })}
+              </>
             )}
           </div>
         </div>
