@@ -3,6 +3,7 @@ import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
 import Icon from '@/components/ui/icon';
 import { Event, mockEvents, categories, getDurationColor } from './types';
+import TimeCalculator from './TimeCalculator';
 
 interface EventSelectionProps {
   selectedEvents: Record<string, Event[]>;
@@ -31,6 +32,8 @@ const EventSelection = ({
 }: EventSelectionProps) => {
   return (
     <div className="space-y-8 animate-fade-in">
+      <TimeCalculator selectedEvents={selectedEvents} />
+      
       <Card className="bg-white shadow-lg">
         <CardHeader>
           <CardTitle className="text-xl flex items-center gap-2">

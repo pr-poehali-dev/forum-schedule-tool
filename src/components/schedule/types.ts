@@ -82,7 +82,7 @@ export const mockEvents: Event[] = [
   { id: '7c', title: 'Лекция об истории успеха', description: 'Лекция о пути становления руководителя. Руководитель делится полезными советами и жизненным опытом.', duration: 50, location: 'Конференц-зал Курчатов/Яковлев; Спортзал "Алабуга Политех"', category: 'Лекции' },
 
   { id: 'meal_breakfast', title: 'Завтрак', description: 'Утренний прием пищи', duration: 35, location: 'Столовая', category: 'Дополнительно' },
-  { id: 'meal_lunch', title: 'Обед', description: 'Обеденный прием пищи', duration: 55, location: 'Столовая', category: 'Дополнительно' },
+  { id: 'meal_lunch', title: 'Обед', description: 'Обеденный прием пищи', duration: 35, location: 'Столовая', category: 'Дополнительно' },
   { id: 'meal_dinner', title: 'Ужин', description: 'Вечерний прием пищи', duration: 35, location: 'Столовая', category: 'Дополнительно' },
   { id: 'transfer_default', title: 'Трансфер', description: 'Переезд между локациями', duration: 15, location: 'Транспорт', category: 'Дополнительно' },
 ];
