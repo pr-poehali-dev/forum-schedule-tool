@@ -46,7 +46,7 @@ const EventSelection = ({
               <Icon name="List" size={18} className="mr-2" />
               Все мероприятия
               <Badge className="ml-2 bg-gray-600 text-white">
-                {mockEvents.filter(e => !e.id.startsWith('3b') && !(e.id.startsWith('2b') && e.id.length > 2)).length}
+                {mockEvents.filter(e => !e.id.startsWith('3b') && !(e.id.startsWith('2b') && e.id.length > 2) && !(e.id.startsWith('4c') && e.id.length > 2)).length}
               </Badge>
             </Button>
             <Button
@@ -56,7 +56,7 @@ const EventSelection = ({
             >
               🟢 Короткие (0-60 мин)
               <Badge className={durationFilter === 'short' ? 'ml-2 bg-white text-green-600' : 'ml-2 bg-green-100 text-green-700'}>
-                {mockEvents.filter(e => e.duration > 0 && e.duration <= 60 && !e.id.startsWith('3b') && !(e.id.startsWith('2b') && e.id.length > 2)).length}
+                {mockEvents.filter(e => e.duration > 0 && e.duration <= 60 && !e.id.startsWith('3b') && !(e.id.startsWith('2b') && e.id.length > 2) && !(e.id.startsWith('4c') && e.id.length > 2)).length}
               </Badge>
             </Button>
             <Button
@@ -66,7 +66,7 @@ const EventSelection = ({
             >
               🟡 Средние (60-90 мин)
               <Badge className={durationFilter === 'medium' ? 'ml-2 bg-white text-yellow-600' : 'ml-2 bg-yellow-100 text-yellow-700'}>
-                {mockEvents.filter(e => e.duration > 60 && e.duration <= 90 && !e.id.startsWith('3b') && !(e.id.startsWith('2b') && e.id.length > 2)).length}
+                {mockEvents.filter(e => e.duration > 60 && e.duration <= 90 && !e.id.startsWith('3b') && !(e.id.startsWith('2b') && e.id.length > 2) && !(e.id.startsWith('4c') && e.id.length > 2)).length}
               </Badge>
             </Button>
             <Button
@@ -76,7 +76,7 @@ const EventSelection = ({
             >
               🔴 Длинные ({'>'}90 мин)
               <Badge className={durationFilter === 'long' ? 'ml-2 bg-white text-red-600' : 'ml-2 bg-red-100 text-red-700'}>
-                {mockEvents.filter(e => e.duration > 90 && !e.id.startsWith('3b') && !(e.id.startsWith('2b') && e.id.length > 2)).length}
+                {mockEvents.filter(e => e.duration > 90 && !e.id.startsWith('3b') && !(e.id.startsWith('2b') && e.id.length > 2) && !(e.id.startsWith('4c') && e.id.length > 2)).length}
               </Badge>
             </Button>
           </div>
@@ -104,6 +104,9 @@ const EventSelection = ({
                     return false;
                   }
                   if (category === 'Открывающие мероприятия' && event.id.length > 2 && event.id.startsWith('2b')) {
+                    return false;
+                  }
+                  if (category === 'Развлекательные мероприятия' && event.id.length > 2 && event.id.startsWith('4c')) {
                     return false;
                   }
                   

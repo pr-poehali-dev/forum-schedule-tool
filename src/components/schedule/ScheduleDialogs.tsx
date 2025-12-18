@@ -40,6 +40,8 @@ interface ScheduleDialogsProps {
   
   interactiveDialog: boolean;
   setInteractiveDialog: (open: boolean) => void;
+  networkingDialog: boolean;
+  setNetworkingDialog: (open: boolean) => void;
   selectedEvents: Record<string, Event[]>;
   setSelectedEvents: (events: Record<string, Event[]> | ((prev: Record<string, Event[]>) => Record<string, Event[]>)) => void;
   mockEvents: Event[];
@@ -81,6 +83,8 @@ const ScheduleDialogs = ({
   
   interactiveDialog,
   setInteractiveDialog,
+  networkingDialog,
+  setNetworkingDialog,
   selectedEvents,
   setSelectedEvents,
   mockEvents,
@@ -453,6 +457,90 @@ const ScheduleDialogs = ({
               }}
               className="bg-gradient-to-r from-cyan-600 to-blue-600 hover:from-cyan-700 hover:to-blue-700"
               disabled={(selectedEvents['Открывающие мероприятия'] || []).filter(e => e.id.startsWith('2b') && e.id.length > 2).length === 0}
+            >
+              Готово
+            </Button>
+          </div>
+        </DialogContent>
+      </Dialog>
+
+      <Dialog open={networkingDialog} onOpenChange={(open) => {
+        if (!open) {
+          const hasNetworkingGames = (selectedEvents['Развлекательные мероприятия'] || []).some(e => e.id.startsWith('4c') && e.id.length > 2);
+          if (!hasNetworkingGames) {
+            setSelectedEvents(prev => {
+              const categoryEvents = prev['Развлекательные мероприятия'] || [];
+              return {
+                ...prev,
+                ['Развлекательные мероприятия']: categoryEvents.filter(e => e.id !== '4c')
+              };
+            });
+          }
+        }
+        setNetworkingDialog(open);
+      }}>
+        <DialogContent className="max-w-3xl" onInteractOutside={(e) => {
+          const hasNetworkingGames = (selectedEvents['Развлекательные мероприятия'] || []).some(e => e.id.startsWith('4c') && e.id.length > 2);
+          if (!hasNetworkingGames) {
+            e.preventDefault();
+          }
+        }}>
+          <DialogHeader>
+            <DialogTitle className="text-2xl flex items-center gap-2">
+              <Icon name="Users" size={28} className="text-cyan-600" />
+              Выберите игру для нетворкинга
+            </DialogTitle>
+            <DialogDescription>
+              Выберите хотя бы одну игру или вернитесь к выбору другого мероприятия
+            </DialogDescription>
+          </DialogHeader>
+          <div className="grid grid-cols-1 gap-3 pt-4">
+            {mockEvents.filter(e => e.id.startsWith('4c') && e.id.length > 2).map(event => {
+              const selected = isEventSelected(event.id);
+              const colorScheme = getDurationColor(event.duration);
+              
+              return (
+                <Card
+                  key={event.id}
+                  className={`cursor-pointer transition-all hover:shadow-md ${
+                    selected ? 'ring-2 ring-cyan-500 bg-cyan-50' : ''
+                  }`}
+                  onClick={() => handleEventSelect(event)}
+                >
+                  <CardHeader className="pb-3">
+                    <div className="flex items-start justify-between gap-2">
+                      <CardTitle className="text-base">{event.title}</CardTitle>
+                      <Badge className={`${colorScheme.badge} text-white shrink-0`}>
+                        {event.duration} мин
+                      </Badge>
+                    </div>
+                    <CardDescription className="text-sm">{event.description}</CardDescription>
+                  </CardHeader>
+                  <CardContent className="pt-0">
+                    <div className="flex items-center gap-2 text-sm text-gray-600">
+                      <Icon name="MapPin" size={14} />
+                      <span>{event.location}</span>
+                    </div>
+                  </CardContent>
+                </Card>
+              );
+            })}
+          </div>
+          <div className="flex justify-between items-center pt-4 border-t">
+            <div className="text-sm text-gray-600">
+              {(selectedEvents['Развлекательные мероприятия'] || []).filter(e => e.id.startsWith('4c') && e.id.length > 2).length === 0 && (
+                <span className="text-amber-600 font-medium">⚠️ Выберите хотя бы одну игру</span>
+              )}
+            </div>
+            <Button 
+              onClick={() => {
+                const hasNetworkingGames = (selectedEvents['Развлекательные мероприятия'] || []).some(e => e.id.startsWith('4c') && e.id.length > 2);
+                if (hasNetworkingGames) {
+                  setNetworkingDialog(false);
+                }
+              }}
+              className="bg-gradient-to-r from-cyan-600 to-blue-600 hover:from-cyan-700 hover:to-blue-700"
+              disabled={(selectedEvents['Развлекательные мероприятия'] || []).filter(e => e.id.startsWith('4c') && e.id.length > 2).length === 0}
             >
               Готово
             </Button>

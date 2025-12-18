@@ -26,6 +26,7 @@ const Index = () => {
   const [scheduleName, setScheduleName] = useState('');
   const [manageDialog, setManageDialog] = useState(false);
   const [interactiveDialog, setInteractiveDialog] = useState(false);
+  const [networkingDialog, setNetworkingDialog] = useState(false);
   const [masterClassDialog, setMasterClassDialog] = useState(false);
   const [editingTime, setEditingTime] = useState<string | null>(null);
   const [tempTime, setTempTime] = useState('');
@@ -45,6 +46,20 @@ const Index = () => {
       }
       
       setInteractiveDialog(true);
+      return;
+    }
+
+    if (event.id === '4c') {
+      const hasNetworkingGames = (selectedEvents['Развлекательные мероприятия'] || []).some(e => e.id.startsWith('4c') && e.id.length > 2);
+      
+      if (!hasNetworkingGames) {
+        setSelectedEvents(prev => ({
+          ...prev,
+          [event.category]: [...(prev[event.category] || []).filter(e => e.id !== '4c'), event]
+        }));
+      }
+      
+      setNetworkingDialog(true);
       return;
     }
 
@@ -72,6 +87,18 @@ const Index = () => {
           };
         }
       } else if (event.id.startsWith('2b') && event.id.length > 2) {
+        if (isSelected) {
+          return {
+            ...prev,
+            [event.category]: categoryEvents.filter(e => e.id !== event.id)
+          };
+        } else {
+          return {
+            ...prev,
+            [event.category]: [...categoryEvents, event]
+          };
+        }
+      } else if (event.id.startsWith('4c') && event.id.length > 2) {
         if (isSelected) {
           return {
             ...prev,
@@ -503,6 +530,8 @@ const Index = () => {
           
           interactiveDialog={interactiveDialog}
           setInteractiveDialog={setInteractiveDialog}
+          networkingDialog={networkingDialog}
+          setNetworkingDialog={setNetworkingDialog}
           selectedEvents={selectedEvents}
           setSelectedEvents={setSelectedEvents}
           mockEvents={mockEvents}
