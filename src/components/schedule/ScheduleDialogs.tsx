@@ -103,7 +103,7 @@ const ScheduleDialogs = ({
           <div className="space-y-4 pt-4">
             <div className="space-y-2">
               <Label htmlFor="custom-title">
-                Название элемента
+                Описание
                 <span className="text-red-500 ml-1">*</span>
               </Label>
               <Input
