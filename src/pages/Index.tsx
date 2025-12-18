@@ -74,7 +74,12 @@ const Index = () => {
       const categoryEvents = prev[event.category] || [];
       const isSelected = categoryEvents.some(e => e.id === event.id);
       
-      if (event.category === 'Знакомство с программой АС' && event.id.startsWith('3b')) {
+      if (event.category === 'Дополнительно') {
+        return {
+          ...prev,
+          [event.category]: [...categoryEvents, event]
+        };
+      } else if (event.category === 'Знакомство с программой АС' && event.id.startsWith('3b')) {
         if (isSelected) {
           return {
             ...prev,
