@@ -135,6 +135,23 @@ const Index = () => {
     return Object.values(selectedEvents).flat().some(e => e.id === eventId);
   };
 
+  const handleEventRemoveOne = (event: Event) => {
+    setSelectedEvents(prev => {
+      const categoryEvents = prev[event.category] || [];
+      const index = categoryEvents.findIndex(e => e.id === event.id);
+      
+      if (index === -1) return prev;
+      
+      const newEvents = [...categoryEvents];
+      newEvents.splice(index, 1);
+      
+      return {
+        ...prev,
+        [event.category]: newEvents
+      };
+    });
+  };
+
   const generateInitialSchedule = () => {
     const items: ScheduleItem[] = [];
     let currentTime = '09:00';
@@ -460,6 +477,7 @@ const Index = () => {
             durationFilter={durationFilter}
             setDurationFilter={setDurationFilter}
             handleEventSelect={handleEventSelect}
+            handleEventRemoveOne={handleEventRemoveOne}
             isEventSelected={isEventSelected}
             handleViewEvent={handleViewEvent}
             setMasterClassDialog={setMasterClassDialog}

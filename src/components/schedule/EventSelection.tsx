@@ -9,6 +9,7 @@ interface EventSelectionProps {
   durationFilter: 'all' | 'short' | 'medium' | 'long';
   setDurationFilter: (filter: 'all' | 'short' | 'medium' | 'long') => void;
   handleEventSelect: (event: Event) => void;
+  handleEventRemoveOne: (event: Event) => void;
   isEventSelected: (eventId: string) => boolean;
   handleViewEvent: (event: Event) => void;
   setMasterClassDialog: (open: boolean) => void;
@@ -21,6 +22,7 @@ const EventSelection = ({
   durationFilter,
   setDurationFilter,
   handleEventSelect,
+  handleEventRemoveOne,
   isEventSelected,
   handleViewEvent,
   setMasterClassDialog,
@@ -315,6 +317,19 @@ const EventSelection = ({
                                 )}
                               </div>
                               <div className="flex items-center gap-2">
+                                {count > 0 && (
+                                  <Button
+                                    onClick={(e) => {
+                                      e.stopPropagation();
+                                      handleEventRemoveOne(event);
+                                    }}
+                                    size="sm"
+                                    variant="outline"
+                                    className="border-red-300 text-red-600 hover:bg-red-50"
+                                  >
+                                    <Icon name="Minus" size={16} />
+                                  </Button>
+                                )}
                                 <Button
                                   onClick={(e) => {
                                     e.stopPropagation();
