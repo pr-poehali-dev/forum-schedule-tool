@@ -41,9 +41,9 @@ const TimeCalculator = ({ selectedEvents }: TimeCalculatorProps) => {
         </div>
         
         <div className="mt-3 pt-3 border-t border-primary-foreground/20">
-          <div className="flex justify-between text-sm opacity-90">
+          <div className="flex justify-between items-center text-sm opacity-90">
             <span>Мероприятий:</span>
-            <span className="font-semibold">{allEvents.length}</span>
+            <span className="font-semibold ml-1">{allEvents.length}</span>
           </div>
         </div>
       </div>
