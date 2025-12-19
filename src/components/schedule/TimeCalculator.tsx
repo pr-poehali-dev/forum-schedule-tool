@@ -17,7 +17,7 @@ const TimeCalculator = ({ selectedEvents }: TimeCalculatorProps) => {
   
   return (
     <Card className="bg-primary text-primary-foreground shadow-2xl border-0 sticky top-4 z-10">
-      <div className="p-5">
+      <div className="p-5 bg-[#1d1c1c]">
         <div className="flex items-center gap-3 mb-3">
           <div className="bg-primary-foreground/20 rounded-full p-2">
             <Icon name="Clock" size={24} className="text-primary-foreground" />
@@ -43,7 +43,7 @@ const TimeCalculator = ({ selectedEvents }: TimeCalculatorProps) => {
         <div className="mt-3 pt-3 border-t border-primary-foreground/20">
           <div className="flex justify-between items-center text-sm opacity-90">
             <span>Мероприятий:</span>
-            <span className="font-semibold ml-1">{allEvents.length}</span>
+            <span className="font-semibold my-0 mx-0">{allEvents.length}</span>
           </div>
         </div>
       </div>
