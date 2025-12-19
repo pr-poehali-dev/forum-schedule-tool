@@ -34,7 +34,7 @@ const EventSelection = ({
     <div className="space-y-8 animate-fade-in">
       <TimeCalculator selectedEvents={selectedEvents} />
       
-      <Card className="bg-white shadow-lg">
+      <Card className="shadow-lg">
         <CardHeader>
           <CardTitle className="text-xl flex items-center gap-2">
             <Icon name="Filter" size={24} className="text-cyan-600" />
@@ -50,7 +50,7 @@ const EventSelection = ({
             >
               <Icon name="List" size={18} className="mr-2" />
               Все мероприятия
-              <Badge className="ml-2 bg-gray-600 text-white">
+              <Badge className="ml-2 bg-muted text-foreground">
                 {mockEvents.filter(e => !e.id.startsWith('3b') && !(e.id.startsWith('2b') && e.id.length > 2) && !(e.id.startsWith('4c') && e.id.length > 2)).length}
               </Badge>
             </Button>
@@ -88,9 +88,9 @@ const EventSelection = ({
         </CardContent>
       </Card>
       {categories.map((category) => (
-        <div key={category} className="bg-white rounded-2xl shadow-lg p-6 hover:shadow-xl transition-shadow">
-          <h2 className="text-2xl font-bold mb-4 flex items-center gap-3 text-gray-800">
-            <div className="w-2 h-8 bg-gradient-to-b from-cyan-500 to-blue-500 rounded-full"></div>
+        <div key={category} className="bg-card rounded-2xl shadow-lg p-6 hover:shadow-xl transition-shadow">
+          <h2 className="text-2xl font-bold mb-4 flex items-center gap-3 text-foreground">
+            <div className="w-2 h-8 bg-primary rounded-full"></div>
             {category}
             {selectedEvents[category] && selectedEvents[category].length > 0 && (
               <Badge className="ml-2 bg-green-500">
@@ -136,10 +136,10 @@ const EventSelection = ({
                     key={event.id}
                     className={`transition-all hover:-translate-y-1 relative ${
                       is2aBlocked 
-                        ? 'opacity-50 cursor-not-allowed bg-gray-100' 
+                        ? 'opacity-50 cursor-not-allowed bg-muted' 
                         : selected 
-                          ? 'ring-2 ring-cyan-500 bg-cyan-50 cursor-pointer hover:shadow-md' 
-                          : 'hover:bg-gray-50 cursor-pointer hover:shadow-md'
+                          ? 'ring-2 ring-primary bg-muted/50 cursor-pointer hover:shadow-md' 
+                          : 'hover:bg-muted/30 cursor-pointer hover:shadow-md'
                     }`}
                   >
                     {is2aBlocked && (
@@ -152,14 +152,14 @@ const EventSelection = ({
                     )}
                     <CardHeader className="pb-3" onClick={() => !is2aBlocked && handleEventSelect(event)}>
                       <div className="flex items-start justify-between gap-2">
-                        <CardTitle className={`text-base leading-tight ${is2aBlocked ? 'text-gray-400' : ''}`}>
+                        <CardTitle className={`text-base leading-tight ${is2aBlocked ? 'text-muted-foreground' : ''}`}>
                           {event.title}
                         </CardTitle>
                         <Badge className={`${colorScheme.badge} text-white shrink-0 ${is2aBlocked ? 'opacity-50' : ''}`}>
                           {event.duration} мин
                         </Badge>
                       </div>
-                      <CardDescription className={`text-sm line-clamp-2 ${is2aBlocked ? 'text-gray-400' : ''}`}>
+                      <CardDescription className={`text-sm line-clamp-2 ${is2aBlocked ? 'text-muted-foreground' : ''}`}>
                         {event.description}
                       </CardDescription>
                       {is2aBlocked && (
@@ -170,7 +170,7 @@ const EventSelection = ({
                     </CardHeader>
                     <CardContent className="pt-0">
                       <div className="flex items-center justify-between gap-2">
-                        <div className={`flex items-center gap-2 text-sm ${is2aBlocked ? 'text-gray-400' : 'text-gray-600'}`}>
+                        <div className={`flex items-center gap-2 text-sm ${is2aBlocked ? 'text-muted-foreground' : 'text-muted-foreground'}`}>
                           <Icon name="MapPin" size={16} className="shrink-0" />
                           <span className="line-clamp-1">{event.location}</span>
                         </div>
@@ -181,7 +181,7 @@ const EventSelection = ({
                             e.stopPropagation();
                             handleViewEvent(event);
                           }}
-                          className={`h-8 ${is2aBlocked ? 'text-gray-400' : 'text-cyan-600 hover:text-cyan-700'}`}
+                          className={`h-8 ${is2aBlocked ? 'text-muted-foreground' : 'text-primary hover:text-primary/80'}`}
                           disabled={is2aBlocked}
                         >
                           <Icon name="Info" size={16} className="shrink-0" />
@@ -193,13 +193,13 @@ const EventSelection = ({
               })}
             {category === 'Знакомство с программой АС' && (
               <Card
-                className="cursor-pointer transition-all hover:shadow-md hover:-translate-y-1 bg-gradient-to-br from-blue-50 to-cyan-50 border-2 border-blue-200"
+                className="cursor-pointer transition-all hover:shadow-md hover:-translate-y-1 bg-muted border-2 border-border"
                 onClick={() => setMasterClassDialog(true)}
               >
                 <CardHeader>
                   <div className="flex items-center gap-3">
-                    <div className="p-3 bg-blue-100 rounded-xl">
-                      <Icon name="GraduationCap" size={28} className="text-blue-600" />
+                    <div className="p-3 bg-primary/10 rounded-xl">
+                      <Icon name="GraduationCap" size={28} className="text-primary" />
                     </div>
                     <div className="flex-1">
                       <CardTitle className="text-lg">Мастер-классы по направлениям</CardTitle>
@@ -222,7 +222,7 @@ const EventSelection = ({
                       )}
                     </div>
                   ) : (
-                    <p className="text-sm text-gray-500">Нажмите, чтобы выбрать</p>
+                    <p className="text-sm text-muted-foreground">Нажмите, чтобы выбрать</p>
                   )}
                 </CardContent>
               </Card>
@@ -230,8 +230,8 @@ const EventSelection = ({
             {category === 'Дополнительно' && (
               <div className="col-span-full space-y-8">
                 <div>
-                  <h3 className="text-lg font-semibold mb-4 flex items-center gap-2 pb-2 border-b-2 border-emerald-200">
-                    <Icon name="Utensils" size={22} className="text-emerald-600" />
+                  <h3 className="text-lg font-semibold mb-4 flex items-center gap-2 pb-2 border-b-2 border-border">
+                    <Icon name="Utensils" size={22} className="text-primary" />
                     Приемы пищи
                   </h3>
                   <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
@@ -247,8 +247,8 @@ const EventSelection = ({
                             onClick={() => handleEventSelect(event)}
                             className={`cursor-pointer transition-all hover:-translate-y-1 hover:shadow-md ${
                               selected 
-                                ? 'ring-2 ring-emerald-500 bg-emerald-50' 
-                                : 'hover:bg-emerald-50'
+                                ? 'ring-2 ring-primary bg-muted/50' 
+                                : 'hover:bg-muted/30'
                             }`}
                           >
                             <CardHeader className="pb-3">
@@ -264,7 +264,7 @@ const EventSelection = ({
                             </CardHeader>
                             <CardContent className="pt-0">
                               <div className="flex items-center justify-between gap-2">
-                                <div className="flex items-center gap-2 text-sm text-gray-600">
+                                <div className="flex items-center gap-2 text-sm text-muted-foreground">
                                   <Icon name="MapPin" size={16} className="shrink-0" />
                                   <span className="line-clamp-1">{event.location}</span>
                                 </div>
@@ -283,8 +283,8 @@ const EventSelection = ({
                 </div>
                 
                 <div>
-                  <h3 className="text-lg font-semibold mb-4 flex items-center gap-2 pb-2 border-b-2 border-blue-200">
-                    <Icon name="Bus" size={22} className="text-blue-600" />
+                  <h3 className="text-lg font-semibold mb-4 flex items-center gap-2 pb-2 border-b-2 border-border">
+                    <Icon name="Bus" size={22} className="text-primary" />
                     Трансфер
                   </h3>
                   <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
@@ -312,7 +312,7 @@ const EventSelection = ({
                             </CardHeader>
                             <CardContent className="pt-0">
                               <div className="flex items-center justify-between gap-2 mb-3">
-                                <div className="flex items-center gap-2 text-sm text-gray-600">
+                                <div className="flex items-center gap-2 text-sm text-muted-foreground">
                                   <Icon name="MapPin" size={16} className="shrink-0" />
                                   <span className="line-clamp-1">{event.location}</span>
                                 </div>
@@ -366,7 +366,7 @@ const EventSelection = ({
           <Button
             size="lg"
             onClick={generateInitialSchedule}
-            className="gap-2 bg-gradient-to-r from-cyan-600 to-blue-600 hover:from-cyan-700 hover:to-blue-700 text-lg px-8 py-6"
+            className="gap-2 bg-primary hover:bg-primary/90 text-lg px-8 py-6"
           >
             Создать расписание
             <Icon name="ArrowRight" size={22} />

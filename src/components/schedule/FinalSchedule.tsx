@@ -27,7 +27,7 @@ const FinalSchedule = ({
 
   return (
     <div className="animate-fade-in">
-      <Card className="bg-white shadow-2xl" data-schedule-export>
+      <Card className="bg-card shadow-2xl" data-schedule-export>
         <CardHeader>
           <div className="flex items-center justify-between">
             <div className="flex items-center gap-4">
@@ -38,7 +38,7 @@ const FinalSchedule = ({
               />
               <div>
                 <CardTitle className="text-3xl flex items-center gap-3">
-                  <Icon name="CalendarCheck" size={32} className="text-cyan-600" />
+                  <Icon name="CalendarCheck" size={32} className="text-primary" />
                   Финальное расписание
                 </CardTitle>
                 <CardDescription className="text-base mt-2">
@@ -47,7 +47,7 @@ const FinalSchedule = ({
               </div>
             </div>
             <div className="flex gap-2" data-no-export>
-              <Button onClick={exportToJPG} className="gap-2 bg-blue-600 hover:bg-blue-700">
+              <Button onClick={exportToJPG} className="gap-2 bg-primary hover:bg-primary/90">
                 <Icon name="Image" size={18} />
                 Скачать JPG
               </Button>
@@ -72,10 +72,10 @@ const FinalSchedule = ({
                     item.type === 'event'
                       ? `${getDurationColor(item.event.duration).bg} ${getDurationColor(item.event.duration).border.replace('border-', 'border-l-')}`
                       : item.type === 'meal'
-                      ? 'bg-gradient-to-br from-emerald-100 via-green-50 to-emerald-100 border-l-emerald-500 border-l-8 ring-2 ring-emerald-200'
+                      ? 'bg-emerald-500/10 dark:bg-emerald-500/20 border-l-emerald-500 dark:border-l-emerald-400 border-l-8 ring-2 ring-emerald-500/20 dark:ring-emerald-400/20'
                       : item.type === 'break'
-                      ? 'bg-gradient-to-r from-purple-50 to-pink-50 border-l-purple-400 border-l-4'
-                      : 'bg-gradient-to-r from-blue-50 to-cyan-50 border-l-blue-500 border-l-8'
+                      ? 'bg-purple-500/10 dark:bg-purple-500/20 border-l-purple-400 dark:border-l-purple-300 border-l-4'
+                      : 'bg-primary/10 border-l-primary border-l-8'
                   }`}
                 >
                   <div className="flex items-center gap-4">
@@ -84,14 +84,14 @@ const FinalSchedule = ({
                         {item.type === 'meal' ? '🍽️' : item.type === 'break' ? '⏸️' : '🚌'}
                       </div>
                     )}
-                    <div className="flex flex-col items-center bg-white rounded-lg px-3 py-2 shadow-sm">
-                      <span className="text-sm font-bold text-cyan-600">{item.startTime}</span>
-                      <span className="text-xs text-gray-400">—</span>
-                      <span className="text-sm font-bold text-blue-600">{endTime}</span>
+                    <div className="flex flex-col items-center bg-card rounded-lg px-3 py-2 shadow-sm border">
+                      <span className="text-sm font-bold text-primary">{item.startTime}</span>
+                      <span className="text-xs text-muted-foreground">—</span>
+                      <span className="text-sm font-bold text-primary">{endTime}</span>
                     </div>
                     <div className="flex-1">
                       <div className="flex items-center gap-2">
-                        <h3 className={`font-bold text-lg text-gray-800 ${isMeal ? 'text-2xl text-emerald-700' : isCustomItem ? 'text-xl' : ''}`}>
+                        <h3 className={`font-bold text-lg text-foreground ${isMeal ? 'text-2xl text-emerald-600 dark:text-emerald-400' : isCustomItem ? 'text-xl' : ''}`}>
                           {item.customTitle || item.event.title}
                         </h3>
                         {isCustomItem && (
@@ -100,25 +100,25 @@ const FinalSchedule = ({
                               ? 'bg-emerald-600 text-white text-sm' 
                               : item.type === 'break' 
                                 ? 'bg-purple-500 text-white' 
-                                : 'bg-blue-500 text-white'
+                                : 'bg-primary text-primary-foreground'
                           }>
                             {item.type === 'meal' ? '🍴 Прием пищи' : item.type === 'break' ? '⏸️ Дополнительный элемент' : '🚌 Трансфер'}
                           </Badge>
                         )}
                       </div>
                       {item.event.category && (
-                        <p className="text-sm text-cyan-600 font-medium mt-1">
+                        <p className="text-sm text-primary font-medium mt-1">
                           [{item.event.category}]
                         </p>
                       )}
                       {item.event.location && (
-                        <p className="text-sm text-gray-600 flex items-center gap-1 mt-1">
+                        <p className="text-sm text-muted-foreground flex items-center gap-1 mt-1">
                           <Icon name="MapPin" size={16} />
                           {item.event.location}
                         </p>
                       )}
                     </div>
-                    <Badge className={`${item.type === 'event' ? getDurationColor(item.event.duration).badge : 'bg-gray-400'} text-white`} data-no-export>
+                    <Badge className={`${item.type === 'event' ? getDurationColor(item.event.duration).badge : 'bg-muted text-foreground'} text-white`} data-no-export>
                       {item.event.duration} мин
                     </Badge>
                   </div>

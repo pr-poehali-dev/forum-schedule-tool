@@ -27,10 +27,10 @@ const ScheduleHeader = ({
         className="absolute top-0 right-0 w-32 h-auto"
       />
       <div className="text-center">
-        <h1 className="text-5xl font-bold bg-gradient-to-r from-cyan-600 to-blue-600 bg-clip-text text-transparent mb-3">
+        <h1 className="text-5xl font-bold text-foreground mb-3">
           Планировщик форума
         </h1>
-        <p className="text-gray-600 text-lg">Создайте идеальное расписание для форума</p>
+        <p className="text-muted-foreground text-lg">Создайте идеальное расписание для форума</p>
       </div>
       
       <div className="flex justify-center gap-3 mt-6">

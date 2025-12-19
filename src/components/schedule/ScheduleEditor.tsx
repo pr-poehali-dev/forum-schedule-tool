@@ -47,7 +47,7 @@ const ScheduleEditor = ({
 }: ScheduleEditorProps) => {
   return (
     <div className="space-y-6 animate-fade-in">
-      <Card className="bg-white shadow-xl">
+      <Card className="bg-card shadow-xl">
         <CardHeader>
           <div className="flex items-center justify-between">
             <div>
@@ -66,10 +66,10 @@ const ScheduleEditor = ({
             const isMeal = item.type === 'meal';
             const customStyle = isCustomItem
               ? item.type === 'meal'
-                ? 'bg-gradient-to-br from-emerald-100 via-green-50 to-emerald-100 border-emerald-400 border-2 shadow-lg ring-2 ring-emerald-200'
+                ? 'bg-emerald-500/10 dark:bg-emerald-500/20 border-emerald-500/50 dark:border-emerald-400/50 border-2 shadow-lg ring-2 ring-emerald-500/20 dark:ring-emerald-400/20'
                 : item.type === 'break'
-                  ? 'bg-gradient-to-r from-purple-50 to-pink-50 border-purple-300 border-2 shadow-md'
-                  : 'bg-gradient-to-r from-blue-50 to-cyan-50 border-blue-300 border-l-8 border-l-blue-500 shadow-md'
+                  ? 'bg-purple-500/10 dark:bg-purple-500/20 border-purple-500/30 dark:border-purple-400/30 border-2 shadow-md'
+                  : 'bg-primary/10 border-primary/30 border-l-8 border-l-primary shadow-md'
               : '';
             
             return (
@@ -86,7 +86,7 @@ const ScheduleEditor = ({
                 } ${draggedIndex === index ? 'opacity-50' : ''}`}
               >
                 <div className="flex items-center gap-4">
-                  <Icon name="GripVertical" size={20} className="text-gray-400" />
+                  <Icon name="GripVertical" size={20} className="text-muted-foreground" />
                   {isCustomItem && (
                     <div className={`text-2xl ${isMeal ? 'text-3xl' : ''}`}>
                       {item.type === 'meal' ? '🍽️' : item.type === 'break' ? '⏸️' : '🚌'}
@@ -120,26 +120,26 @@ const ScheduleEditor = ({
                             setEditingTime(item.id);
                             setTempTime(item.startTime);
                           }}
-                          className="px-3 py-1 rounded bg-white hover:bg-gray-50 text-sm font-medium shadow-sm border"
+                          className="px-3 py-1 rounded bg-card hover:bg-muted text-sm font-medium shadow-sm border"
                         >
                           {item.startTime}
                         </button>
                       </>
                     )}
-                    <span className="text-sm text-gray-500">—</span>
+                    <span className="text-sm text-muted-foreground">—</span>
                     <span className="text-sm font-medium">
                       {addMinutes(item.startTime, item.event.duration)}
                     </span>
                   </div>
                   <div className="flex-1">
-                    <h3 className={`font-semibold ${isMeal ? 'text-xl text-emerald-700' : isCustomItem ? 'text-lg' : ''}`}>
+                    <h3 className={`font-semibold ${isMeal ? 'text-xl text-emerald-600 dark:text-emerald-400' : isCustomItem ? 'text-lg' : ''}`}>
                       {item.customTitle || item.event.title}
                     </h3>
                     {item.event.category && (
-                      <p className="text-xs text-gray-600">[{item.event.category}]</p>
+                      <p className="text-xs text-muted-foreground">[{item.event.category}]</p>
                     )}
                     {isCustomItem && (
-                      <p className={`text-xs font-medium mt-1 ${isMeal ? 'text-emerald-600' : 'text-gray-500'}`}>
+                      <p className={`text-xs font-medium mt-1 ${isMeal ? 'text-emerald-600 dark:text-emerald-400' : 'text-muted-foreground'}`}>
                         {item.type === 'meal' ? '🍴 Прием пищи' : item.type === 'break' ? '⏸️ Дополнительный элемент' : '🚌 Трансфер'}
                       </p>
                     )}
@@ -169,7 +169,7 @@ const ScheduleEditor = ({
                         setEditingDuration(item.id);
                         setTempDuration(item.event.duration);
                       }}
-                      className="px-3 py-1 rounded bg-white hover:bg-gray-50 text-sm font-medium shadow-sm border"
+                      className="px-3 py-1 rounded bg-card hover:bg-muted text-sm font-medium shadow-sm border"
                     >
                       {item.event.duration} мин
                     </button>
@@ -200,7 +200,7 @@ const ScheduleEditor = ({
         </Button>
         <Button
           onClick={() => setStep('final')}
-          className="gap-2 bg-gradient-to-r from-cyan-600 to-blue-600 hover:from-cyan-700 hover:to-blue-700"
+          className="gap-2 bg-primary hover:bg-primary/90"
         >
           Сформировать расписание
           <Icon name="Sparkles" size={18} />

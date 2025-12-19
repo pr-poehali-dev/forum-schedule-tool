@@ -12,7 +12,7 @@ const Index = () => {
   const handlers = useScheduleHandlers(state);
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-cyan-50 via-blue-50 to-sky-100">
+    <div className="min-h-screen bg-background">
       <div className="container mx-auto px-4 py-8">
         <ScheduleHeader
           savedSchedules={state.savedSchedules}

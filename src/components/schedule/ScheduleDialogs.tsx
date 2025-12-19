@@ -139,7 +139,7 @@ const ScheduleDialogs = ({
         <DialogContent className="max-w-2xl">
           <DialogHeader>
             <DialogTitle className="text-2xl flex items-center gap-3">
-              <Icon name="Calendar" size={28} className="text-cyan-600" />
+              <Icon name="Calendar" size={28} className="text-primary" />
               {viewingEvent?.title}
             </DialogTitle>
           </DialogHeader>
@@ -161,27 +161,27 @@ const ScheduleDialogs = ({
                 
                 <div className="space-y-3">
                   <div>
-                    <h4 className="font-semibold text-gray-700 mb-1 flex items-center gap-2">
+                    <h4 className="font-semibold text-foreground mb-1 flex items-center gap-2">
                       <Icon name="FileText" size={18} />
                       Описание
                     </h4>
-                    <p className="text-gray-600 leading-relaxed">{viewingEvent.description}</p>
+                    <p className="text-muted-foreground leading-relaxed">{viewingEvent.description}</p>
                   </div>
                   
                   <div>
-                    <h4 className="font-semibold text-gray-700 mb-1 flex items-center gap-2">
+                    <h4 className="font-semibold text-foreground mb-1 flex items-center gap-2">
                       <Icon name="MapPin" size={16} />
                       Место проведения
                     </h4>
-                    <p className="text-gray-600">{viewingEvent.location}</p>
+                    <p className="text-muted-foreground">{viewingEvent.location}</p>
                   </div>
                   
                   <div>
-                    <h4 className="font-semibold text-gray-700 mb-1 flex items-center gap-2">
+                    <h4 className="font-semibold text-foreground mb-1 flex items-center gap-2">
                       <Icon name="Folder" size={18} />
                       Категория
                     </h4>
-                    <Badge variant="outline" className="text-cyan-600 border-cyan-300">
+                    <Badge variant="outline" className="text-primary border-primary/30">
                       {viewingEvent.category}
                     </Badge>
                   </div>
@@ -200,7 +200,7 @@ const ScheduleDialogs = ({
                     handleEventSelect(viewingEvent);
                     setViewEventDialog(false);
                   }}
-                  className="bg-gradient-to-r from-cyan-600 to-blue-600 hover:from-cyan-700 hover:to-blue-700"
+                  className="bg-primary hover:bg-primary/90"
                 >
                   {isEventSelected(viewingEvent.id) ? 'Убрать из расписания' : 'Добавить в расписание'}
                 </Button>
@@ -214,7 +214,7 @@ const ScheduleDialogs = ({
         <DialogContent>
           <DialogHeader>
             <DialogTitle className="flex items-center gap-2">
-              <Icon name="Save" size={24} className="text-cyan-600" />
+              <Icon name="Save" size={24} className="text-primary" />
               {currentScheduleId ? 'Обновить расписание' : 'Сохранить расписание'}
             </DialogTitle>
             <DialogDescription>
@@ -239,7 +239,7 @@ const ScheduleDialogs = ({
               <Button
                 onClick={saveCurrentSchedule}
                 disabled={!scheduleName.trim()}
-                className="bg-gradient-to-r from-cyan-600 to-blue-600 hover:from-cyan-700 hover:to-blue-700"
+                className="bg-primary hover:bg-primary/90"
               >
                 <Icon name="Check" size={18} className="mr-2" />
                 {currentScheduleId ? 'Обновить' : 'Сохранить'}
@@ -253,7 +253,7 @@ const ScheduleDialogs = ({
         <DialogContent className="max-w-3xl max-h-[80vh] overflow-y-auto">
           <DialogHeader>
             <DialogTitle className="text-2xl flex items-center gap-2">
-              <Icon name="FolderOpen" size={28} className="text-cyan-600" />
+              <Icon name="FolderOpen" size={28} className="text-primary" />
               Управление расписаниями
             </DialogTitle>
             <DialogDescription>
@@ -270,14 +270,14 @@ const ScheduleDialogs = ({
             </Button>
 
             {savedSchedules.length === 0 ? (
-              <div className="text-center py-12 text-gray-500">
+              <div className="text-center py-12 text-muted-foreground">
                 <Icon name="Inbox" size={48} className="mx-auto mb-4 opacity-50" />
                 <p>У вас пока нет сохраненных расписаний</p>
                 <p className="text-sm mt-2">Создайте первое расписание и сохраните его</p>
               </div>
             ) : (
               <div className="space-y-3">
-                <h3 className="font-semibold text-gray-700">Сохраненные расписания:</h3>
+                <h3 className="font-semibold text-foreground">Сохраненные расписания:</h3>
                 {savedSchedules.map(schedule => {
                   const totalEvents = Object.values(schedule.selectedEvents).flat().length;
                   const totalDuration = schedule.schedule.reduce((acc, item) => acc + item.event.duration, 0);
@@ -286,14 +286,14 @@ const ScheduleDialogs = ({
                     <Card
                       key={schedule.id}
                       className={`cursor-pointer transition-all hover:shadow-md ${
-                        currentScheduleId === schedule.id ? 'ring-2 ring-cyan-500 bg-cyan-50' : ''
+                        currentScheduleId === schedule.id ? 'ring-2 ring-primary bg-primary/5' : ''
                       }`}
                     >
                       <CardHeader className="pb-3">
                         <div className="flex items-start justify-between">
                           <div className="flex-1">
                             <CardTitle className="text-lg mb-2">{schedule.name}</CardTitle>
-                            <div className="flex items-center gap-4 text-sm text-gray-600">
+                            <div className="flex items-center gap-4 text-sm text-muted-foreground">
                               <span className="flex items-center gap-1">
                                 <Icon name="Calendar" size={14} />
                                 {totalEvents} мероприятий
