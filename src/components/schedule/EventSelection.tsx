@@ -34,10 +34,10 @@ const EventSelection = ({
     <div className="space-y-8 animate-fade-in">
       <TimeCalculator selectedEvents={selectedEvents} />
       
-      <Card className="shadow-lg">
+      <Card className="bg-gradient-to-br from-slate-800 to-slate-900 shadow-2xl border border-slate-700">
         <CardHeader>
-          <CardTitle className="text-xl flex items-center gap-2">
-            <Icon name="Filter" size={24} className="text-cyan-600" />
+          <CardTitle className="text-xl flex items-center gap-2 text-foreground">
+            <Icon name="Filter" size={24} className="text-primary" />
             Фильтр по длительности
           </CardTitle>
         </CardHeader>
@@ -46,7 +46,7 @@ const EventSelection = ({
             <Button
               variant={durationFilter === 'all' ? 'default' : 'outline'}
               onClick={() => setDurationFilter('all')}
-              className={durationFilter === 'all' ? 'bg-gradient-to-r from-cyan-600 to-blue-600' : ''}
+              className={durationFilter === 'all' ? 'bg-primary hover:bg-primary/90' : 'hover:bg-slate-800'}
             >
               <Icon name="List" size={18} className="mr-2" />
               Все мероприятия
@@ -57,30 +57,30 @@ const EventSelection = ({
             <Button
               variant={durationFilter === 'short' ? 'default' : 'outline'}
               onClick={() => setDurationFilter('short')}
-              className={durationFilter === 'short' ? 'bg-green-500 hover:bg-green-600' : 'border-green-300 text-green-700 hover:bg-green-50'}
+              className={durationFilter === 'short' ? 'bg-green-600 hover:bg-green-700 text-white' : 'border-green-500/50 text-green-400 hover:bg-green-950/30'}
             >
               🟢 Короткие (0-59 мин)
-              <Badge className={durationFilter === 'short' ? 'ml-2 bg-white text-green-600' : 'ml-2 bg-green-100 text-green-700'}>
+              <Badge className={durationFilter === 'short' ? 'ml-2 bg-white text-green-700' : 'ml-2 bg-green-950 text-green-300'}>
                 {mockEvents.filter(e => e.duration > 0 && e.duration < 60 && !e.id.startsWith('3b') && !(e.id.startsWith('2b') && e.id.length > 2) && !(e.id.startsWith('4c') && e.id.length > 2)).length}
               </Badge>
             </Button>
             <Button
               variant={durationFilter === 'medium' ? 'default' : 'outline'}
               onClick={() => setDurationFilter('medium')}
-              className={durationFilter === 'medium' ? 'bg-yellow-500 hover:bg-yellow-600' : 'border-yellow-300 text-yellow-700 hover:bg-yellow-50'}
+              className={durationFilter === 'medium' ? 'bg-yellow-600 hover:bg-yellow-700 text-white' : 'border-yellow-500/50 text-yellow-400 hover:bg-yellow-950/30'}
             >
               🟡 Средние (60-89 мин)
-              <Badge className={durationFilter === 'medium' ? 'ml-2 bg-white text-yellow-600' : 'ml-2 bg-yellow-100 text-yellow-700'}>
+              <Badge className={durationFilter === 'medium' ? 'ml-2 bg-white text-yellow-700' : 'ml-2 bg-yellow-950 text-yellow-300'}>
                 {mockEvents.filter(e => e.duration >= 60 && e.duration < 90 && !e.id.startsWith('3b') && !(e.id.startsWith('2b') && e.id.length > 2) && !(e.id.startsWith('4c') && e.id.length > 2)).length}
               </Badge>
             </Button>
             <Button
               variant={durationFilter === 'long' ? 'default' : 'outline'}
               onClick={() => setDurationFilter('long')}
-              className={durationFilter === 'long' ? 'bg-red-500 hover:bg-red-600' : 'border-red-300 text-red-700 hover:bg-red-50'}
+              className={durationFilter === 'long' ? 'bg-red-600 hover:bg-red-700 text-white' : 'border-red-500/50 text-red-400 hover:bg-red-950/30'}
             >
               🔴 Длинные (90+ мин)
-              <Badge className={durationFilter === 'long' ? 'ml-2 bg-white text-red-600' : 'ml-2 bg-red-100 text-red-700'}>
+              <Badge className={durationFilter === 'long' ? 'ml-2 bg-white text-red-700' : 'ml-2 bg-red-950 text-red-300'}>
                 {mockEvents.filter(e => e.duration >= 90 && !e.id.startsWith('3b') && !(e.id.startsWith('2b') && e.id.length > 2) && !(e.id.startsWith('4c') && e.id.length > 2)).length}
               </Badge>
             </Button>
