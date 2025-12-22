@@ -152,14 +152,14 @@ const EventSelection = ({
                     )}
                     <CardHeader className="pb-3" onClick={() => !is2aBlocked && handleEventSelect(event)}>
                       <div className="flex items-start justify-between gap-2">
-                        <CardTitle className={`text-base leading-tight ${is2aBlocked ? 'text-muted-foreground' : ''}`}>
+                        <CardTitle className={`text-base leading-tight ${is2aBlocked ? 'text-muted-foreground' : 'text-foreground'}`}>
                           {event.title}
                         </CardTitle>
                         <Badge className={`${colorScheme.badge} text-white shrink-0 ${is2aBlocked ? 'opacity-50' : ''}`}>
                           {event.duration} мин
                         </Badge>
                       </div>
-                      <CardDescription className={`text-sm line-clamp-2 ${is2aBlocked ? 'text-muted-foreground' : ''}`}>
+                      <CardDescription className={`text-sm line-clamp-2 ${is2aBlocked ? 'text-muted-foreground' : 'text-slate-300'}`}>
                         {event.description}
                       </CardDescription>
                       {is2aBlocked && (
