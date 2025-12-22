@@ -161,27 +161,27 @@ const ScheduleDialogs = ({
                 
                 <div className="space-y-3">
                   <div>
-                    <h4 className="font-semibold text-foreground mb-1 flex items-center gap-2">
-                      <Icon name="FileText" size={18} />
+                    <h4 className="font-semibold text-black mb-1 flex items-center gap-2">
+                      <Icon name="FileText" size={18} className="text-black" />
                       Описание
                     </h4>
-                    <p className="text-slate-200 leading-relaxed">{viewingEvent.description}</p>
+                    <p className="text-black leading-relaxed">{viewingEvent.description}</p>
                   </div>
                   
                   <div>
-                    <h4 className="font-semibold text-foreground mb-1 flex items-center gap-2">
-                      <Icon name="MapPin" size={16} />
+                    <h4 className="font-semibold text-black mb-1 flex items-center gap-2">
+                      <Icon name="MapPin" size={16} className="text-black" />
                       Место проведения
                     </h4>
-                    <p className="text-slate-200">{viewingEvent.location}</p>
+                    <p className="text-black">{viewingEvent.location}</p>
                   </div>
                   
                   <div>
-                    <h4 className="font-semibold text-foreground mb-1 flex items-center gap-2">
-                      <Icon name="Folder" size={18} />
+                    <h4 className="font-semibold text-black mb-1 flex items-center gap-2">
+                      <Icon name="Folder" size={18} className="text-black" />
                       Категория
                     </h4>
-                    <Badge variant="outline" className="text-primary border-primary/30">
+                    <Badge variant="outline" className="text-black border-black/30 bg-white">
                       {viewingEvent.category}
                     </Badge>
                   </div>
