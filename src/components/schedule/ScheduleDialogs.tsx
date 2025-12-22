@@ -165,7 +165,7 @@ const ScheduleDialogs = ({
                       <Icon name="FileText" size={18} />
                       Описание
                     </h4>
-                    <p className="text-muted-foreground leading-relaxed">{viewingEvent.description}</p>
+                    <p className="text-slate-200 leading-relaxed">{viewingEvent.description}</p>
                   </div>
                   
                   <div>
@@ -173,7 +173,7 @@ const ScheduleDialogs = ({
                       <Icon name="MapPin" size={16} />
                       Место проведения
                     </h4>
-                    <p className="text-muted-foreground">{viewingEvent.location}</p>
+                    <p className="text-slate-200">{viewingEvent.location}</p>
                   </div>
                   
                   <div>
