@@ -1,5 +1,6 @@
 import { Button } from '@/components/ui/button';
 import Icon from '@/components/ui/icon';
+import ThemeToggle from '@/components/ThemeToggle';
 import { SavedSchedule } from './types';
 
 interface ScheduleHeaderProps {
@@ -21,11 +22,14 @@ const ScheduleHeader = ({
 }: ScheduleHeaderProps) => {
   return (
     <div className="mb-8 animate-fade-in relative">
-      <img 
-        src="https://cdn.poehali.dev/files/Рисунок алабуга.png" 
-        alt="Алабуга логотип" 
-        className="absolute top-0 right-0 w-32 h-auto"
-      />
+      <div className="absolute top-0 right-0 flex items-center gap-3">
+        <ThemeToggle />
+        <img 
+          src="https://cdn.poehali.dev/files/Рисунок алабуга.png" 
+          alt="Алабуга логотип" 
+          className="w-32 h-auto"
+        />
+      </div>
       <div className="text-center">
         <h1 className="text-5xl font-bold text-foreground mb-3">
           Планировщик форума
@@ -49,7 +53,7 @@ const ScheduleHeader = ({
               setScheduleName(currentSchedule?.name || '');
               setSaveDialog(true);
             }}
-            className="gap-2 bg-gradient-to-r from-cyan-600 to-blue-600 hover:from-cyan-700 hover:to-blue-700"
+            className="gap-2 bg-primary hover:bg-primary/90"
           >
             <Icon name="Save" size={18} />
             {currentScheduleId ? 'Обновить' : 'Сохранить'}
