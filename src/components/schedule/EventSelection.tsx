@@ -159,7 +159,7 @@ const EventSelection = ({
                           {event.duration} мин
                         </Badge>
                       </div>
-                      <CardDescription className={`text-sm line-clamp-2 ${is2aBlocked ? 'text-muted-foreground' : 'text-slate-300'}`}>
+                      <CardDescription className={`text-sm line-clamp-2 ${is2aBlocked ? 'text-muted-foreground' : 'text-slate-600 dark:text-slate-300'}`}>
                         {event.description}
                       </CardDescription>
                       {is2aBlocked && (

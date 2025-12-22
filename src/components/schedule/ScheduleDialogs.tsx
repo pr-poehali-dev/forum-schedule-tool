@@ -154,8 +154,8 @@ const ScheduleDialogs = ({
                     </span>
                   </div>
                   <Badge className={`${getDurationColor(viewingEvent.duration).badge} text-white`}>
-                    {viewingEvent.duration > 0 && viewingEvent.duration <= 60 ? '🟢 Оптимально' : 
-                     viewingEvent.duration > 60 && viewingEvent.duration <= 90 ? '🟡 Средне' : '🔴 Длительно'}
+                    {viewingEvent.duration > 0 && viewingEvent.duration < 60 ? '🟢 Оптимально' : 
+                     viewingEvent.duration >= 60 && viewingEvent.duration < 90 ? '🟡 Средне' : '🔴 Длительно'}
                   </Badge>
                 </div>
                 
