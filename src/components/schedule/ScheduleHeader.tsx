@@ -27,14 +27,9 @@ const ScheduleHeader = ({
       </div>
       <div className="absolute top-0 right-0">
         <img 
-          src="https://cdn.poehali.dev/files/Рисунок алабуга.png" 
+          src="https://cdn.poehali.dev/files/333.png" 
           alt="Алабуга логотип" 
-          className="w-32 h-auto dark:block hidden"
-        />
-        <img 
-          src="https://cdn.poehali.dev/projects/feeca60c-fccb-4c57-9cbb-b93b36ce54c5/files/09c6c342-806d-4805-84e4-e8418b1cd0c3.jpg" 
-          alt="Алабуга логотип" 
-          className="w-32 h-auto dark:hidden block"
+          className="w-32 h-auto"
         />
       </div>
       <div className="text-center">
