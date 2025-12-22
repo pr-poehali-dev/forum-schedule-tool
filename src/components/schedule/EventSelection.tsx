@@ -258,9 +258,7 @@ const EventSelection = ({
                                   {event.duration} мин
                                 </Badge>
                               </div>
-                              <CardDescription className="text-sm">
-                                Общее время проведения: {event.title === 'Завтрак' ? '30-40' : event.title === 'Обед' ? '50-60' : '30-40'} минут
-                              </CardDescription>
+                              <CardDescription className="text-sm">Общее время проведения: 30-40 минут</CardDescription>
                             </CardHeader>
                             <CardContent className="pt-0">
                               <div className="flex items-center justify-between gap-2">
