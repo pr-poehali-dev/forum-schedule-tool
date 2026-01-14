@@ -533,7 +533,7 @@ const ScheduleDialogs = ({
               
               return (
                 <div key={direction.prefix} className="space-y-3">
-                  <h3 className="text-lg font-bold text-gray-800 flex items-center gap-2">
+                  <h3 className="text-lg font-bold text-foreground flex items-center gap-2">
                     <div className="w-1.5 h-6 bg-gradient-to-b from-cyan-500 to-blue-500 rounded-full"></div>
                     {direction.name}
                   </h3>
@@ -550,15 +550,15 @@ const ScheduleDialogs = ({
                             selected ? 'ring-2 ring-cyan-500 bg-cyan-50' : ''
                           } ${
                             isPremium 
-                              ? 'bg-gradient-to-br from-amber-50 to-yellow-50 border-2 border-amber-300' 
-                              : 'bg-white border border-gray-200'
+                              ? 'bg-gradient-to-br from-amber-50 to-yellow-50 dark:from-amber-950/30 dark:to-yellow-950/30 border-2 border-amber-300 dark:border-amber-700' 
+                              : 'bg-slate-200 dark:bg-slate-700 border border-slate-300 dark:border-slate-600'
                           }`}
                           onClick={() => handleEventSelect(event)}
                         >
                           <CardHeader className="pb-3">
                             <div className="flex items-start justify-between gap-2">
                               <div className="flex-1">
-                                <CardTitle className={`text-base ${isPremium ? 'text-amber-900' : ''}`}>
+                                <CardTitle className={`text-base ${isPremium ? 'text-white' : 'text-black dark:text-white'}`}>
                                   {event.title}
                                 </CardTitle>
                                 {isPremium && (
@@ -572,12 +572,12 @@ const ScheduleDialogs = ({
                                 {event.duration} мин
                               </Badge>
                             </div>
-                            <CardDescription className={`text-sm ${isPremium ? 'text-amber-800' : ''}`}>
+                            <CardDescription className={`text-sm ${isPremium ? 'text-white/90' : 'text-black dark:text-white/90'}`}>
                               {event.description}
                             </CardDescription>
                           </CardHeader>
                           <CardContent className="pt-0">
-                            <div className={`flex items-center gap-2 text-sm ${isPremium ? 'text-amber-700' : 'text-gray-600'}`}>
+                            <div className={`flex items-center gap-2 text-sm ${isPremium ? 'text-white/80' : 'text-black dark:text-white/80'}`}>
                               <Icon name="MapPin" size={16} />
                               <span className="line-clamp-1">{event.location}</span>
                             </div>
