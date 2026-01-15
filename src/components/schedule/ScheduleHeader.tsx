@@ -32,7 +32,7 @@ const ScheduleHeader = ({
           className="w-32 h-auto dark:block hidden"
         />
         <img 
-          src="https://cdn.poehali.dev/files/333.png" 
+          src="https://cdn.poehali.dev/files/0c9cc9f80dee7e3af8109daf69f3c176.jpeg" 
           alt="Алабуга логотип" 
           className="w-32 h-auto dark:hidden block"
         />
