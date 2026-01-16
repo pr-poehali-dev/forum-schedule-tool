@@ -150,6 +150,14 @@ const EventSelection = ({
                         </Badge>
                       </div>
                     )}
+                    {event.id === '4' && !is2aBlocked && (
+                      <div className="absolute top-2 right-2 z-10">
+                        <Badge className="bg-blue-600 text-white">
+                          <Icon name="MapPin" size={16} className="mr-1" />
+                          Для участниц из РФ!
+                        </Badge>
+                      </div>
+                    )}
                     <CardHeader className="pb-3" onClick={() => !is2aBlocked && handleEventSelect(event)}>
                       <div className="flex items-start justify-between gap-2">
                         <CardTitle className={`text-base leading-tight ${is2aBlocked ? 'text-muted-foreground' : 'text-foreground'}`}>
