@@ -152,8 +152,8 @@ const EventSelection = ({
                     )}
                     {event.id === '4d' && !is2aBlocked && (
                       <div className="absolute top-2 right-2 z-10">
-                        <Badge className="bg-blue-600 text-white">
-                          <Icon name="MapPin" size={16} className="mr-1" />
+                        <Badge className="bg-blue-600 text-white text-xs px-2 py-0.5">
+                          <Icon name="MapPin" size={12} className="mr-1" />
                           Для участниц из РФ!
                         </Badge>
                       </div>
