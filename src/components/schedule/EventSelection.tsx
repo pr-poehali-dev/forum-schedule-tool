@@ -150,14 +150,6 @@ const EventSelection = ({
                         </Badge>
                       </div>
                     )}
-                    {event.id === '4d' && !is2aBlocked && (
-                      <div className="absolute top-2 right-2 z-10">
-                        <Badge className="bg-blue-600 text-white text-xs px-2 py-0.5">
-                          <Icon name="MapPin" size={12} className="mr-1" />
-                          Для участниц из РФ!
-                        </Badge>
-                      </div>
-                    )}
                     <CardHeader className="pb-3" onClick={() => !is2aBlocked && handleEventSelect(event)}>
                       <div className="flex items-start justify-between gap-2">
                         <CardTitle className={`text-base leading-tight ${is2aBlocked ? 'text-muted-foreground' : 'text-foreground'}`}>
@@ -174,6 +166,13 @@ const EventSelection = ({
                         <p className="text-xs text-red-600 mt-2">
                           ⚠️ Уже выбрано "Открытие с интерактивом"
                         </p>
+                      )}
+                      {event.id === '4d' && !is2aBlocked && (
+                        <div className="mt-2">
+                          <Badge className="bg-blue-600 text-white text-[10px] px-1.5 py-0">
+                            Для участниц из РФ
+                          </Badge>
+                        </div>
                       )}
                     </CardHeader>
                     <CardContent className="pt-0">
