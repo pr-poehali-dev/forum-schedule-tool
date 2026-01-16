@@ -150,7 +150,7 @@ const EventSelection = ({
                         </Badge>
                       </div>
                     )}
-                    {event.id === '4' && !is2aBlocked && (
+                    {event.id === '4d' && !is2aBlocked && (
                       <div className="absolute top-2 right-2 z-10">
                         <Badge className="bg-blue-600 text-white">
                           <Icon name="MapPin" size={16} className="mr-1" />
