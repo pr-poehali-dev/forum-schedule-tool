@@ -126,8 +126,8 @@ const ScheduleEditor = ({
                         </button>
                       </>
                     )}
-                    <span className="text-sm text-muted-foreground">—</span>
-                    <span className="text-sm font-medium">
+                    <span className="text-sm text-muted-foreground dark:text-slate-400">—</span>
+                    <span className="text-sm font-medium dark:text-white">
                       {addMinutes(item.startTime, item.event.duration)}
                     </span>
                   </div>
