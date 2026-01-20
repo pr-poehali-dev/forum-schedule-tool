@@ -22,24 +22,8 @@ const ScheduleHeader = ({
 }: ScheduleHeaderProps) => {
   return (
     <div className="mb-8 animate-fade-in relative">
-      <div className="absolute top-0 left-0 flex gap-2">
+      <div className="absolute top-0 left-0">
         <ThemeToggle />
-        <Button 
-          onClick={() => window.open('https://team.alabuga.ru/~Dvzi6', '_blank')}
-          className="bg-primary hover:bg-primary/90 text-white shadow-lg"
-          size="sm"
-        >
-          <Icon name="BookOpen" size={16} className="mr-2" />
-          Материалы
-        </Button>
-        <Button 
-          onClick={() => window.open('https://forumguidestart.ru/', '_blank')}
-          className="bg-emerald-600 hover:bg-emerald-700 text-white shadow-lg"
-          size="sm"
-        >
-          <Icon name="Compass" size={16} className="mr-2" />
-          Гайд по организации
-        </Button>
       </div>
       <div className="absolute top-0 right-0">
         <img 
@@ -58,6 +42,24 @@ const ScheduleHeader = ({
           Планировщик форума
         </h1>
         <p className="text-muted-foreground text-lg">Создайте идеальное расписание для форума</p>
+        <div className="flex justify-center gap-2 mt-4">
+          <Button 
+            onClick={() => window.open('https://team.alabuga.ru/~Dvzi6', '_blank')}
+            className="bg-primary hover:bg-primary/90 text-white shadow-lg"
+            size="sm"
+          >
+            <Icon name="BookOpen" size={16} className="mr-2" />
+            Материалы
+          </Button>
+          <Button 
+            onClick={() => window.open('https://forumguidestart.ru/', '_blank')}
+            className="bg-emerald-600 hover:bg-emerald-700 text-white shadow-lg"
+            size="sm"
+          >
+            <Icon name="Compass" size={16} className="mr-2" />
+            Гайд по организации
+          </Button>
+        </div>
       </div>
       
       <div className="flex justify-center gap-3 mt-6">
