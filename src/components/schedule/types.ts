@@ -99,9 +99,9 @@ export const categories = [
 ];
 
 export const getDurationColor = (duration: number) => {
-  if (duration > 0 && duration < 60) return { bg: 'bg-green-100', border: 'border-green-400', text: 'text-green-700', badge: 'bg-green-500' };
-  if (duration >= 60 && duration < 90) return { bg: 'bg-yellow-100', border: 'border-yellow-400', text: 'text-yellow-700', badge: 'bg-yellow-500' };
-  return { bg: 'bg-red-100', border: 'border-red-400', text: 'text-red-700', badge: 'bg-red-500' };
+  if (duration > 0 && duration < 60) return { bg: 'bg-green-100 dark:bg-green-900/50', border: 'border-green-400 dark:border-green-600', text: 'text-green-700 dark:text-green-300', badge: 'bg-green-500' };
+  if (duration >= 60 && duration < 90) return { bg: 'bg-yellow-100 dark:bg-yellow-900/50', border: 'border-yellow-400 dark:border-yellow-600', text: 'text-yellow-700 dark:text-yellow-300', badge: 'bg-yellow-500' };
+  return { bg: 'bg-red-100 dark:bg-red-900/50', border: 'border-red-400 dark:border-red-600', text: 'text-red-700 dark:text-red-300', badge: 'bg-red-500' };
 };
 
 export const addMinutes = (time: string, minutes: number): string => {
