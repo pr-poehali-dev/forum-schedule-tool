@@ -84,14 +84,14 @@ const FinalSchedule = ({
                         {item.type === 'meal' ? '🍽️' : item.type === 'break' ? '⏸️' : '🚌'}
                       </div>
                     )}
-                    <div className="flex flex-col items-center bg-card rounded-lg px-3 py-2 shadow-sm border">
-                      <span className="text-sm font-bold text-primary">{item.startTime}</span>
-                      <span className="text-xs text-muted-foreground">—</span>
-                      <span className="text-sm font-bold text-primary">{endTime}</span>
+                    <div className="flex flex-col items-center bg-card rounded-lg px-3 py-2 shadow-sm border dark:bg-slate-700 dark:border-slate-600">
+                      <span className="text-sm font-bold text-primary dark:text-blue-400">{item.startTime}</span>
+                      <span className="text-xs text-muted-foreground dark:text-slate-400">—</span>
+                      <span className="text-sm font-bold text-primary dark:text-blue-400">{endTime}</span>
                     </div>
                     <div className="flex-1">
                       <div className="flex items-center gap-2">
-                        <h3 className={`font-bold text-lg text-foreground ${isMeal ? 'text-2xl text-emerald-600 dark:text-emerald-400' : isCustomItem ? 'text-xl' : ''}`}>
+                        <h3 className={`font-bold text-lg ${isMeal ? 'text-2xl text-emerald-600 dark:text-emerald-400' : isCustomItem ? 'text-xl dark:text-white' : 'dark:text-white'}`}>
                           {item.customTitle || item.event.title}
                         </h3>
                         {isCustomItem && (
@@ -107,12 +107,12 @@ const FinalSchedule = ({
                         )}
                       </div>
                       {item.event.category && (
-                        <p className="text-sm text-primary font-medium mt-1">
+                        <p className="text-sm text-primary font-medium mt-1 dark:text-blue-400">
                           [{item.event.category}]
                         </p>
                       )}
                       {item.event.location && (
-                        <p className="text-sm text-muted-foreground flex items-center gap-1 mt-1">
+                        <p className="text-sm text-muted-foreground flex items-center gap-1 mt-1 dark:text-slate-300">
                           <Icon name="MapPin" size={16} />
                           {item.event.location}
                         </p>

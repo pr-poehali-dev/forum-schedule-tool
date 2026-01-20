@@ -120,7 +120,7 @@ const ScheduleEditor = ({
                             setEditingTime(item.id);
                             setTempTime(item.startTime);
                           }}
-                          className="px-3 py-1 rounded bg-card hover:bg-muted text-sm font-medium shadow-sm border"
+                          className="px-3 py-1 rounded bg-card hover:bg-muted text-sm font-medium shadow-sm border dark:bg-slate-700 dark:text-white dark:border-slate-600"
                         >
                           {item.startTime}
                         </button>
@@ -132,11 +132,11 @@ const ScheduleEditor = ({
                     </span>
                   </div>
                   <div className="flex-1">
-                    <h3 className={`font-semibold ${isMeal ? 'text-xl text-emerald-600 dark:text-emerald-400' : isCustomItem ? 'text-lg' : ''}`}>
+                    <h3 className={`font-semibold ${isMeal ? 'text-xl text-emerald-600 dark:text-emerald-400' : isCustomItem ? 'text-lg dark:text-foreground' : 'dark:text-foreground'}`}>
                       {item.customTitle || item.event.title}
                     </h3>
                     {item.event.category && (
-                      <p className="text-xs text-muted-foreground">[{item.event.category}]</p>
+                      <p className="text-xs text-muted-foreground dark:text-slate-400">[{item.event.category}]</p>
                     )}
                     {isCustomItem && (
                       <p className={`text-xs font-medium mt-1 ${isMeal ? 'text-emerald-600 dark:text-emerald-400' : 'text-muted-foreground'}`}>
@@ -169,7 +169,7 @@ const ScheduleEditor = ({
                         setEditingDuration(item.id);
                         setTempDuration(item.event.duration);
                       }}
-                      className="px-3 py-1 rounded bg-card hover:bg-muted text-sm font-medium shadow-sm border"
+                      className="px-3 py-1 rounded bg-card hover:bg-muted text-sm font-medium shadow-sm border dark:bg-slate-700 dark:text-white dark:border-slate-600"
                     >
                       {item.event.duration} мин
                     </button>

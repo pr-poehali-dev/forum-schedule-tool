@@ -22,8 +22,16 @@ const ScheduleHeader = ({
 }: ScheduleHeaderProps) => {
   return (
     <div className="mb-8 animate-fade-in relative">
-      <div className="absolute top-0 left-0">
+      <div className="absolute top-0 left-0 flex gap-2">
         <ThemeToggle />
+        <Button 
+          onClick={() => window.open('https://team.alabuga.ru/~Dvzi6', '_blank')}
+          className="bg-primary hover:bg-primary/90 text-white shadow-lg"
+          size="sm"
+        >
+          <Icon name="BookOpen" size={16} className="mr-2" />
+          Материалы
+        </Button>
       </div>
       <div className="absolute top-0 right-0">
         <img 

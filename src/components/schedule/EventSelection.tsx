@@ -34,16 +34,6 @@ const EventSelection = ({
     <div className="space-y-8 animate-fade-in">
       <TimeCalculator selectedEvents={selectedEvents} />
       
-      <div className="flex justify-center">
-        <Button 
-          onClick={() => window.open('https://team.alabuga.ru/~Dvzi6', '_blank')}
-          className="bg-primary hover:bg-primary/90 text-white px-6 py-3 text-base shadow-lg"
-        >
-          <Icon name="BookOpen" size={20} className="mr-2" />
-          Материалы к мероприятиям
-        </Button>
-      </div>
-      
       <Card className="shadow-lg dark:bg-gradient-to-br dark:from-slate-800 dark:to-slate-900 dark:border-slate-700">
         <CardHeader>
           <CardTitle className="text-xl flex items-center gap-2 text-foreground">
