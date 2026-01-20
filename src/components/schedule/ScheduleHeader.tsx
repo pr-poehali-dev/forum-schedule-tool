@@ -32,6 +32,14 @@ const ScheduleHeader = ({
           <Icon name="BookOpen" size={16} className="mr-2" />
           Материалы
         </Button>
+        <Button 
+          onClick={() => window.open('https://forumguidestart.ru/', '_blank')}
+          className="bg-emerald-600 hover:bg-emerald-700 text-white shadow-lg"
+          size="sm"
+        >
+          <Icon name="Compass" size={16} className="mr-2" />
+          Гайд по организации
+        </Button>
       </div>
       <div className="absolute top-0 right-0">
         <img 
