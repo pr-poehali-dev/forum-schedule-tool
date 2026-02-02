@@ -161,27 +161,27 @@ const ScheduleDialogs = ({
                 
                 <div className="space-y-3">
                   <div>
-                    <h4 className="font-semibold text-foreground dark:text-black mb-1 flex items-center gap-2">
-                      <Icon name="FileText" size={18} className="dark:text-black" />
+                    <h4 className="font-semibold text-foreground mb-1 flex items-center gap-2">
+                      <Icon name="FileText" size={18} />
                       Описание
                     </h4>
-                    <p className="text-foreground/80 dark:text-black leading-relaxed">{viewingEvent.description}</p>
+                    <p className="text-foreground/80 leading-relaxed">{viewingEvent.description}</p>
                   </div>
                   
                   <div>
-                    <h4 className="font-semibold text-foreground dark:text-black mb-1 flex items-center gap-2">
-                      <Icon name="MapPin" size={16} className="dark:text-black" />
+                    <h4 className="font-semibold text-foreground mb-1 flex items-center gap-2">
+                      <Icon name="MapPin" size={16} />
                       Место проведения
                     </h4>
-                    <p className="text-foreground/80 dark:text-black">{viewingEvent.location}</p>
+                    <p className="text-foreground/80">{viewingEvent.location}</p>
                   </div>
                   
                   <div>
-                    <h4 className="font-semibold text-foreground dark:text-black mb-1 flex items-center gap-2">
-                      <Icon name="Folder" size={18} className="dark:text-black" />
+                    <h4 className="font-semibold text-foreground mb-1 flex items-center gap-2">
+                      <Icon name="Folder" size={18} />
                       Категория
                     </h4>
-                    <Badge variant="outline" className="text-primary border-primary/30 dark:text-black dark:border-black/30 dark:bg-white">
+                    <Badge variant="outline" className="text-primary border-primary/30">
                       {viewingEvent.category}
                     </Badge>
                   </div>
