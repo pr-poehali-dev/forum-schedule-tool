@@ -69,6 +69,7 @@ const Index = () => {
             schedule={state.schedule}
             exportToExcel={handlers.exportToExcel}
             exportToJPG={handlers.exportToJPG}
+            exportToPDF={handlers.exportToPDF}
             setStep={state.setStep}
             setSelectedEvents={state.setSelectedEvents}
             setSchedule={state.setSchedule}

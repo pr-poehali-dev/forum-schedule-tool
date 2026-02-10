@@ -1,6 +1,8 @@
 import { Event, ScheduleItem, SavedSchedule, categories, addMinutes } from '@/components/schedule/types';
 import * as XLSX from 'xlsx';
 import html2canvas from 'html2canvas';
+import jsPDF from 'jspdf';
+import autoTable from 'jspdf-autotable';
 
 interface ScheduleState {
   selectedEvents: Record<string, Event[]>;
@@ -367,30 +369,98 @@ export const useScheduleHandlers = (state: ScheduleState) => {
       if (!worksheet[headerCell]) continue;
       worksheet[headerCell].s = {
         font: { bold: true },
-        fill: { fgColor: { rgb: "ADD8E6" } },
-        alignment: { horizontal: 'center', vertical: 'center' }
+        fill: { fgColor: { rgb: "4A90E2" } },
+        alignment: { horizontal: 'center', vertical: 'center', wrapText: true }
       };
     }
     
     for (let R = range.s.r + 1; R <= range.e.r; ++R) {
-      const timeCell = XLSX.utils.encode_cell({ r: R, c: 0 });
-      if (worksheet[timeCell]) {
-        worksheet[timeCell].s = {
-          fill: { fgColor: { rgb: "E0F2F7" } },
-          font: { italic: true },
-          alignment: { horizontal: 'center', vertical: 'center' }
-        };
-      }
-      
-      const locationCell = XLSX.utils.encode_cell({ r: R, c: 2 });
-      if (worksheet[locationCell]) {
-        worksheet[locationCell].s = {
-          alignment: { wrapText: true, vertical: 'top' }
+      for (let C = range.s.c; C <= range.e.c; ++C) {
+        const cellAddress = XLSX.utils.encode_cell({ r: R, c: C });
+        if (!worksheet[cellAddress]) continue;
+        
+        worksheet[cellAddress].s = {
+          alignment: { 
+            wrapText: true, 
+            vertical: 'top',
+            horizontal: C === 0 ? 'center' : 'left'
+          },
+          border: {
+            top: { style: 'thin', color: { rgb: 'CCCCCC' } },
+            bottom: { style: 'thin', color: { rgb: 'CCCCCC' } },
+            left: { style: 'thin', color: { rgb: 'CCCCCC' } },
+            right: { style: 'thin', color: { rgb: 'CCCCCC' } }
+          }
         };
       }
     }
     
     XLSX.writeFile(workbook, 'raspisanie-foruma.xlsx', { cellStyles: true });
+  };
+
+  const exportToPDF = () => {
+    const doc = new jsPDF({
+      orientation: 'portrait',
+      unit: 'mm',
+      format: 'a4'
+    });
+
+    const logoUrl = 'https://cdn.poehali.dev/files/Рисунок алабуга.png';
+    
+    doc.setFontSize(20);
+    doc.setFont('helvetica', 'bold');
+    doc.text('Расписание форума', 105, 20, { align: 'center' });
+    
+    doc.setFontSize(12);
+    doc.setFont('helvetica', 'normal');
+    doc.text('Программа АС', 105, 28, { align: 'center' });
+
+    const tableData = state.schedule.map(item => {
+      const endTime = addMinutes(item.startTime, item.event.duration);
+      return [
+        `${item.startTime} - ${endTime}`,
+        item.customTitle || item.event.title,
+        item.event.location || ''
+      ];
+    });
+
+    autoTable(doc, {
+      head: [['Время', 'Мероприятие', 'Место проведения']],
+      body: tableData,
+      startY: 35,
+      theme: 'grid',
+      styles: {
+        font: 'helvetica',
+        fontSize: 9,
+        cellPadding: 3,
+        lineColor: [200, 200, 200],
+        lineWidth: 0.1
+      },
+      headStyles: {
+        fillColor: [74, 144, 226],
+        textColor: [255, 255, 255],
+        fontStyle: 'bold',
+        halign: 'center',
+        valign: 'middle',
+        fontSize: 10
+      },
+      columnStyles: {
+        0: { cellWidth: 35, halign: 'center', valign: 'middle' },
+        1: { cellWidth: 90, halign: 'left', valign: 'top' },
+        2: { cellWidth: 65, halign: 'left', valign: 'top' }
+      },
+      alternateRowStyles: {
+        fillColor: [245, 247, 250]
+      },
+      margin: { left: 10, right: 10 }
+    });
+
+    const finalY = (doc as typeof doc & { lastAutoTable?: { finalY: number } }).lastAutoTable?.finalY || 35;
+    doc.setFontSize(8);
+    doc.setTextColor(150, 150, 150);
+    doc.text(`Создано: ${new Date().toLocaleDateString('ru-RU')}`, 105, finalY + 10, { align: 'center' });
+
+    doc.save('raspisanie-foruma.pdf');
   };
 
   const updateDuration = (id: string, newDuration: number) => {
@@ -482,6 +552,7 @@ export const useScheduleHandlers = (state: ScheduleState) => {
     handleDragEnd,
     exportToJPG,
     exportToExcel,
+    exportToPDF,
     updateDuration,
     canGenerateSchedule,
     saveCurrentSchedule,

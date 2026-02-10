@@ -10,8 +10,9 @@ interface FinalScheduleProps {
   schedule: ScheduleItem[];
   exportToExcel: () => void;
   exportToJPG: () => Promise<void>;
+  exportToPDF: () => void;
   setStep: (step: 'selection' | 'editing' | 'final') => void;
-  setSelectedEvents: (events: Record<string, any[]>) => void;
+  setSelectedEvents: (events: Record<string, Event[]>) => void;
   setSchedule: (schedule: ScheduleItem[]) => void;
 }
 
@@ -19,6 +20,7 @@ const FinalSchedule = ({
   schedule,
   exportToExcel,
   exportToJPG,
+  exportToPDF,
   setStep,
   setSelectedEvents,
   setSchedule
@@ -47,13 +49,17 @@ const FinalSchedule = ({
               </div>
             </div>
             <div className="flex gap-2" data-no-export>
-              <Button onClick={exportToJPG} className="gap-2 bg-primary hover:bg-primary/90">
-                <Icon name="Image" size={18} />
-                Скачать JPG
+              <Button onClick={exportToPDF} className="gap-2 bg-red-600 hover:bg-red-700">
+                <Icon name="FileText" size={18} />
+                PDF для печати
               </Button>
               <Button onClick={exportToExcel} className="gap-2 bg-green-600 hover:bg-green-700">
-                <Icon name="Download" size={18} />
-                Скачать Excel
+                <Icon name="FileSpreadsheet" size={18} />
+                Excel
+              </Button>
+              <Button onClick={exportToJPG} className="gap-2 bg-primary hover:bg-primary/90">
+                <Icon name="Image" size={18} />
+                JPG
               </Button>
             </div>
           </div>
