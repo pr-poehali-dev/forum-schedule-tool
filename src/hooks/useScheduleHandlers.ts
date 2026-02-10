@@ -425,13 +425,53 @@ export const useScheduleHandlers = (state: ScheduleState) => {
     });
 
     const imgData = canvas.toDataURL('image/jpeg', 1.0);
+    
     const pdf = new jsPDF({
-      orientation: canvas.width > canvas.height ? 'landscape' : 'portrait',
-      unit: 'px',
-      format: [canvas.width, canvas.height]
+      orientation: 'portrait',
+      unit: 'mm',
+      format: 'a4'
     });
 
-    pdf.addImage(imgData, 'JPEG', 0, 0, canvas.width, canvas.height);
+    const pdfWidth = pdf.internal.pageSize.getWidth();
+    const pdfHeight = pdf.internal.pageSize.getHeight();
+    
+    const imgWidth = canvas.width;
+    const imgHeight = canvas.height;
+    
+    const ratio = Math.min(pdfWidth / imgWidth, pdfHeight / imgHeight);
+    
+    const imgScaledWidth = imgWidth * ratio;
+    const imgScaledHeight = imgHeight * ratio;
+    
+    const marginX = (pdfWidth - imgScaledWidth) / 2;
+    const marginY = 10;
+
+    if (imgScaledHeight > pdfHeight - 20) {
+      const totalPages = Math.ceil(imgScaledHeight / (pdfHeight - 20));
+      
+      for (let i = 0; i < totalPages; i++) {
+        if (i > 0) {
+          pdf.addPage();
+        }
+        
+        const sourceY = i * (pdfHeight - 20) / ratio;
+        const sourceHeight = Math.min((pdfHeight - 20) / ratio, imgHeight - sourceY);
+        
+        const tempCanvas = document.createElement('canvas');
+        tempCanvas.width = imgWidth;
+        tempCanvas.height = sourceHeight;
+        const ctx = tempCanvas.getContext('2d');
+        
+        if (ctx) {
+          ctx.drawImage(canvas, 0, sourceY, imgWidth, sourceHeight, 0, 0, imgWidth, sourceHeight);
+          const pageImgData = tempCanvas.toDataURL('image/jpeg', 1.0);
+          pdf.addImage(pageImgData, 'JPEG', marginX, marginY, imgScaledWidth, sourceHeight * ratio);
+        }
+      }
+    } else {
+      pdf.addImage(imgData, 'JPEG', marginX, marginY, imgScaledWidth, imgScaledHeight);
+    }
+
     pdf.save('raspisanie-foruma.pdf');
   };
 
