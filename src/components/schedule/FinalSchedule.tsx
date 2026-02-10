@@ -10,7 +10,7 @@ interface FinalScheduleProps {
   schedule: ScheduleItem[];
   exportToExcel: () => void;
   exportToJPG: () => Promise<void>;
-  exportToPDF: () => void;
+  exportToPDF: () => Promise<void>;
   setStep: (step: 'selection' | 'editing' | 'final') => void;
   setSelectedEvents: (events: Record<string, Event[]>) => void;
   setSchedule: (schedule: ScheduleItem[]) => void;

@@ -1,5 +1,5 @@
 import { Event, ScheduleItem, SavedSchedule, categories, addMinutes } from '@/components/schedule/types';
-import * as XLSX from 'xlsx';
+import * as XLSX from 'xlsx-js-style';
 import html2canvas from 'html2canvas';
 import jsPDF from 'jspdf';
 import autoTable from 'jspdf-autotable';
@@ -345,14 +345,19 @@ export const useScheduleHandlers = (state: ScheduleState) => {
   const exportToExcel = () => {
     const tableData = state.schedule.map(item => {
       const endTime = addMinutes(item.startTime, item.event.duration);
-      return {
-        'Время': `${item.startTime} - ${endTime}`,
-        'Мероприятие': item.customTitle || item.event.title,
-        'Место проведения': item.event.location || ''
-      };
+      return [
+        `${item.startTime} - ${endTime}`,
+        item.customTitle || item.event.title,
+        item.event.location || ''
+      ];
     });
     
-    const worksheet = XLSX.utils.json_to_sheet(tableData);
+    const data = [
+      ['Время', 'Мероприятие', 'Место проведения'],
+      ...tableData
+    ];
+    
+    const worksheet = XLSX.utils.aoa_to_sheet(data);
     const workbook = XLSX.utils.book_new();
     XLSX.utils.book_append_sheet(workbook, worksheet, 'Расписание');
     
@@ -368,9 +373,15 @@ export const useScheduleHandlers = (state: ScheduleState) => {
       const headerCell = XLSX.utils.encode_cell({ r: 0, c: C });
       if (!worksheet[headerCell]) continue;
       worksheet[headerCell].s = {
-        font: { bold: true },
+        font: { bold: true, sz: 12 },
         fill: { fgColor: { rgb: "4A90E2" } },
-        alignment: { horizontal: 'center', vertical: 'center', wrapText: true }
+        alignment: { horizontal: 'center', vertical: 'center', wrapText: true },
+        border: {
+          top: { style: 'thin', color: { rgb: '000000' } },
+          bottom: { style: 'thin', color: { rgb: '000000' } },
+          left: { style: 'thin', color: { rgb: '000000' } },
+          right: { style: 'thin', color: { rgb: '000000' } }
+        }
       };
     }
     
@@ -395,72 +406,33 @@ export const useScheduleHandlers = (state: ScheduleState) => {
       }
     }
     
-    XLSX.writeFile(workbook, 'raspisanie-foruma.xlsx', { cellStyles: true });
+    XLSX.writeFile(workbook, 'raspisanie-foruma.xlsx');
   };
 
-  const exportToPDF = () => {
-    const doc = new jsPDF({
-      orientation: 'portrait',
-      unit: 'mm',
-      format: 'a4'
+  const exportToPDF = async () => {
+    const scheduleElement = document.querySelector('[data-schedule-export]');
+    if (!scheduleElement) return;
+
+    const canvas = await html2canvas(scheduleElement as HTMLElement, {
+      scale: 2,
+      backgroundColor: '#ffffff',
+      logging: false,
+      useCORS: true,
+      allowTaint: true,
+      ignoreElements: (element) => {
+        return element.hasAttribute('data-no-export');
+      }
     });
 
-    const logoUrl = 'https://cdn.poehali.dev/files/Рисунок алабуга.png';
-    
-    doc.setFontSize(20);
-    doc.setFont('helvetica', 'bold');
-    doc.text('Расписание форума', 105, 20, { align: 'center' });
-    
-    doc.setFontSize(12);
-    doc.setFont('helvetica', 'normal');
-    doc.text('Программа АС', 105, 28, { align: 'center' });
-
-    const tableData = state.schedule.map(item => {
-      const endTime = addMinutes(item.startTime, item.event.duration);
-      return [
-        `${item.startTime} - ${endTime}`,
-        item.customTitle || item.event.title,
-        item.event.location || ''
-      ];
+    const imgData = canvas.toDataURL('image/jpeg', 1.0);
+    const pdf = new jsPDF({
+      orientation: canvas.width > canvas.height ? 'landscape' : 'portrait',
+      unit: 'px',
+      format: [canvas.width, canvas.height]
     });
 
-    autoTable(doc, {
-      head: [['Время', 'Мероприятие', 'Место проведения']],
-      body: tableData,
-      startY: 35,
-      theme: 'grid',
-      styles: {
-        font: 'helvetica',
-        fontSize: 9,
-        cellPadding: 3,
-        lineColor: [200, 200, 200],
-        lineWidth: 0.1
-      },
-      headStyles: {
-        fillColor: [74, 144, 226],
-        textColor: [255, 255, 255],
-        fontStyle: 'bold',
-        halign: 'center',
-        valign: 'middle',
-        fontSize: 10
-      },
-      columnStyles: {
-        0: { cellWidth: 35, halign: 'center', valign: 'middle' },
-        1: { cellWidth: 90, halign: 'left', valign: 'top' },
-        2: { cellWidth: 65, halign: 'left', valign: 'top' }
-      },
-      alternateRowStyles: {
-        fillColor: [245, 247, 250]
-      },
-      margin: { left: 10, right: 10 }
-    });
-
-    const finalY = (doc as typeof doc & { lastAutoTable?: { finalY: number } }).lastAutoTable?.finalY || 35;
-    doc.setFontSize(8);
-    doc.setTextColor(150, 150, 150);
-    doc.text(`Создано: ${new Date().toLocaleDateString('ru-RU')}`, 105, finalY + 10, { align: 'center' });
-
-    doc.save('raspisanie-foruma.pdf');
+    pdf.addImage(imgData, 'JPEG', 0, 0, canvas.width, canvas.height);
+    pdf.save('raspisanie-foruma.pdf');
   };
 
   const updateDuration = (id: string, newDuration: number) => {
