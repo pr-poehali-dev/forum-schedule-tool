@@ -393,14 +393,14 @@ export const useScheduleHandlers = (state: ScheduleState) => {
         worksheet[cellAddress].s = {
           alignment: { 
             wrapText: true, 
-            vertical: 'top',
-            horizontal: C === 0 ? 'center' : 'left'
+            vertical: 'center',
+            horizontal: 'center'
           },
           border: {
-            top: { style: 'thin', color: { rgb: 'CCCCCC' } },
-            bottom: { style: 'thin', color: { rgb: 'CCCCCC' } },
-            left: { style: 'thin', color: { rgb: 'CCCCCC' } },
-            right: { style: 'thin', color: { rgb: 'CCCCCC' } }
+            top: { style: 'thin', color: { rgb: '000000' } },
+            bottom: { style: 'thin', color: { rgb: '000000' } },
+            left: { style: 'thin', color: { rgb: '000000' } },
+            right: { style: 'thin', color: { rgb: '000000' } }
           }
         };
       }
