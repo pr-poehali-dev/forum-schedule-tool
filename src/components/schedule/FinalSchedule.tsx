@@ -49,7 +49,10 @@ const FinalSchedule = ({
               </div>
             </div>
             <div className="flex gap-2" data-no-export>
-              <Button onClick={exportToPDF} className="gap-2 bg-red-600 hover:bg-red-700">PDF</Button>
+              <Button onClick={exportToPDF} className="gap-2 bg-red-600 hover:bg-red-700">
+                <Icon name="FileText" size={18} />
+                PDF
+              </Button>
               <Button onClick={exportToExcel} className="gap-2 bg-green-600 hover:bg-green-700">
                 <Icon name="FileSpreadsheet" size={18} />
                 Excel
