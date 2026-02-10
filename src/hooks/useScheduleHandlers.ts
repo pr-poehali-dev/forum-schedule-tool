@@ -444,18 +444,18 @@ export const useScheduleHandlers = (state: ScheduleState) => {
     const imgScaledHeight = imgHeight * ratio;
     
     const marginX = (pdfWidth - imgScaledWidth) / 2;
-    const marginY = 10;
+    const marginY = 0;
 
-    if (imgScaledHeight > pdfHeight - 20) {
-      const totalPages = Math.ceil(imgScaledHeight / (pdfHeight - 20));
+    if (imgScaledHeight > pdfHeight) {
+      const totalPages = Math.ceil(imgScaledHeight / pdfHeight);
       
       for (let i = 0; i < totalPages; i++) {
         if (i > 0) {
           pdf.addPage();
         }
         
-        const sourceY = i * (pdfHeight - 20) / ratio;
-        const sourceHeight = Math.min((pdfHeight - 20) / ratio, imgHeight - sourceY);
+        const sourceY = i * pdfHeight / ratio;
+        const sourceHeight = Math.min(pdfHeight / ratio, imgHeight - sourceY);
         
         const tempCanvas = document.createElement('canvas');
         tempCanvas.width = imgWidth;
