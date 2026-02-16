@@ -17,6 +17,7 @@ interface ScheduleEditorProps {
   setTempDuration: (duration: number) => void;
   updateStartTime: (id: string, newTime: string) => void;
   updateDuration: (id: string, newDuration: number) => void;
+  updateLocation: (id: string, newLocation: string) => void;
   removeItem: (id: string) => void;
   handleDragStart: (index: number) => void;
   handleDragOver: (e: React.DragEvent, index: number) => void;
@@ -38,6 +39,7 @@ const ScheduleEditor = ({
   setTempDuration,
   updateStartTime,
   updateDuration,
+  updateLocation,
   removeItem,
   handleDragStart,
   handleDragOver,
@@ -182,6 +184,17 @@ const ScheduleEditor = ({
                   >
                     <Icon name="Trash2" size={18} />
                   </Button>
+                </div>
+                <div className="flex items-center gap-2 mt-2 ml-10">
+                  <span className="text-xs text-muted-foreground whitespace-nowrap font-medium">
+                    {item.type === 'transfer' ? 'Откуда-Куда:' : 'Локация:'}
+                  </span>
+                  <Input
+                    value={item.customLocation || ''}
+                    onChange={(e) => updateLocation(item.id, e.target.value)}
+                    placeholder={item.type === 'transfer' ? 'Например: Пирамида — Курчатов' : 'Введите локацию'}
+                    className="h-7 text-xs flex-1"
+                  />
                 </div>
               </div>
             );

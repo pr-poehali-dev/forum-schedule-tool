@@ -347,12 +347,13 @@ export const useScheduleHandlers = (state: ScheduleState) => {
       const endTime = addMinutes(item.startTime, item.event.duration);
       return [
         `${item.startTime} - ${endTime}`,
-        item.customTitle || item.event.title
+        item.customTitle || item.event.title,
+        item.customLocation || ''
       ];
     });
     
     const data = [
-      ['Время', 'Мероприятие'],
+      ['Время', 'Мероприятие', 'Место проведения'],
       ...tableData
     ];
     
@@ -362,7 +363,8 @@ export const useScheduleHandlers = (state: ScheduleState) => {
     
     worksheet['!cols'] = [
       { wch: 20 },
-      { wch: 50 }
+      { wch: 50 },
+      { wch: 30 }
     ];
     
     const range = XLSX.utils.decode_range(worksheet['!ref'] || 'A1');
@@ -495,6 +497,12 @@ export const useScheduleHandlers = (state: ScheduleState) => {
     });
   };
 
+  const updateLocation = (id: string, newLocation: string) => {
+    state.setSchedule(prev =>
+      prev.map(item => item.id === id ? { ...item, customLocation: newLocation } : item)
+    );
+  };
+
   const canGenerateSchedule = Object.values(state.selectedEvents).some(events => events.length > 0);
 
   const saveCurrentSchedule = () => {
@@ -564,6 +572,7 @@ export const useScheduleHandlers = (state: ScheduleState) => {
     exportToExcel,
     exportToPDF,
     updateDuration,
+    updateLocation,
     canGenerateSchedule,
     saveCurrentSchedule,
     loadSchedule,

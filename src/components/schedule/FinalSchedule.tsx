@@ -117,7 +117,12 @@ const FinalSchedule = ({
                           [{item.event.category}]
                         </p>
                       )}
-
+                      {item.customLocation && (
+                        <p className="text-xs text-muted-foreground mt-1 flex items-center gap-1">
+                          <span className="font-medium">{item.type === 'transfer' ? '🚩 Откуда-Куда:' : '📍 Локация:'}</span>
+                          {item.customLocation}
+                        </p>
+                      )}
                     </div>
                     <Badge className={`${item.type === 'event' ? getDurationColor(item.event.duration).badge : 'bg-muted text-foreground'} text-white`} data-no-export>
                       {item.event.duration} мин

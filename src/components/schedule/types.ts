@@ -14,6 +14,7 @@ export interface ScheduleItem {
   startTime: string;
   type: 'event' | 'break' | 'meal' | 'transfer';
   customTitle?: string;
+  customLocation?: string;
 }
 
 export interface SavedSchedule {

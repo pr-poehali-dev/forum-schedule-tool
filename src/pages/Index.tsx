@@ -55,6 +55,7 @@ const Index = () => {
             setTempDuration={state.setTempDuration}
             updateStartTime={handlers.updateStartTime}
             updateDuration={handlers.updateDuration}
+            updateLocation={handlers.updateLocation}
             removeItem={handlers.removeItem}
             handleDragStart={handlers.handleDragStart}
             handleDragOver={handlers.handleDragOver}
