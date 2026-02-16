@@ -347,13 +347,12 @@ export const useScheduleHandlers = (state: ScheduleState) => {
       const endTime = addMinutes(item.startTime, item.event.duration);
       return [
         `${item.startTime} - ${endTime}`,
-        item.customTitle || item.event.title,
-        item.event.location || ''
+        item.customTitle || item.event.title
       ];
     });
     
     const data = [
-      ['Время', 'Мероприятие', 'Место проведения'],
+      ['Время', 'Мероприятие'],
       ...tableData
     ];
     
@@ -363,8 +362,7 @@ export const useScheduleHandlers = (state: ScheduleState) => {
     
     worksheet['!cols'] = [
       { wch: 20 },
-      { wch: 50 },
-      { wch: 40 }
+      { wch: 50 }
     ];
     
     const range = XLSX.utils.decode_range(worksheet['!ref'] || 'A1');

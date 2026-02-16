@@ -100,12 +100,6 @@ const SelectionDialogs = ({
                       {event.description}
                     </CardDescription>
                   </CardHeader>
-                  <CardContent className="pt-0">
-                    <div className="flex items-center gap-2 text-sm text-muted-foreground">
-                      <Icon name="MapPin" size={16} className="shrink-0" />
-                      <span className="line-clamp-1">{event.location}</span>
-                    </div>
-                  </CardContent>
                 </Card>
               );
             })}
@@ -155,12 +149,6 @@ const SelectionDialogs = ({
                       {event.description}
                     </CardDescription>
                   </CardHeader>
-                  <CardContent className="pt-0">
-                    <div className="flex items-center gap-2 text-sm text-muted-foreground">
-                      <Icon name="MapPin" size={16} className="shrink-0" />
-                      <span className="line-clamp-1">{event.location}</span>
-                    </div>
-                  </CardContent>
                 </Card>
               );
             })}
@@ -218,12 +206,6 @@ const SelectionDialogs = ({
                       {event.description}
                     </CardDescription>
                   </CardHeader>
-                  <CardContent className="pt-0">
-                    <div className="flex items-center gap-2 text-sm text-muted-foreground">
-                      <Icon name="MapPin" size={16} className="shrink-0" />
-                      <span className="line-clamp-1">{event.location}</span>
-                    </div>
-                  </CardContent>
                 </Card>
               );
             })}

@@ -55,14 +55,6 @@ const ViewEventDialog = ({
                 
                 <div>
                   <h4 className="font-semibold text-foreground dark:text-black mb-1 flex items-center gap-2">
-                    <Icon name="MapPin" size={16} className="dark:text-black" />
-                    Место проведения
-                  </h4>
-                  <p className="text-foreground/80 dark:text-black">{event.location}</p>
-                </div>
-                
-                <div>
-                  <h4 className="font-semibold text-foreground dark:text-black mb-1 flex items-center gap-2">
                     <Icon name="Folder" size={18} className="dark:text-black" />
                     Категория
                   </h4>

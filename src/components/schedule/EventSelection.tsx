@@ -176,11 +176,7 @@ const EventSelection = ({
                       )}
                     </CardHeader>
                     <CardContent className="pt-0">
-                      <div className="flex items-center justify-between gap-2">
-                        <div className={`flex items-center gap-2 text-sm ${is2aBlocked ? 'text-muted-foreground' : 'text-muted-foreground'}`}>
-                          <Icon name="MapPin" size={16} className="shrink-0" />
-                          <span className="line-clamp-1">{event.location}</span>
-                        </div>
+                      <div className="flex items-center justify-end gap-2">
                         <Button
                           variant="ghost"
                           size="sm"
@@ -268,11 +264,7 @@ const EventSelection = ({
                               <CardDescription className="text-sm">Общее время проведения: 30-40 минут</CardDescription>
                             </CardHeader>
                             <CardContent className="pt-0">
-                              <div className="flex items-center justify-between gap-2">
-                                <div className="flex items-center gap-2 text-sm text-muted-foreground">
-                                  <Icon name="MapPin" size={16} className="shrink-0" />
-                                  <span className="line-clamp-1">{event.location}</span>
-                                </div>
+                              <div className="flex items-center justify-end gap-2">
                                 {selected && (
                                   <Badge className="bg-green-500 text-white">
                                     <Icon name="Check" size={16} className="mr-1" />
