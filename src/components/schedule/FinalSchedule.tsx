@@ -117,12 +117,7 @@ const FinalSchedule = ({
                           [{item.event.category}]
                         </p>
                       )}
-                      {item.event.location && (
-                        <p className="text-sm text-muted-foreground flex items-center gap-1 mt-1 dark:text-slate-300">
-                          <Icon name="MapPin" size={16} />
-                          {item.event.location}
-                        </p>
-                      )}
+
                     </div>
                     <Badge className={`${item.type === 'event' ? getDurationColor(item.event.duration).badge : 'bg-muted text-foreground'} text-white`} data-no-export>
                       {item.event.duration} мин
